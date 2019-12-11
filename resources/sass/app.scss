@@ -1,0 +1,20 @@
+.grid-container, .grid-sizes {
+  display: grid;
+  grid-template-columns: auto;
+  grid-column-gap: 0.5rem;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(50% - var(--gutter) * 2);
+}
+
+.grid-item, .size-item {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.grid-item {
+  padding: 0.5rem;
+}
+
+.breadcrums {
+  font-size: 0.75rem;
+}
