@@ -46,6 +46,8 @@ class User extends Authenticatable
 
     /**
      * Check if user has an admin user level
+     *
+     * @return boolean
      */
     public function is_admin()
     {

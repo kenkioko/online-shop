@@ -15,10 +15,10 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/category', function () {
-    return view('category');
-});
-
 Route::get('/item', function () {
     return view('item');
 });
+
+Route::resources([
+    'category' => 'CategoryController',
+]);

@@ -1,6 +1,6 @@
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top d-flex">
-  <a class="navbar-brand" href="index.html">
+  <a class="navbar-brand" href="/">
     <img src="img/placeholder.com-logo1.jpg" alt="logo" width="100" height="50" />
   </a>
   <button type="button"
