@@ -8,13 +8,24 @@ use Illuminate\Http\Request;
 class ItemController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //$this->middleware('auth')->except(['index', 'show']);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        dd(Item::all());
+        return view('item');
     }
 
     /**
@@ -46,7 +57,8 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        //
+        dd($item);
+        return view('item');
     }
 
     /**
