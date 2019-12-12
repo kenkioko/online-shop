@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Item;
 use App\Category;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class CategoryController extends Controller
      */
     public function __construct()
     {
-        //$this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('auth')->except(['index', 'show']);
     }
 
     /**
@@ -57,8 +58,11 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        dd($category);
-        return view('category');
+        $items = Item::where('category_id', $category->id)->get();
+        return view('category')->with([
+          'category' => $category,
+          'items' => $items,
+        ]);
     }
 
     /**

@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Item')
+@section('title')
+  @php
+    echo ucwords($item->name);
+  @endphp
+@endsection
 
 @section('page_css')
   @parent
@@ -18,7 +22,7 @@
 @section('content')
   <!-- Breadcrums -->
   <div class="border-bottom p-2 breadcrums">
-    <span class="text-muted">Home / Item Title /</span>
+    <span class="text-muted">Home / Item / {{ ucwords($item->name) }} /</span>
   </div>
   <!-- End Breadcrums -->
 
@@ -50,18 +54,20 @@
       <!-- End Item Images -->
 
       <div class="col-sm-6 px-5">
-        <h1 class="border-bottom" id="item-title">Item Title</h1>
+        <h1 class="border-bottom" id="item-title">
+          {{ ucwords($item->name) }}
+        </h1>
 
-        <p class="my-5">
-          Ma quande lingues coalesce, li grammatica del resultant lingue es
-          plu simplic e regulari quam ti del coalescent lingues. Li nov lingua
-          franca va esser plu simplic e regulari quam li existent Europan lingues.
-          It va esser tam simplic quam Occidental in fact, it va esser Occidental.
-          A un Angleso it va semblar un simplificat Angles, quam un skeptic Cambridge
-          amico dit me que Occidental es.
+        <p class="my-4">
+          <span class="font-weight-bold">
+            Description:
+          </span><br>
+          {{ ucwords($item->description) }}
         </p>
 
-        <p>Select Size:</p>
+        <p><span class="font-weight-bold">
+            Select Size:
+        </span><br></p>
         <div class="grid-sizes">
           <div class="size-item border">7</div>
           <div class="size-item border">8</div>
@@ -70,7 +76,9 @@
           <div class="size-item border">11</div>
         </div>
 
-        <a href="#" class="btn btn-primary w-100 add-cart my-5">ADD TO CART</a>
+        <button class="btn btn-primary w-100 add-cart my-5">
+          ADD TO CART
+        </button>
       </div>
     </div>
     <!-- End Item Description -->

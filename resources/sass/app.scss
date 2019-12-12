@@ -1,3 +1,12 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
 .grid-container, .grid-sizes {
   display: grid;
   grid-template-columns: auto;

@@ -14,7 +14,7 @@
         >
 
         <!-- Custom Site CSS -->
-        <link rel="stylesheet" href="css/app.css">
+        <link rel="stylesheet" href="{{ route('home.index') }}/css/app.css">
     @show
 
     <title>@yield('title')</title>
@@ -72,7 +72,7 @@
       <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 
       <!-- Custom Site Javascript -->
-      <script src="js/app.js" type="text/javascript"></script>
+      <script src="{{ route('home.index') }}/js/app.js" type="text/javascript"></script>
     @show
   </body>
 </html>

@@ -10,6 +10,7 @@ $factory->define(Item::class, function (Faker $faker) {
         'name' => $faker->unique()->word,
         'images_folder' => $faker->image,
         'price' => $faker->numberBetween($min = 100, $max = 9000),
+        'description' => $faker->paragraph,
         'category_id' => function () {
             return factory(App\Category::class)->create()->id;
         },

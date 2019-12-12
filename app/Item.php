@@ -11,7 +11,7 @@ class Item extends Model
    *
    * @var array
    */
-  protected $fillable = ['name', 'category'];
+  protected $fillable = ['name', 'category', 'description'];
 
   /**
    * The attributes that aren't mass assignable.

@@ -51,11 +51,11 @@ class User extends Authenticatable
      */
     public function is_admin()
     {
-      var admin = False;
+      $is_admin = False;
       if ($this->user_level === 'admin') {
-        admin = True;
+        $is_admin = True;
       }
 
-      return admin;
+      return $is_admin;
     }
 }

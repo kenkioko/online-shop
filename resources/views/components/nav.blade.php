@@ -1,7 +1,12 @@
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top d-flex">
-  <a class="navbar-brand" href="/">
-    <img src="img/placeholder.com-logo1.jpg" alt="logo" width="100" height="50" />
+  <a class="navbar-brand" href="{{ route('home.index') }}">
+    <img
+      src="{{ route('home.index') }}/img/placeholder.com-logo1.jpg"
+      alt="logo"
+      width="100"
+      height="50"
+    />
   </a>
   <button type="button"
     class="navbar-toggler ml-auto"
@@ -28,7 +33,7 @@
         </li>
       @else
         <li class="nav-item">
-          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="{{ route('home.index') }}">Home</a>
         </li>
       @endif
 
@@ -43,10 +48,21 @@
           Categories
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/category">All Categories</a>
-          <a class="dropdown-item" href="#">Another action</a>
+          <!-- List all categories -->
+          @php
+            $categories = App\Category::all();
+          @endphp
+
+          @foreach ($categories as $category)
+            <a
+              class="dropdown-item"
+              href="{{ route('category.show', ['category' => $category->id]) }}"
+            >{{ ucwords($category->name) }}</a>
+          @endforeach
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
+          <a class="dropdown-item" href="{{ route('category.index') }}">
+            All Categories
+          </a>
         </div>
       </li>
     </ul>
