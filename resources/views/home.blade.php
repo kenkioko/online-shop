@@ -9,12 +9,6 @@
   <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
 @endsection
 
-@section('nav_bar')
-  @nav(['page' => 'home'])
-    <!-- print navigation bar -->
-  @endnav
-@endsection
-
 @section('content')
   <!-- Banner Ads -->
   <div class="banner-ads">

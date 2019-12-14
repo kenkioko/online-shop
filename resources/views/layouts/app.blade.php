@@ -22,7 +22,9 @@
   <body>
 
     <div id="navigation">
-        @yield('nav_bar')
+      @nav()
+        <!-- print navigation bar -->
+      @endnav
     </div>
 
     <div id="app">

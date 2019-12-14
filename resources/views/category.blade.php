@@ -6,12 +6,6 @@
   @endphp
 @endsection
 
-@section('nav_bar')
-  @nav(['page' => 'category'])
-    <!-- print navigation bar -->
-  @endnav
-@endsection
-
 @section('content')
   <!-- Breadcrums -->
   <div class="border-bottom p-2 breadcrums">

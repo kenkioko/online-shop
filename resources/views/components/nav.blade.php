@@ -1,5 +1,5 @@
 <!-- Navigation Bar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top d-flex">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top d-flex">
   <a class="navbar-brand" href="{{ route('home.index') }}">
     <img
       src="{{ route('home.index') }}/img/placeholder.com-logo1.jpg"
@@ -20,25 +20,13 @@
   </button>
 
   <span class="navbar-text p-1 order-3">
-    <button class="btn btn-outline-secondary my-2 my-sm-0" type="button">CART</button>
+    <button class="btn btn-outline-light my-2 my-sm-0" type="button">CART</button>
   </span>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      @if ($page === 'home')
-        <li class="nav-item active">
-          <a class="nav-link" href="#"> Home
-            <span class="sr-only">(current)</span>
-          </a>
-        </li>
-      @else
-        <li class="nav-item">
-          <a class="nav-link" href="{{ route('home.index') }}">Home</a>
-        </li>
-      @endif
-
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle"
+        <a class="nav-link dropdown-toggle text-light"
           id="navbarDropdown"
           role="button"
           data-toggle="dropdown"
@@ -68,7 +56,7 @@
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Search</button>
+      <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
     </form>
   </div>
 </nav>
