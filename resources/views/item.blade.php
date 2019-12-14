@@ -14,11 +14,17 @@
 @endsection
 
 @section('content')
-  <!-- Breadcrums -->
-  <div class="border-bottom p-2 breadcrums">
-    <span class="text-muted">Home / Item / {{ ucwords($item->name) }} /</span>
-  </div>
-  <!-- End Breadcrums -->
+
+  @breadcrum(['extra_class' => 'w-100 p-2 text-muted'])
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item">
+      <a href="{{ route('category.show',['category' => $item->category->id]) }}">
+        {{ ucwords($item->category->name) }}
+      </a>
+    </li>
+    <li class="breadcrumb-item active">{{ ucwords($item->name) }}</li>
+  @endbreadcrum()
+
 
   <div class="container my-5">
     <!-- Item Description -->
@@ -70,7 +76,9 @@
           <div class="size-item border">11</div>
         </div>
 
-        <button class="btn btn-primary w-100 add-cart my-5">
+        <button class="btn btn-primary w-100 add-cart my-5"
+          onclick="add_to_cart()"
+        >
           ADD TO CART
         </button>
       </div>
@@ -125,4 +133,18 @@
     <!-- More Items Grid -->
 
   </div>
+@endsection
+
+@section('page_js')
+  @parent
+
+  <!-- Flickity JavaScript -->
+  <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
+  <script src="{{ route('home.index') }}/js/flikty.js" type="text/javascript"></script>
+
+  <script type="text/javascript">
+    function add_to_cart() {
+      console.log('add to cart');
+    }
+  </script>
 @endsection

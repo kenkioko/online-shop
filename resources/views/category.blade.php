@@ -7,13 +7,11 @@
 @endsection
 
 @section('content')
-  <!-- Breadcrums -->
-  <div class="border-bottom p-2 breadcrums">
-    <span class="text-muted">
-      Home / Category / {{ ucwords($category->name) }} /
-    </span>
-  </div>
-  <!-- End Breadcrums -->
+
+  @breadcrum(['extra_class' => 'w-100 p-2 text-muted'])
+    <li class="breadcrumb-item"><a href="/">Home</a></li>
+    <li class="breadcrumb-item active">{{ ucwords($category->name) }}</li>
+  @endbreadcrum()
 
   <div class="container my-5 d-flex">
 
@@ -56,11 +54,6 @@
                   <h5 class="card-title">{{ $item->name }}</h5>
                 </a>
                 <p class="card-text">Ksh. {{ $item->price }}</p>
-              </div>
-              <div class="card-footer">
-                <button class="btn btn-primary w-100 add-cart" onclick="add_to_cart()">
-                  ADD TO CART
-                </button>
               </div>
             </div>
             <!-- End Card -->

@@ -18,6 +18,7 @@ class CreateItemsTable extends Migration
             $table->string('name')->unique();
             $table->string('description');
             $table->string('images_folder');
+            $table->unsignedInteger('stock');
             $table->unsignedDecimal('price', 8, 2);
             $table->unsignedBigInteger('category_id');
             $table->timestamps();

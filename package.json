@@ -23,6 +23,8 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.12.0",
+        "admin-lte": "^3.0.1",
         "gulp": "^4.0.2"
     }
 }

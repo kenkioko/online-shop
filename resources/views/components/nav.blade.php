@@ -1,12 +1,9 @@
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top d-flex">
   <a class="navbar-brand" href="{{ route('home.index') }}">
-    <img
-      src="{{ route('home.index') }}/img/placeholder.com-logo1.jpg"
-      alt="logo"
-      width="100"
-      height="50"
-    />
+    <img src="{{ route('home.index') }}/adminlte/dist/img/AdminLTELogo.png" alt="Logo" class="brand-image img-circle elevation-3"
+         style="opacity: .8" height="40rem">
+    <span class="brand-text font-weight-light">My Shop</span>
   </a>
   <button type="button"
     class="navbar-toggler ml-auto"
@@ -20,11 +17,16 @@
   </button>
 
   <span class="navbar-text p-1 order-3">
-    <button class="btn btn-outline-light my-2 my-sm-0" type="button">CART</button>
+    <button class="btn btn-outline-light ml-5" type="button">CART</button>
   </span>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
+  <span class="navbar-text p-1 order-3">
+    @php
+      use Illuminate\Support\Facades\Auth;
+      $user = Auth::user();
+    @endphp
+
+    <ul class="navbar-nav mr-5">
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle text-light"
           id="navbarDropdown"
@@ -33,8 +35,46 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          Categories
+          @if ($user)
+            {{ $user->name }}
+          @else
+            Login
+          @endif
         </a>
+        <div class="dropdown-menu dropdown-menu-right " aria-labelledby="navbarDropdown">
+          @if ($user)
+            @if ($user->user_level === 'admin')
+              <a class="dropdown-item text-dark" href="{{ route('admin.dash') }}">
+                Admin Dashboard
+              </a>
+            @endif
+
+            @logout(['display' => 'text'])
+              <!--print logout button -->
+            @endlogout
+          @else
+            <a class="dropdown-item text-dark" href="{{ route('login') }}">
+              Login
+            </a>
+            <a class="dropdown-item text-dark" href="{{ route('register') }}">
+              Register
+            </a>
+          @endif
+        </div>
+      </li>
+    </ul>
+  </span>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-5">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle text-light"
+          id="navbarDropdown"
+          role="button"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >Categories</a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <!-- List all categories -->
           @php
@@ -42,8 +82,7 @@
           @endphp
 
           @foreach ($categories as $category)
-            <a
-              class="dropdown-item"
+            <a class="dropdown-item"
               href="{{ route('category.show', ['category' => $category->id]) }}"
             >{{ ucwords($category->name) }}</a>
           @endforeach
@@ -54,10 +93,11 @@
         </div>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
-    </form>
+
+    @search(['size' => 'md'])
+      <!-- print search form -->
+    @endsearch
+
   </div>
 </nav>
 <!-- End Navigation Bar -->

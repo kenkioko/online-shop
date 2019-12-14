@@ -15,6 +15,9 @@
 
         <!-- Custom Site CSS -->
         <link rel="stylesheet" href="{{ route('home.index') }}/css/app.css">
+
+        <!-- fontawesome -->
+        <link rel="stylesheet" href="{{ route('home.index') }}/fontawsome/css/all.min.css">
     @show
 
     <title>@yield('title')</title>
@@ -69,12 +72,6 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"
       ></script>
-
-      <!-- Flickity JavaScript -->
-      <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
-
-      <!-- Custom Site Javascript -->
-      <script src="{{ route('home.index') }}/js/app.js" type="text/javascript"></script>
     @show
   </body>
 </html>

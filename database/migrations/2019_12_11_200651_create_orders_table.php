@@ -18,6 +18,14 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('item_id');
             $table->unsignedInteger('total');
+            $table->enum('status', [
+              'items_in_cart',
+              'order_made',
+              'processing',
+              'enroute',
+              'delivered',
+              'rejected',
+            ]);
             $table->timestamps();
 
             $table->foreign('user_id')
