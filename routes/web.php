@@ -11,11 +11,11 @@
 |
 */
 
-// available resources
+// available resource controllers for website
 Route::resources([
   'category' => 'CategoryController',
   'item' => 'ItemController',
-  'user' => 'UserController',
+  'order' => 'OrderController',
 ]);
 
 //auth routes from laravel/ui
@@ -26,12 +26,20 @@ Route::get('/', 'HomeController@index')->name('home.index');
 Route::redirect('/home', '/');
 Route::redirect('/index', '/');
 
-//admin dashboard
+//admin routes
 Route::middleware(['auth', 'admin'])
   ->prefix('admin')
   ->name('admin.')
   ->group(function () {
+    // admin dashboard
     Route::redirect('/', '/admin/dashboard');
-
     Route::get('dashboard', 'DashboardController@index')->name('dash');
+
+    // available resource controllers for admin dashboard
+    Route::resources([
+      'category' => 'CategoryController',
+      'item' => 'ItemController',
+      'user' => 'UserController',
+      'order' => 'OrderController',
+    ]);
 });

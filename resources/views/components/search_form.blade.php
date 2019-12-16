@@ -1,5 +1,5 @@
 <!-- SEARCH FORM -->
-<form class="form-inline ml-3 w-100">
+<form class="form-inline mx-3 w-100">
   @if($size == 'sm')
   <div class="input-group input-group-sm w-100">
   @else

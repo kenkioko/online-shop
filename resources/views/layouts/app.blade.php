@@ -13,7 +13,7 @@
           crossorigin="anonymous"
         >
 
-        <!-- Custom Site CSS -->
+        <!-- Custom CSS -->
         <link rel="stylesheet" href="{{ route('home.index') }}/css/app.css">
 
         <!-- fontawesome -->

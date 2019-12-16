@@ -28,28 +28,66 @@
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item">
-          <a href="{{ route('user.index') }}"
+          <a href="{{ route('admin.user.index') }}"
             class="nav-link @if ($page === 'users') active @endif"
           >
             <i class="nav-icon fas fa-users"></i>
             <p>Registered Users</p>
           </a>
-        </li>
+        </li><!-- /.nav-item -->
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="{{ route('admin.order.index') }}"
+            class="nav-link @if ($page === 'orders') active @endif"
+          >
             <i class="nav-icon fas fa-shopping-cart"></i>
-            <p>
-              Orders
-              <span class="right badge badge-danger">5 New</span>
+            <p> Orders
+
+              @php
+                use App\Order;
+                $new_orders = Order::where('status', 'order_made')->count();
+              @endphp
+
+              @if($new_orders)
+                <span class="right badge badge-danger">
+                  {{ $new_orders }} New
+                </span>
+              @endif
             </p>
           </a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-plus"></i>
-            <p>Add Categories/Items</p>
+        </li><!-- /.nav-item -->
+
+        @if ($page === 'categories' or $page === 'items')
+          <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link active">
+        @else
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+        @endif
+            <i class="nav-icon fas fa-plus-circle"></i>
+            <p>
+              Add Categories/Items
+              <i class="right fas fa-angle-left"></i>
+            </p>
           </a>
-        </li>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a href="{{ route('admin.category.index') }}"
+                class="nav-link @if ($page === 'categories') active @endif"
+              >
+                <i class="far fa-circle nav-icon"></i>
+                <p>Categories</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="{{ route('admin.item.index') }}"
+                class="nav-link @if ($page === 'items') active @endif"
+              >
+                <i class="far fa-circle nav-icon"></i>
+                <p>Items</p>
+              </a>
+            </li>
+          </ul>
+        </li><!-- /.nav-item -->
       </ul>
     </nav>
     <!-- /.sidebar-menu -->

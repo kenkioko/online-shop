@@ -57,9 +57,7 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        return view('item')->with([
-          'item' => $item
-        ]);
+        return view('item')->with('item', $item);
     }
 
     /**

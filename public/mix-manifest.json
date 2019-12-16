@@ -1,6 +1,8 @@
 {
-    "/js/bootstrap.js": "/js/bootstrap.js",
+    "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/css/dash.css": "/css/dash.css",
+    "/js/bootstrap.js": "/js/bootstrap.js",
     "/js/datatables.js": "/js/datatables.js",
     "/js/flikty.js": "/js/flikty.js"
 }

@@ -16,6 +16,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link rel="stylesheet" href="{{ route('home.index') }}/adminlte/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ route('home.index') }}/adminlte/dist/css/adminlte.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ route('home.index') }}/css/dash.css">
   @show
 
   <!-- Google Font: Source Sans Pro -->
@@ -130,6 +132,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script src="{{ route('home.index') }}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE App -->
   <script src="{{ route('home.index') }}/adminlte/dist/js/adminlte.min.js"></script>
+
+  <!-- custom js -->
+  <script type="text/javascript"
+    src="{{ route('home.index') }}/js/app.js" >
+  </script>
 @show
 
 </body>

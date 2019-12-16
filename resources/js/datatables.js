@@ -1,11 +1,21 @@
 $(function(){
 
-  // Initiate datatables.
-  $('#users_list').DataTable({
-    select: true
+  // Initialize datatables.
+  table = $('#table_list').DataTable({
+    select: true,
+    "columnDefs": [
+      { "visible": false, "targets": 1 }
+    ]
   });
 
-  //print data
-  console.log(data);
-
+  // select table single row
+  $('#table_list tbody').on( 'click', 'tr', function () {
+    if ( $(this).hasClass('selected') ) {
+      $(this).removeClass('selected');
+    }
+    else {
+      table.$('tr.selected').removeClass('selected');
+      $(this).addClass('selected');
+    }
+  });
 });

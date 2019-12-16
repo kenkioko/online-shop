@@ -81,48 +81,61 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/js/datatables.js":
-/*!************************************!*\
-  !*** ./resources/js/datatables.js ***!
-  \************************************/
+/***/ "./resources/js/app.js":
+/*!*****************************!*\
+  !*** ./resources/js/app.js ***!
+  \*****************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
 $(function () {
-  // Initialize datatables.
-  table = $('#table_list').DataTable({
-    select: true,
-    "columnDefs": [{
-      "visible": false,
-      "targets": 1
-    }]
-  }); // select table single row
-
-  $('#table_list tbody').on('click', 'tr', function () {
-    if ($(this).hasClass('selected')) {
-      $(this).removeClass('selected');
-    } else {
-      table.$('tr.selected').removeClass('selected');
-      $(this).addClass('selected');
-    }
+  // Toogle popovers
+  $('.pop').hover(function () {
+    $(this).popover('show');
+  }, function () {
+    $(this).popover('hide');
   });
 });
 
 /***/ }),
 
-/***/ 2:
-/*!******************************************!*\
-  !*** multi ./resources/js/datatables.js ***!
-  \******************************************/
+/***/ "./resources/sass/app.scss":
+/*!*********************************!*\
+  !*** ./resources/sass/app.scss ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./resources/sass/dash.scss":
+/*!**********************************!*\
+  !*** ./resources/sass/dash.scss ***!
+  \**********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 0:
+/*!****************************************************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/sass/app.scss ./resources/sass/dash.scss ***!
+  \****************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/kioko/Projects/shop/resources/js/datatables.js */"./resources/js/datatables.js");
+__webpack_require__(/*! /home/kioko/Projects/shop/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /home/kioko/Projects/shop/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /home/kioko/Projects/shop/resources/sass/dash.scss */"./resources/sass/dash.scss");
 
 
 /***/ })

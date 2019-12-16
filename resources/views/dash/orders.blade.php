@@ -8,10 +8,10 @@
   >
 @endsection
 
-@section('page_header', 'Users')
+@section('page_header', 'Orders')
 
 @section('sidebar')
-  @dash_sidebar(['page' => 'users'])
+  @dash_sidebar(['page' => 'orders'])
     <!-- print sidebar -->
   @enddash_sidebar
 @endsection
@@ -21,7 +21,7 @@
     <li class="breadcrumb-item">
       <a href="{{ route('admin.dash') }}">Admin</a>
     </li>
-    <li class="breadcrumb-item active">Users</li>
+    <li class="breadcrumb-item active">Orders</li>
   @endbreadcrum()
 @endsection
 
@@ -31,14 +31,17 @@
     <div class="card">
       <div class="card-header">
         <div class="card-tools">
+          <button type="button" class="btn btn-sm btn-outline-primary">
+            <i class="nav-icon far fa-eye"></i>
+          </button>
           <button type="button" class="btn btn-sm btn-outline-success">
-            <i class="nav-icon fas fa-user-plus"></i>
+            <i class="nav-icon fas fa-plus"></i>
           </button>
           <button type="button" class="btn btn-sm btn-outline-info">
-            <i class="nav-icon fas fa-user-edit"></i>
+            <i class="nav-icon fas fa-edit"></i>
           </button>
           <button type="button" class="btn btn-sm btn-outline-danger">
-            <i class="nav-icon fas fa-user-times"></i>
+            <i class="nav-icon fas fa-times"></i>
           </button>
         </div>
         <!-- /.card-tools -->
@@ -50,18 +53,17 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Email</th>
-              <th scope="col">User Level</th>
+              <th scope="col">Oder No</th>
+              <th scope="col">User</th>
+              <th scope="col">Total</th>
+              <th scope="col">Status</th>
             </tr>
           </thead>
           <tbody>
-            @foreach($users as $user)
+            @foreach($orders as $order)
             <tr>
               <th scope="row">{{ $loop->iteration }}</th>
-              <td>{{ $user->name }}</td>
-              <td>{{ $user->email }}</td>
-              <td>{{ $user->user_level }}</td>
+              <td>{{ $order }}</td>
             </tr>
             @endforeach
           </tbody>

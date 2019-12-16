@@ -16,7 +16,7 @@ class Admin
     public function handle($request, Closure $next)
     {
         if (! $request->user()->is_admin()) {
-            return route('home.index');
+            return abort(401);
         }
 
         return $next($request);

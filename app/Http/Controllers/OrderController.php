@@ -15,6 +15,9 @@ class OrderController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->middleware('admin')->except([
+          'create','store', 'update'
+        ]);
     }
 
     /**
@@ -24,7 +27,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Order::all();
+        return view('dash.orders')->with('orders', $orders);
     }
 
     /**
@@ -45,7 +49,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**
