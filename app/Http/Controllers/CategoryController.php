@@ -37,7 +37,9 @@ class CategoryController extends Controller
           $view_name = 'dash.categories';
         }
 
-        return view($view_name)->with('categories', $categories);
+        return view($view_name)->with([
+          'categories' => $categories
+        ]);
     }
 
     /**

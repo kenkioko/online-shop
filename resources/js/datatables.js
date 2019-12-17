@@ -3,9 +3,6 @@ $(function(){
   // Initialize datatables.
   table = $('#table_list').DataTable({
     select: true,
-    "columnDefs": [
-      { "visible": false, "targets": 1 }
-    ]
   });
 
   // select table single row

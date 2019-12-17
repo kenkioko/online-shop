@@ -158,31 +158,34 @@
     <!-- /.card -->
 
     @if ($category)
-
-      @modal(['modal_id' => 'delete_modal'])
-        @slot('modal_title')
-          Delete '{{ $category->name }}'
-        @endslot
-
-        @slot('modal_body')
-          <p>Are you sure you want to delete '{{ $category->name }}'.</p>
-          <form method="post" class="d-none"
-            id="delete_category_form"
-            action="{{ route('admin.category.destroy', [
-              'category' => $category
-            ]) }}"
-          >
-            @csrf
-            @method('DELETE')
-          </form>
-        @endslot
-
-        @slot('modal_footer')
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-danger" form="delete_category_form">Delete</button>
-        @endslot
-      @endmodal
-
+      <div class="modal" tabindex="-1" role="dialog" id="delete_modal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete '{{ $category->name }}'</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to delete '{{ $category->name }}'.</p>
+              <form method="post" class="d-none"
+                id="delete_category_form"
+                action="{{ route('admin.category.destroy', [
+                  'category' => $category
+                ]) }}"
+              >
+                @csrf
+                @method('DELETE')
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-danger" form="delete_category_form">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div><!-- /.modal -->
     @endif
 
   </div>

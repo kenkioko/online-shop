@@ -96,11 +96,7 @@
 $(function () {
   // Initialize datatables.
   table = $('#table_list').DataTable({
-    select: true,
-    "columnDefs": [{
-      "visible": false,
-      "targets": 1
-    }]
+    select: true
   }); // select table single row
 
   $('#table_list tbody').on('click', 'tr', function () {

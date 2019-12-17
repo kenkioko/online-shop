@@ -46,26 +46,29 @@
       <!-- /.card-header -->
       <div class="card-body">
 
-        <table class="table table-sm" id="table_list">
-          <thead>
+        @data_table(['table_id' => 'table_list'])
+          @slot('head')
             <tr>
               <th scope="col">#</th>
               <th scope="col">Name</th>
               <th scope="col">Email</th>
               <th scope="col">User Level</th>
+              <th scope="col">Created</th>
+              <th scope="col">Updated</th>
             </tr>
-          </thead>
-          <tbody>
-            @foreach($users as $user)
+          @endslot
+
+          @foreach($users as $user)
             <tr>
               <th scope="row">{{ $loop->iteration }}</th>
               <td>{{ $user->name }}</td>
               <td>{{ $user->email }}</td>
               <td>{{ $user->user_level }}</td>
+              <td>{{ $user->created_at }}</td>
+              <td>{{ $user->updated_at }}</td>
             </tr>
-            @endforeach
-          </tbody>
-        </table>
+          @endforeach
+        @enddata_table
 
       </div>
       <!-- /.card-body -->
