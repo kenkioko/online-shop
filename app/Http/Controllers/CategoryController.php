@@ -29,17 +29,14 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        $view_name = 'category';
-
         // admin category
-        if (URL::current() === route('admin.category.index')) {
-          $view_name = 'dash.categories';
+        if (URL::current() === route('admin.categories.index')) {
+          return view('dash.categories')->with([
+            'categories' => Category::all()
+          ]);
         }
 
-        return view($view_name)->with([
-          'categories' => $categories
-        ]);
+        return abort(404);
     }
 
     /**
@@ -68,7 +65,7 @@ class CategoryController extends Controller
           return back()->withInput();
         }
 
-        return redirect()->route('admin.category.index')->with([
+        return redirect()->route('admin.categories.index')->with([
           'categories' => Category::all(),
           'success' => 'Category added successfully'
         ]);
@@ -82,10 +79,10 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        if (URL::current() === route('admin.category.show', [
+        if (URL::current() === route('admin.categories.show', [
           'category' => $category
         ])) {
-          return redirect()->route('category.show', [
+          return redirect()->route('categories.show', [
             'category' => $category
           ]);
         }
@@ -126,7 +123,7 @@ class CategoryController extends Controller
           return back()->withInput();
         }
 
-        return redirect()->route('admin.category.index')->with([
+        return redirect()->route('admin.categories.index')->with([
           'categories' => Category::all(),
           'success' => 'Category edited successfully'
         ]);
@@ -147,7 +144,7 @@ class CategoryController extends Controller
         }
 
         $category->delete();
-        return redirect()->route('admin.category.index')->with([
+        return redirect()->route('admin.categories.index')->with([
           'categories' => Category::all(),
           'success' => 'Category deleted successfully'
         ]);

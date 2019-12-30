@@ -50,7 +50,7 @@
           </button><!-- /.button -->
           <a type="button"
             class="btn btn-sm btn-outline-success pop"
-            href="{{ route('admin.category.create') }}"
+            href="{{ route('admin.categories.create') }}"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="New"
           >
@@ -165,7 +165,7 @@
         if (data) {
           var view_url = new URL(
             'category/' + data[1],
-            "{{ route('category.index') }}"
+            "{{ route('categories.index') }}"
           );
 
           window.location.href = view_url;
@@ -177,7 +177,7 @@
         if (data) {
           var edit_url = new URL(
             'category/' + data[1] + '/edit',
-            "{{ route('admin.category.index') }}"
+            "{{ route('admin.categories.index') }}"
           );
 
           window.location.href = edit_url;
@@ -191,7 +191,7 @@
 
           var action_url = new URL(
             'category/' + data[1],
-            "{{ route('admin.category.index') }}"
+            "{{ route('admin.categories.index') }}"
           );
 
           $("#delete_category_form").attr('action', action_url);

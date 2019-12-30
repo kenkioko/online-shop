@@ -42,7 +42,7 @@
         <div class="card-tools">
           <a type="button"
             class="btn btn-sm btn-outline-success pop"
-            href="{{ route('admin.user.create') }}"
+            href="{{ route('admin.users.create') }}"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="New"
           ><i class="nav-icon fas fa-user-plus"></i></a><!-- /.button -->
@@ -147,7 +147,7 @@
         if (data) {
           var edit_url = new URL(
             'user/' + data[1] + '/edit',
-            "{{ route('admin.user.index') }}"
+            "{{ route('admin.users.index') }}"
           );
 
           window.location.href = edit_url;
@@ -161,7 +161,7 @@
 
           var action_url = new URL(
             'user/' + data[1],
-            "{{ route('admin.user.index') }}"
+            "{{ route('admin.users.index') }}"
           );
 
           $("#delete_user_form").attr('action', action_url);

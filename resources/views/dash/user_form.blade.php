@@ -20,7 +20,7 @@
       <a href="{{ route('admin.dash') }}">Admin</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="{{ route('admin.user.index') }}">Users</a>
+      <a href="{{ route('admin.users.index') }}">Users</a>
     </li>
     @if ($user)
       <li class="breadcrumb-item active">{{ ucwords($user->name) }}</li>
@@ -57,7 +57,7 @@
           @if ($user)
             <a type="button"
               class="btn btn-sm btn-outline-primary pop"
-              href="{{ route('admin.user.show', ['user' => $user->id]) }}"
+              href="{{ route('admin.users.show', ['user' => $user->id]) }}"
               data-container="body" data-toggle="popover" data-placement="bottom"
               data-content="View in site"
             >
@@ -80,7 +80,7 @@
             data-content="Save changes"
           ><i class="nav-icon fas fa-save"></i></button><!-- /.button -->
           <a type="button"
-            href="{{ route('admin.user.index') }}"
+            href="{{ route('admin.users.index') }}"
             class="btn btn-sm btn-outline-danger pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Discard changes"
@@ -92,9 +92,9 @@
       <div class="card-body">
 
         @php
-          $form_action = route('admin.user.store');
+          $form_action = route('admin.users.store');
           if ($user) {
-            $form_action = route('admin.user.update', ['user' => $user]);
+            $form_action = route('admin.users.update', ['user' => $user]);
           }
         @endphp
 
@@ -189,7 +189,7 @@
           <p>Are you sure you want to delete '{{ $user->name }}'.</p>
           <form method="post" class="d-none"
             id="delete_user_form"
-            action="{{ route('admin.user.destroy', ['user' => $user]) }}"
+            action="{{ route('admin.users.destroy', ['user' => $user]) }}"
           >
             @csrf
             @method('DELETE')

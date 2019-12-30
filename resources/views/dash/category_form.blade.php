@@ -20,7 +20,7 @@
       <a href="{{ route('admin.dash') }}">Admin</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="{{ route('admin.category.index') }}">Categories</a>
+      <a href="{{ route('admin.categories.index') }}">Categories</a>
     </li>
     @if ($category)
       <li class="breadcrumb-item active">{{ ucwords($category->name) }}</li>
@@ -57,7 +57,7 @@
           @if ($category)
             <a type="button"
               class="btn btn-sm btn-outline-primary pop"
-              href="{{ route('admin.category.show', ['category' => $category]) }}"
+              href="{{ route('admin.categories.show', ['category' => $category]) }}"
               data-container="body" data-toggle="popover" data-placement="bottom"
               data-content="View in site"
             >
@@ -80,7 +80,7 @@
             data-content="Save changes"
           ><i class="nav-icon fas fa-save"></i></button><!-- /.button -->
           <a type="button"
-            href="{{ route('admin.category.index') }}"
+            href="{{ route('admin.categories.index') }}"
             class="btn btn-sm btn-outline-danger pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Discard changes"
@@ -92,9 +92,9 @@
       <div class="card-body">
 
         @php
-          $form_action = route('admin.category.store');
+          $form_action = route('admin.categories.store');
           if ($category) {
-            $form_action = route('admin.category.update', [
+            $form_action = route('admin.categories.update', [
               'category' => $category
             ]);
           }
@@ -160,7 +160,7 @@
           <p>Are you sure you want to delete '{{ $category->name }}'.</p>
           <form method="post" class="d-none"
             id="delete_category_form"
-            action="{{ route('admin.category.destroy', [
+            action="{{ route('admin.categories.destroy', [
               'category' => $category
             ]) }}"
           >

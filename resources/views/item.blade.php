@@ -18,7 +18,7 @@
   @breadcrum(['extra_class' => 'w-100 p-2 text-muted'])
     <li class="breadcrumb-item"><a href="/">Home</a></li>
     <li class="breadcrumb-item">
-      <a href="{{ route('category.show',['category' => $item->category->id]) }}">
+      <a href="{{ route('categories.show',['category' => $item->category->id]) }}">
         {{ ucwords($item->category->name) }}
       </a>
     </li>

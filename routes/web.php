@@ -13,9 +13,9 @@
 
 // available resource controllers for website
 Route::resources([
-  'category' => 'CategoryController',
-  'item' => 'ItemController',
-  'order' => 'OrderController',
+  'categories' => 'CategoryController',
+  'items' => 'ItemController',
+  'orders' => 'OrderController',
 ]);
 
 //auth routes from laravel/ui
@@ -37,9 +37,9 @@ Route::middleware(['auth', 'admin'])
 
     // available resource controllers for admin dashboard
     Route::resources([
-      'category' => 'CategoryController',
-      'item' => 'ItemController',
-      'user' => 'UserController',
-      'order' => 'OrderController',
+      'categories' => 'CategoryController',
+      'items' => 'ItemController',
+      'orders' => 'OrderController',
+      'users' => 'UserController',
     ]);
 });

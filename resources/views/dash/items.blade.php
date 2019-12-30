@@ -46,7 +46,7 @@
           ><i class="nav-icon far fa-eye"></i></button><!-- /.button -->
           <a type="button"
             class="btn btn-sm btn-outline-success pop"
-            href="{{ route('admin.item.create') }}"
+            href="{{ route('admin.items.create') }}"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="New"
           ><i class="nav-icon fas fa-plus"></i></a><!-- /.button -->
@@ -150,7 +150,7 @@
         if (data) {
           var view_url = new URL(
             'item/' + data[1],
-            "{{ route('item.index') }}"
+            "{{ route('items.index') }}"
           );
 
           window.location.href = view_url;
@@ -162,7 +162,7 @@
         if (data) {
           var edit_url = new URL(
             'item/' + data[1] + '/edit',
-            "{{ route('admin.item.index') }}"
+            "{{ route('admin.items.index') }}"
           );
 
           window.location.href = edit_url;
@@ -176,7 +176,7 @@
 
           var action_url = new URL(
             'item/' + data[1],
-            "{{ route('admin.item.index') }}"
+            "{{ route('admin.items.index') }}"
           );
 
           $("#delete_item_form").attr('action', action_url);

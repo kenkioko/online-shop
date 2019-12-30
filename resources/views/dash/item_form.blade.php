@@ -20,7 +20,7 @@
       <a href="{{ route('admin.dash') }}">Admin</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="{{ route('admin.item.index') }}">Items</a>
+      <a href="{{ route('admin.items.index') }}">Items</a>
     </li>
     @if ($item)
       <li class="breadcrumb-item active">{{ ucwords($item->name) }}</li>
@@ -61,7 +61,7 @@
           @if ($item)
             <a type="button"
               class="btn btn-sm btn-outline-primary pop"
-              href="{{ route('admin.item.show', ['item' => $item]) }}"
+              href="{{ route('admin.items.show', ['item' => $item]) }}"
               data-container="body" data-toggle="popover" data-placement="bottom"
               data-content="View in site"
             >
@@ -84,7 +84,7 @@
             data-content="Save changes"
           ><i class="nav-icon fas fa-save"></i></button><!-- /.button -->
           <a type="button"
-            href="{{ route('admin.item.index') }}"
+            href="{{ route('admin.items.index') }}"
             class="btn btn-sm btn-outline-danger pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Discard changes"
@@ -96,9 +96,9 @@
       <div class="card-body">
 
         @php
-          $form_action = route('admin.item.store');
+          $form_action = route('admin.items.store');
           if ($item) {
-            $form_action = route('admin.item.update', [
+            $form_action = route('admin.items.update', [
               'item' => $item
             ]);
           }
@@ -250,7 +250,7 @@
           <p>Are you sure you want to delete '{{ $item->name }}'.</p>
           <form method="post" class="d-none"
             id="delete_item_form"
-            action="{{ route('admin.item.destroy', [
+            action="{{ route('admin.items.destroy', [
               'item' => $item
             ]) }}"
           >

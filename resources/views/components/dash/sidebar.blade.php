@@ -29,7 +29,7 @@
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item">
-          <a href="{{ route('admin.user.index') }}"
+          <a href="{{ route('admin.users.index') }}"
             class="nav-link @if ($page === 'users') active @endif"
           >
             <i class="nav-icon fas fa-users"></i>
@@ -37,7 +37,7 @@
           </a>
         </li><!-- /.nav-item -->
         <li class="nav-item">
-          <a href="{{ route('admin.order.index') }}"
+          <a href="{{ route('admin.orders.index') }}"
             class="nav-link @if ($page === 'orders') active @endif"
           >
             <i class="nav-icon fas fa-shopping-cart"></i>
@@ -72,7 +72,7 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a href="{{ route('admin.category.index') }}"
+              <a href="{{ route('admin.categories.index') }}"
                 class="nav-link @if ($page === 'categories') active @endif"
               >
                 <i class="far fa-circle nav-icon"></i>
@@ -80,7 +80,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{ route('admin.item.index') }}"
+              <a href="{{ route('admin.items.index') }}"
                 class="nav-link @if ($page === 'items') active @endif"
               >
                 <i class="far fa-circle nav-icon"></i>

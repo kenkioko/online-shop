@@ -6,6 +6,7 @@ use App\Item;
 use App\Category;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ItemStoreRequest;
 use App\Http\Requests\ItemUpdateRequest;
@@ -36,7 +37,11 @@ class ItemController extends Controller
      */
     public function index()
     {
-        return view('dash.items')->with('items', Item::all());
+        if (URL::current() === route('admin.items.index')) {
+          return view('dash.items')->with('items', Item::all());
+        }
+
+        return abort(404);
     }
 
     /**
@@ -61,7 +66,7 @@ class ItemController extends Controller
           return back()->withInput();
         }
 
-        return redirect()->route('admin.item.index')->with([
+        return redirect()->route('admin.items.index')->with([
           'items' => Item::all(),
           'success' => 'Item added successfully'
         ]);
@@ -108,7 +113,7 @@ class ItemController extends Controller
           return back()->withInput();
         }
 
-        return redirect()->route('admin.item.index')->with([
+        return redirect()->route('admin.items.index')->with([
           'items' => Item::all(),
           'success' => 'Item edited successfully'
         ]);
@@ -127,7 +132,7 @@ class ItemController extends Controller
         }
 
         $item->delete();
-        return redirect()->route('admin.item.index')->with([
+        return redirect()->route('admin.items.index')->with([
           'items' => Item::all(),
           'success' => 'Item deleted successfully'
         ]);

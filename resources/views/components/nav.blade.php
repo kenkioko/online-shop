@@ -85,11 +85,11 @@
 
           @foreach ($categories as $category)
             <a class="dropdown-item"
-              href="{{ route('category.show', ['category' => $category->id]) }}"
+              href="{{ route('categories.show', ['category' => $category->id]) }}"
             >{{ ucwords($category->name) }}</a>
           @endforeach
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="{{ route('category.index') }}">
+          <a class="dropdown-item" href="{{ route('categories.index') }}">
             All Categories
           </a>
         </div>

@@ -57,7 +57,7 @@ class UserController extends Controller
           return back()->withInput();
         }
 
-        return redirect()->route('admin.user.index')->with([
+        return redirect()->route('admin.users.index')->with([
           'users' => User::all(),
           'success' => 'User added successfully',
         ]);
@@ -98,7 +98,7 @@ class UserController extends Controller
           return back()->withInput();
         }
 
-        return redirect()->route('admin.user.index')->with([
+        return redirect()->route('admin.users.index')->with([
           'users' => User::all(),
           'success' => 'User edited successfully',
         ]);
@@ -119,7 +119,7 @@ class UserController extends Controller
         }
 
         $user->delete();
-        return redirect()->route('admin.user.index')->with([
+        return redirect()->route('admin.users.index')->with([
           'users' => User::all(),
           'success' => 'User deleted successfully'
         ]);

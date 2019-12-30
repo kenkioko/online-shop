@@ -44,11 +44,11 @@
           @foreach ($items as $item)
             <!-- Card -->
             <div class="card p-0">
-              <a href="{{ route('item.show',['item' => $item->id]) }}">
+              <a href="{{ route('items.show',['item' => $item->id]) }}">
                 <img class="w-100" src="https://via.placeholder.com/150x150"/>
               </a>
               <div class="card-body">
-                <a href="{{ route('item.show',['item' => $item->id]) }}"
+                <a href="{{ route('items.show',['item' => $item->id]) }}"
                   class="text-dark"
                 >
                   <h5 class="card-title">{{ $item->name }}</h5>
