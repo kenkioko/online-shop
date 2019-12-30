@@ -13,6 +13,7 @@ It is written in [php](https://www.php.net/) using the [laravel framework ](http
 
 ### Setup database
 The dev database server used is [mysql version 8.0](https://www.mysql.com/).
+Use env.example file as a start point.
 
 ### Install dependancies (Composer update and npm install)
 Update the dependancies using `composer update` and `npm install` commands.
