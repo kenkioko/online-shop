@@ -1,13 +1,5 @@
 @extends('layouts.dash')
 
-@section('page_css')
-  @parent
-
-  <link rel="stylesheet"
-    href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css"
-  >
-@endsection
-
 @section('page_header')
   @if ($category)
     {{ ucwords($category->name) }}
@@ -65,7 +57,7 @@
           @if ($category)
             <a type="button"
               class="btn btn-sm btn-outline-primary pop"
-              href="{{ route('admin.category.show', ['category' => $category->id]) }}"
+              href="{{ route('admin.category.show', ['category' => $category]) }}"
               data-container="body" data-toggle="popover" data-placement="bottom"
               data-content="View in site"
             >
@@ -190,20 +182,6 @@
 
 @section('page_js')
   @parent
-
-  <script type="text/javascript"
-    src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"
-    charset="utf-8"
-  ></script>
-
-  <script type="text/javascript"
-    src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"
-    charset="utf-8"
-  ></script>
-
-  <script type="text/javascript"
-    src="{{ route('home.index') }}/js/datatables.js" >
-  </script>
 
   <script type="text/javascript">
     function on_delete() {

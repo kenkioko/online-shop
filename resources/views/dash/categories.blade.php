@@ -41,6 +41,7 @@
       <div class="card-header">
         <div class="card-tools">
           <button type="button"
+            id="view_category"
             class="btn btn-sm btn-outline-primary pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="View in site"
@@ -114,11 +115,11 @@
 
     @modal(['modal_id' => 'delete_modal'])
       @slot('modal_title')
-        Delete '<span class="del_cate_name"></span>'
+        Delete '<span class="del_category_name"></span>'
       @endslot
 
       @slot('modal_body')
-        <p>Are you sure you want to delete '<span class="del_cate_name"></span>'.</p>
+        <p>Are you sure you want to delete '<span class="del_category_name"></span>'.</p>
         <form method="post" class="d-none" id="delete_category_form">
           @csrf
           @method('DELETE')
@@ -148,7 +149,7 @@
   ></script>
 
   <script type="text/javascript"
-    src="{{ route('home.index') }}/js/datatables.js" >
+    src="{{ asset('/js/datatables.js') }}" >
   </script>
 
   <script type="text/javascript">
@@ -159,6 +160,18 @@
       table.column(1).visible(false);
 
       // selected row actions
+      $('#view_category').click( function () {
+        var data = table.row('.selected').data();
+        if (data) {
+          var view_url = new URL(
+            'category/' + data[1],
+            "{{ route('category.index') }}"
+          );
+
+          window.location.href = view_url;
+        }
+      });
+
       $('#edit_table_row').click( function () {
         var data = table.row('.selected').data();
         if (data) {
@@ -174,7 +187,7 @@
       $('#delete_table_row').click( function () {
         var data = table.row('.selected').data();
         if (data) {
-          $('.del_cate_name').text(data[2]);
+          $('.del_category_name').text(data[2]);
 
           var action_url = new URL(
             'category/' + data[1],

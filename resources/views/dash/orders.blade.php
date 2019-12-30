@@ -91,6 +91,6 @@
   ></script>
 
   <script type="text/javascript"
-    src="{{ route('home.index') }}/js/datatables.js" >
+    src="{{ asset('/js/datatables.js') }}" >
   </script>
 @endsection

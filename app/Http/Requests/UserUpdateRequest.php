@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ItemStoreRequest extends FormRequest
+class UserUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,13 +23,13 @@ class ItemStoreRequest extends FormRequest
      */
     public function rules()
     {
+        $user_levels=array('admin', 'buyer');
+
         return [
-          'name' => 'required|unique:items|max:255',
-          'description' => 'required|string|max:500',
-          'category_id' => 'required|integer',
-          'price' => 'required|integer',
-          'stock' => 'required|integer',
-          'images' => 'required|array',
+          'name' => 'required|max:255',
+          'email' => 'required|email|max:255',
+          'user_level' => 'required|max:255|in:' . implode(',', $user_levels),
+          'password' => 'nullable|confirmed|max:255',
         ];
     }
 }

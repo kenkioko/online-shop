@@ -1,8 +1,10 @@
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top d-flex">
   <a class="navbar-brand" href="{{ route('home.index') }}">
-    <img src="{{ route('home.index') }}/adminlte/dist/img/AdminLTELogo.png" alt="Logo" class="brand-image img-circle elevation-3"
-         style="opacity: .8" height="40rem">
+    <img src="{{ asset('/adminlte/dist/img/AdminLTELogo.png') }}" alt="Logo"
+      class="brand-image img-circle elevation-3"
+      style="opacity: .8" height="40rem"
+    >
     <span class="brand-text font-weight-light">My Shop</span>
   </a>
   <button type="button"

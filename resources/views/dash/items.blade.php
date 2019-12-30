@@ -8,10 +8,10 @@
   >
 @endsection
 
-@section('page_header', 'Orders Placed')
+@section('page_header', 'Items')
 
 @section('sidebar')
-  @dash_sidebar(['page' => 'orders'])
+  @dash_sidebar(['page' => 'items'])
     <!-- print sidebar -->
   @enddash_sidebar
 @endsection
@@ -26,21 +26,42 @@
 @section('content')
   <div class="container-fluid">
 
+    @if (session('success'))
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <p class="m-0">{{ session('success') }}</p>
+      </div>
+    @endif
+
     <div class="card">
       <div class="card-header">
         <div class="card-tools">
-          <button type="button" class="btn btn-sm btn-outline-primary">
-            <i class="nav-icon far fa-eye"></i>
-          </button>
-          <button type="button" class="btn btn-sm btn-outline-success">
-            <i class="nav-icon fas fa-plus"></i>
-          </button>
-          <button type="button" class="btn btn-sm btn-outline-info">
-            <i class="nav-icon fas fa-edit"></i>
-          </button>
-          <button type="button" class="btn btn-sm btn-outline-danger">
-            <i class="nav-icon fas fa-times"></i>
-          </button>
+          <button type="button"
+            id="view_item"
+            class="btn btn-sm btn-outline-primary pop"
+            data-container="body" data-toggle="popover" data-placement="bottom"
+            data-content="View in site"
+          ><i class="nav-icon far fa-eye"></i></button><!-- /.button -->
+          <a type="button"
+            class="btn btn-sm btn-outline-success pop"
+            href="{{ route('admin.item.create') }}"
+            data-container="body" data-toggle="popover" data-placement="bottom"
+            data-content="New"
+          ><i class="nav-icon fas fa-plus"></i></a><!-- /.button -->
+          <button type="button"
+            id="edit_table_row"
+            class="btn btn-sm btn-outline-info pop"
+            data-container="body" data-toggle="popover" data-placement="bottom"
+            data-content="Edit"
+          ><i class="nav-icon fas fa-edit"></i></button><!-- /.button -->
+          <button type="button"
+            id="delete_table_row"
+            class="btn btn-sm btn-outline-danger pop"
+            data-container="body" data-toggle="popover" data-placement="bottom"
+            data-content="Delete"
+          ><i class="nav-icon fas fa-trash-alt"></i></button><!-- /.button -->
         </div>
         <!-- /.card-tools -->
       </div>
@@ -51,17 +72,22 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Oder No</th>
-              <th scope="col">User</th>
-              <th scope="col">Total</th>
-              <th scope="col">Status</th>
+              <th scope="col">Id</th>
+              <th scope="col">Name</th>
+              <th scope="col">Category</th>
+              <th scope="col">Price</th>
+              <th scope="col">Stock</th>
             </tr>
           </thead>
           <tbody>
             @foreach($items as $item)
             <tr>
               <th scope="row">{{ $loop->iteration }}</th>
-              <td>{{ $item }}</td>
+              <td>{{ $item->id }}</td>
+              <td>{{ $item->name }}</td>
+              <td>{{ $item->category->name }}</td>
+              <td>{{ $item->price }}</td>
+              <td>{{ $item->stock }}</td>
             </tr>
             @endforeach
           </tbody>
@@ -71,6 +97,25 @@
       <!-- /.card-body -->
     </div>
     <!-- /.card -->
+
+    @modal(['modal_id' => 'delete_modal'])
+      @slot('modal_title')
+        Delete '<span class="del_item_name"></span>'
+      @endslot
+
+      @slot('modal_body')
+        <p>Are you sure you want to delete '<span class="del_item_name"></span>'.</p>
+        <form method="post" class="d-none" id="delete_item_form">
+          @csrf
+          @method('DELETE')
+        </form>
+      @endslot
+
+      @slot('modal_footer')
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger" form="delete_item_form">Delete</button>
+      @endslot
+    @endmodal
 
   </div>
 @endsection
@@ -89,6 +134,55 @@
   ></script>
 
   <script type="text/javascript"
-    src="{{ route('home.index') }}/js/datatables.js" >
+    src="{{ asset('/js/datatables.js') }}" >
+  </script>
+
+  <script type="text/javascript">
+    var table;
+
+    $(function(){
+      // hide id column
+      table.column(1).visible(false);
+
+      // selected row actions
+      $('#view_item').click( function () {
+        var data = table.row('.selected').data();
+        if (data) {
+          var view_url = new URL(
+            'item/' + data[1],
+            "{{ route('item.index') }}"
+          );
+
+          window.location.href = view_url;
+        }
+      });
+
+      $('#edit_table_row').click( function () {
+        var data = table.row('.selected').data();
+        if (data) {
+          var edit_url = new URL(
+            'item/' + data[1] + '/edit',
+            "{{ route('admin.item.index') }}"
+          );
+
+          window.location.href = edit_url;
+        }
+      });
+
+      $('#delete_table_row').click( function () {
+        var data = table.row('.selected').data();
+        if (data) {
+          $('.del_item_name').text(data[2]);
+
+          var action_url = new URL(
+            'item/' + data[1],
+            "{{ route('admin.item.index') }}"
+          );
+
+          $("#delete_item_form").attr('action', action_url);
+          $('#delete_modal').modal('show');
+        }
+      });
+    });
   </script>
 @endsection

@@ -13,17 +13,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   @section('page_css')
     <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="{{ route('home.index') }}/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('/adminlte/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{ route('home.index') }}/adminlte/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="{{ asset('/adminlte/dist/css/adminlte.min.css') }}">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ route('home.index') }}/css/dash.css">
+    <link rel="stylesheet" href="{{ asset('/css/dash.css') }}">
   @show
 
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
 <div class="wrapper">
 
   <!-- Navbar -->
@@ -127,15 +127,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- REQUIRED SCRIPTS -->
 
   <!-- jQuery -->
-  <script src="{{ route('home.index') }}/adminlte/plugins/jquery/jquery.min.js"></script>
+  <script src="{{ asset('/adminlte/plugins/jquery/jquery.min.js') }}"></script>
   <!-- Bootstrap 4 -->
-  <script src="{{ route('home.index') }}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ asset('/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
   <!-- AdminLTE App -->
-  <script src="{{ route('home.index') }}/adminlte/dist/js/adminlte.min.js"></script>
+  <script src="{{ asset('/adminlte/dist/js/adminlte.min.js') }}"></script>
 
   <!-- custom js -->
   <script type="text/javascript"
-    src="{{ route('home.index') }}/js/app.js" >
+    src="{{ asset('/js/app.js') }}" >
   </script>
 @show
 

@@ -1,23 +1,15 @@
 @extends('layouts.dash')
 
-@section('page_css')
-  @parent
-
-  <link rel="stylesheet"
-    href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css"
-  >
-@endsection
-
 @section('page_header')
-  @if ($category)
-    {{ ucwords($category->name) }}
+  @if ($user)
+    {{ ucwords($user->name) }}
   @else
-    New Category
+    New User
   @endif
 @endsection
 
 @section('sidebar')
-  @dash_sidebar(['page' => 'categories'])
+  @dash_sidebar(['page' => 'users'])
     <!-- print sidebar -->
   @enddash_sidebar
 @endsection
@@ -28,10 +20,10 @@
       <a href="{{ route('admin.dash') }}">Admin</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="{{ route('admin.category.index') }}">Categories</a>
+      <a href="{{ route('admin.user.index') }}">Users</a>
     </li>
-    @if ($category)
-      <li class="breadcrumb-item active">{{ ucwords($category->name) }}</li>
+    @if ($user)
+      <li class="breadcrumb-item active">{{ ucwords($user->name) }}</li>
     @else
       <li class="breadcrumb-item active">New</li>
     @endif
@@ -62,10 +54,10 @@
     <div class="card">
       <div class="card-header">
         <div class="card-tools">
-          @if ($category)
+          @if ($user)
             <a type="button"
               class="btn btn-sm btn-outline-primary pop"
-              href="{{ route('admin.category.show', ['category' => $category->id]) }}"
+              href="{{ route('admin.user.show', ['user' => $user->id]) }}"
               data-container="body" data-toggle="popover" data-placement="bottom"
               data-content="View in site"
             >
@@ -73,22 +65,22 @@
             </a><!-- /.button -->
 
             <button type="button"
-              form="delete_category_form"
+              form="delete_user_form"
               class="btn btn-sm btn-outline-warning pop"
               data-container="body" data-toggle="popover" data-placement="bottom"
-              data-content="Delete category"
+              data-content="Delete user"
               onclick="on_delete()"
             ><i class="nav-icon fas fa-trash-alt"></i></button><!-- /.button -->
           @endif
 
           <button type="submit"
-            form="category_form"
+            form="user_form"
             class="btn btn-sm btn-outline-success pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Save changes"
           ><i class="nav-icon fas fa-save"></i></button><!-- /.button -->
           <a type="button"
-            href="{{ route('admin.category.index') }}"
+            href="{{ route('admin.user.index') }}"
             class="btn btn-sm btn-outline-danger pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Discard changes"
@@ -100,18 +92,16 @@
       <div class="card-body">
 
         @php
-          $form_action = route('admin.category.store');
-          if ($category) {
-            $form_action = route('admin.category.update', [
-              'category' => $category
-            ]);
+          $form_action = route('admin.user.store');
+          if ($user) {
+            $form_action = route('admin.user.update', ['user' => $user]);
           }
         @endphp
 
-        <form action="{{ $form_action }}" method="post" id="category_form">
+        <form action="{{ $form_action }}" method="post" id="user_form">
           @csrf
 
-          @if ($category)
+          @if ($user)
             @method('PUT')
           @endif
 
@@ -121,34 +111,65 @@
               id="name_input"
               name="name"
               class="form-control"
-              placeholder="Enter the category's name"
+              placeholder="Enter the user's name"
 
               @if (old('name'))
                 value="{{ old('name') }}"
-              @elseif ($category)
-                value="{{ $category->name }}"
+              @elseif ($user)
+                value="{{ $user->name }}"
+              @endif
+
+              @if ($user)
+                readonly
               @endif
             >
           </div><!-- /.form-group -->
           <div class="form-group">
-            <label>Select a parent category:</label>
-            <select class="custom-select" name="parent_category_id">
-              @if ($category and $category->parent_category or old('parent_category_id'))
-                <option value="">No parent</option>
-              @else
-                <option selected value="">No parent</option>
-              @endif
+            <label for="email_input">Email:</label>
+            <input type="email"
+              id="email_input"
+              name="email"
+              class="form-control"
+              placeholder="Enter the user's email"
 
-              @foreach ($categories as $cat)
-                @if (old('parent_category_id') === $cat->id)
-                  <option value="{{ $cat->id }}" selected>{{ $cat->name }}</option>
-                @elseif ($category and $category->parent_category == $cat)
-                  <option value="{{ $cat->id }}" selected>{{ $cat->name }}</option>
+              @if (old('email'))
+                value="{{ old('email') }}"
+              @elseif ($user)
+                value="{{ $user->email }}"
+              @endif
+            >
+          </div><!-- /.form-group -->
+          <div class="form-group">
+            <label>Select User Level:</label>
+            <select class="custom-select" name="user_level">
+              @foreach(['buyer', 'admin'] as $level)
+                @if (old('user_level'))
+                  <option selected value="{{ $level }}">{{ ucwords($level) }}</option>
+                @elseif ($user and $user->user_level === $level)
+                  <option selected value="{{ $level }}">{{ ucwords($level) }}</option>
                 @else
-                  <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                  <option value="{{ $level }}">{{ ucwords($level) }}</option>
                 @endif
               @endforeach
             </select>
+          </div><!-- /.form-group -->
+          <div class="form-group">
+            <label for="password_input">Password:</label>
+            <input type="password"
+              id="password_input"
+              name="password"
+              class="form-control"
+              placeholder="password"
+            >
+          </div><!-- /.form-group -->
+          <div class="form-group">
+            <label for="password_confirmation_input">Confirm Password:</label>
+            <input type="password"
+              id="password_confirmation_input"
+              name="password_confirmation"
+              class="form-control"
+              placeholder="confirm password"
+            >
           </div><!-- /.form-group -->
         </form>
 
@@ -157,35 +178,30 @@
     </div>
     <!-- /.card -->
 
-    @if ($category)
-      <div class="modal" tabindex="-1" role="dialog" id="delete_modal">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Delete '{{ $category->name }}'</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>Are you sure you want to delete '{{ $category->name }}'.</p>
-              <form method="post" class="d-none"
-                id="delete_category_form"
-                action="{{ route('admin.category.destroy', [
-                  'category' => $category
-                ]) }}"
-              >
-                @csrf
-                @method('DELETE')
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-danger" form="delete_category_form">Delete</button>
-            </div>
-          </div>
-        </div>
-      </div><!-- /.modal -->
+    @if ($user)
+
+      @modal(['modal_id' => 'delete_modal'])
+        @slot('modal_title')
+          Delete '{{ $user->name }}'
+        @endslot
+
+        @slot('modal_body')
+          <p>Are you sure you want to delete '{{ $user->name }}'.</p>
+          <form method="post" class="d-none"
+            id="delete_user_form"
+            action="{{ route('admin.user.destroy', ['user' => $user]) }}"
+          >
+            @csrf
+            @method('DELETE')
+          </form>
+        @endslot
+
+        @slot('modal_footer')
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger" form="delete_user_form">Delete</button>
+        @endslot
+      @endmodal
+
     @endif
 
   </div>
@@ -193,20 +209,6 @@
 
 @section('page_js')
   @parent
-
-  <script type="text/javascript"
-    src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"
-    charset="utf-8"
-  ></script>
-
-  <script type="text/javascript"
-    src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"
-    charset="utf-8"
-  ></script>
-
-  <script type="text/javascript"
-    src="{{ route('home.index') }}/js/datatables.js" >
-  </script>
 
   <script type="text/javascript">
     function on_delete() {

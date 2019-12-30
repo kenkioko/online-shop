@@ -39,8 +39,8 @@
 
 @section('page_js')
   @parent
-  
+
   <!-- Flickity JavaScript -->
   <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
-  <script src="{{ route('home.index') }}/js/flikty.js" type="text/javascript"></script>
+  <script src="{{ asset('/js/flikty.js') }}" type="text/javascript"></script>
 @endsection

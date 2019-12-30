@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserUpdateRequest;
 
 class UserController extends Controller
 {
@@ -35,7 +39,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('dash.user_form')->with('user', null);
     }
 
     /**
@@ -44,9 +48,19 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $user = new User;
+
+        if (! $this->save($validated, $user)) {
+          return back()->withInput();
+        }
+
+        return redirect()->route('admin.user.index')->with([
+          'users' => User::all(),
+          'success' => 'User added successfully',
+        ]);
     }
 
     /**
@@ -68,7 +82,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('dash.user_form')->with('user', $user);
     }
 
     /**
@@ -78,9 +92,16 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        //
+        if (! $this->save($request->validated(), $user)) {
+          return back()->withInput();
+        }
+
+        return redirect()->route('admin.user.index')->with([
+          'users' => User::all(),
+          'success' => 'User edited successfully',
+        ]);
     }
 
     /**
@@ -91,6 +112,33 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        if ($user === Auth::user()) {
+          return back()->with([
+            'error' => 'Cannot delete logged in user'
+          ]);
+        }
+
+        $user->delete();
+        return redirect()->route('admin.user.index')->with([
+          'users' => User::all(),
+          'success' => 'User deleted successfully'
+        ]);
+    }
+
+    /**
+     * save user to database.
+     *
+     * @param  array  $validated
+     * @param  \App\Category  $category
+     * @return boolean
+     */
+    protected function save($validated, $user)
+    {
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->user_level = $validated['user_level'];
+        $user->password = Hash::make($validated['password']);
+
+        return $user->save();
     }
 }
