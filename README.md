@@ -1,1 +1,15 @@
 # online-shop
+
+This is an online shop based on the [shop layout]](https://github.com/kenkioko/shop-layout.git).
+It is written in [php](https://www.php.net/) using the [laravel framework ](https://laravel.com)
+
+## dependencies
+* php version 7.3
+* composer version 1.9
+* laravel version 6.0
+* npm version 6.13
+
+## getting started
+
+### setup database
+The dev database server used is [mysql version 8.0](https://www.mysql.com/).
