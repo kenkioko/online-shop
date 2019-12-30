@@ -27,9 +27,9 @@ class ItemUpdateRequest extends FormRequest
           'name' => 'required|string|max:255',
           'description' => 'required|string|max:255',
           'category_id' => 'required|integer',
-          'price' => 'required|integer',
+          'price' => 'required|numeric',
           'stock' => 'required|integer',
-          'images' => 'required|array',
+          'images' => 'nullable|array',
         ];
     }
 }

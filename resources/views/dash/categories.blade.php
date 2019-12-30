@@ -153,7 +153,10 @@
   </script>
 
   <script type="text/javascript">
-    var table;
+    var table;          //datatable
+    var selected_row;   //selected table row
+    var action_url;     //url for action on selected row
+
 
     $(function(){
       // hide id column
@@ -161,36 +164,33 @@
 
       // selected row actions
       $('#view_category').click( function () {
-        var data = table.row('.selected').data();
-        if (data) {
-          var view_url = new URL(
-            'category/' + data[1],
+        if (selected_row) {
+          action_url = new URL(
+            'categories/' + selected_row[1],
             "{{ route('categories.index') }}"
           );
 
-          window.location.href = view_url;
+          window.location.href = action_url;
         }
       });
 
       $('#edit_table_row').click( function () {
-        var data = table.row('.selected').data();
-        if (data) {
-          var edit_url = new URL(
-            'category/' + data[1] + '/edit',
+        if (selected_row) {
+          action_url = new URL(
+            'categories/' + selected_row[1] + '/edit',
             "{{ route('admin.categories.index') }}"
           );
 
-          window.location.href = edit_url;
+          window.location.href = action_url;
         }
       });
 
       $('#delete_table_row').click( function () {
-        var data = table.row('.selected').data();
-        if (data) {
-          $('.del_category_name').text(data[2]);
+        if (selected_row) {
+          $('.del_category_name').text(selected_row[2]);
 
-          var action_url = new URL(
-            'category/' + data[1],
+          action_url = new URL(
+            'categories/' + selected_row[1],
             "{{ route('admin.categories.index') }}"
           );
 

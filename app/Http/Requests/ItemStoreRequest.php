@@ -27,7 +27,7 @@ class ItemStoreRequest extends FormRequest
           'name' => 'required|unique:items|max:255',
           'description' => 'required|string|max:500',
           'category_id' => 'required|integer',
-          'price' => 'required|integer',
+          'price' => 'required|numeric',
           'stock' => 'required|integer',
           'images' => 'required|array',
         ];

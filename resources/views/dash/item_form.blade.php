@@ -64,12 +64,9 @@
               href="{{ route('admin.items.show', ['item' => $item]) }}"
               data-container="body" data-toggle="popover" data-placement="bottom"
               data-content="View in site"
-            >
-              <i class="nav-icon far fa-eye"></i>
-            </a><!-- /.button -->
+            ><i class="nav-icon far fa-eye"></i></a><!-- /.button -->
 
             <button type="button"
-              form="delete_item_form"
               class="btn btn-sm btn-outline-warning pop"
               data-container="body" data-toggle="popover" data-placement="bottom"
               data-content="Delete item"
@@ -148,7 +145,7 @@
           <div class="form-group">
             <label>Select a parent item:</label>
             <select class="custom-select" name="category_id">
-              @if ($item and $item->category or old('description'))
+              @if (($item and $item->category) or old('description'))
                 <option value="">Choose A Category</option>
               @else
                 <option selected value="">Choose A Category</option>
@@ -159,9 +156,9 @@
               @endphp
 
               @foreach ($categories as $cat)
-                @if (old('category_id') === $cat->id)
+                @if (old('category_id') == $cat->id)
                   <option selected value="{{ $cat->id }}">{{ $cat->name }}</option>
-                @elseif ($item and $item->category->id === $cat->id)
+                @elseif ($item and ($item->category->id === $cat->id))
                   <option selected value="{{ $cat->id }}">{{ $cat->name }}</option>
                 @else
                   <option value="{{ $cat->id }}">{{ $cat->name }}</option>
@@ -299,7 +296,7 @@
       });
 
       $('#item_images_label').text(
-       length + ' file(s) selected.'
+       length + ' image file(s) selected.'
       );
 
       console.log(images);
@@ -326,6 +323,19 @@
       card.appendChild(image);
       document.getElementById('image_preview').appendChild(card);
     }
+
+    $('#submit_item_form').click(function (event) {
+      let form = document.getElementById('item_form');
+      let formData = new FormData(form);
+
+      formData.delete('images[]');
+      $.each( images, function( index, image ) {
+        formData.append('images[]', image, image.name);
+      });
+
+      console.log(formData);
+      $(form).submit(); //Change to use ajax for image file filters
+    });
   });
   </script>
 @endsection

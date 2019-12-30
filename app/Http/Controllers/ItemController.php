@@ -27,7 +27,8 @@ class ItemController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['index', 'show']);
+      $this->middleware(['auth', 'admin'])
+           ->except(['index', 'show']);
     }
 
     /**
@@ -109,7 +110,7 @@ class ItemController extends Controller
      */
     public function update(ItemUpdateRequest $request, Item $item)
     {
-        if (! $this->save($request->validated(), $item)) {
+        if (! $this->save($request->validated(), $item, true)) {
           return back()->withInput();
         }
 
@@ -127,7 +128,7 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        if(! delete_image_files($item->images_folder)) {
+        if(! $this->delete_image_files($item->images_folder)) {
           return back()->withInput();
         }
 
@@ -147,17 +148,21 @@ class ItemController extends Controller
      */
     protected function save($validated, $item, $edit=false)
     {
-        $items_folder_name = Uuid::generate()->string;
-        foreach($validated['images'] as $file){
-          $upload_path = $this::item_image_folder . '/' . $items_folder_name;
-          $file->store($upload_path, 'public');
+        if ($edit and isset($validated['images'])) {
+          $this->delete_image_files($item->images_folder);
+          $path = $this->save_image_files($validated['images']);
+          $item->images_folder = $path;
+        }
+
+        if (! $edit) {
+          $path = $this->save_image_files($validated['images']);
+          $item->images_folder = $path;
         }
 
         $item->name = $validated['name'];
         $item->price = $validated['price'];
         $item->stock = $validated['stock'];
         $item->description = $validated['description'];
-        $item->images_folder = $items_folder_name;
 
         $category = Category::findOrFail($validated['category_id']);
         $item->category_id = $category->id;
@@ -165,18 +170,26 @@ class ItemController extends Controller
         return $item->save();
     }
 
+    protected function save_image_files($images)
+    {
+        $items_folder_name = Uuid::generate()->string;
+        foreach($images as $file){
+          $upload_path = $this::item_image_folder . '/' . $items_folder_name;
+          $file->store($upload_path, 'public');
+        }
+
+        return $items_folder_name;
+    }
+
     protected function get_image_files($image_folder)
     {
         $directory = 'public/' . $this::item_image_folder . '/' . $image_folder;
-
         return Storage::files($directory);
     }
 
     protected function delete_image_files($image_folder)
     {
         $directory = 'public/' . $this::item_image_folder . '/' . $image_folder;
-        dd($directory);
-
         return Storage::deleteDirectory($directory);
     }
 }

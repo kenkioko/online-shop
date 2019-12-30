@@ -125,14 +125,14 @@
           <div class="form-group">
             <label>Select a parent category:</label>
             <select class="custom-select" name="parent_category_id">
-              @if ($category and $category->parent_category or old('parent_category_id'))
+              @if (($category and $category->parent_category) or old('parent_category_id'))
                 <option value="">No parent</option>
               @else
                 <option selected value="">No parent</option>
               @endif
 
               @foreach ($categories as $cat)
-                @if (old('parent_category_id') === $cat->id)
+                @if (old('parent_category_id') == $cat->id)
                   <option value="{{ $cat->id }}" selected>{{ $cat->name }}</option>
                 @elseif ($category and $category->parent_category == $cat)
                   <option value="{{ $cat->id }}" selected>{{ $cat->name }}</option>

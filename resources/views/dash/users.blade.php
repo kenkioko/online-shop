@@ -135,7 +135,9 @@
   </script>
 
   <script type="text/javascript">
-    var table;
+    var table;          //datatable
+    var selected_row;   //selected table row
+    var action_url;     //url for action on selected row
 
     $(function(){
       // hide id column
@@ -143,24 +145,22 @@
 
       // selected row actions
       $('#edit_table_row').click( function () {
-        var data = table.row('.selected').data();
-        if (data) {
-          var edit_url = new URL(
-            'user/' + data[1] + '/edit',
+        if (selected_row) {
+          action_url = new URL(
+            'users/' + selected_row[1] + '/edit',
             "{{ route('admin.users.index') }}"
           );
 
-          window.location.href = edit_url;
+          window.location.href = action_url;
         }
       });
 
       $('#delete_table_row').click( function () {
-        var data = table.row('.selected').data();
-        if (data) {
-          $('.del_user_name').text(data[2]);
+        if (selected_row) {
+          $('.del_user_name').text(selected_row[2]);
 
-          var action_url = new URL(
-            'user/' + data[1],
+          action_url = new URL(
+            'users/' + selected_row[1],
             "{{ route('admin.users.index') }}"
           );
 

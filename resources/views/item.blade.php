@@ -34,22 +34,21 @@
         <img class="w-100" src="https://via.placeholder.com/500x300"/>
 
         <div class="grid-container" id="item-images-grid">
-          <div class="grid-item">
-            <img src="https://via.placeholder.com/100x100"/>
-          </div>
-          <div class="grid-item">
-            <img src="https://via.placeholder.com/100x100"/>
-          </div>
-          <div class="grid-item">
-            <img src="https://via.placeholder.com/100x100"/>
-          </div>
-          <div class="grid-item">
-            <img src="https://via.placeholder.com/100x100"/>
-          </div>
-          <div class="grid-item">
-            <img src="https://via.placeholder.com/100x100"/>
-          </div>
+          @foreach($files as $file)
+            @php
+              $url = Illuminate\Support\Facades\Storage::url($file);
+            @endphp
+
+            <div class="card"><img class="card-img-top"
+              src="{{ asset($url) }}"
+            ></div>
+
+            <div class="grid-item">
+              <img src="src="{{ asset($url) }}""/>
+            </div>
+          @endforeach
         </div>
+
       </div>
       <!-- End Item Images -->
 

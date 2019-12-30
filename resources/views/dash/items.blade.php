@@ -39,7 +39,7 @@
       <div class="card-header">
         <div class="card-tools">
           <button type="button"
-            id="view_item"
+            id="view_btn"
             class="btn btn-sm btn-outline-primary pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="View in site"
@@ -51,13 +51,13 @@
             data-content="New"
           ><i class="nav-icon fas fa-plus"></i></a><!-- /.button -->
           <button type="button"
-            id="edit_table_row"
+            id="edit_btn"
             class="btn btn-sm btn-outline-info pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Edit"
           ><i class="nav-icon fas fa-edit"></i></button><!-- /.button -->
           <button type="button"
-            id="delete_table_row"
+            id="delete_btn"
             class="btn btn-sm btn-outline-danger pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Delete"
@@ -138,44 +138,44 @@
   </script>
 
   <script type="text/javascript">
-    var table;
+    var table;          //datatable
+    var selected_row;   //selected table row
+    var action_url;     //url for action on selected row
 
     $(function(){
       // hide id column
       table.column(1).visible(false);
 
       // selected row actions
-      $('#view_item').click( function () {
-        var data = table.row('.selected').data();
-        if (data) {
-          var view_url = new URL(
-            'item/' + data[1],
+      $('#view_btn').click( function () {
+        if (selected_row) {
+          action_url = new URL(
+            'items/' + selected_row[1],
             "{{ route('items.index') }}"
           );
 
-          window.location.href = view_url;
+          window.location.href = action_url;
         }
       });
 
-      $('#edit_table_row').click( function () {
-        var data = table.row('.selected').data();
-        if (data) {
-          var edit_url = new URL(
-            'item/' + data[1] + '/edit',
+      $('#edit_btn').click( function () {
+        if (selected_row) {
+          action_url = new URL(
+            'items/' + selected_row[1] + '/edit',
             "{{ route('admin.items.index') }}"
           );
 
-          window.location.href = edit_url;
+          window.location.href = action_url;
         }
       });
 
-      $('#delete_table_row').click( function () {
+      $('#delete_btn').click( function () {
         var data = table.row('.selected').data();
         if (data) {
-          $('.del_item_name').text(data[2]);
+          $('.del_item_name').text(selected_row[2]);
 
-          var action_url = new URL(
-            'item/' + data[1],
+          action_url = new URL(
+            'items/' + selected_row[1],
             "{{ route('admin.items.index') }}"
           );
 
