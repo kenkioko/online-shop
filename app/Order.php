@@ -18,14 +18,6 @@ class Order extends Model
    */
   public function user()
   {
-      return $this->hasOne('App\User');
-  }
-
-  /**
-   * The items in the order '1-2-M'.
-   */
-  public function item()
-  {
-      return $this->hasMany('App\Item');
+      return $this->belongsTo('App\User');
   }
 }

@@ -29,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
       Blade::component('components.search_form', 'search');
       Blade::component('components.logout_form', 'logout');
       Blade::component('components.breadcrum', 'breadcrum');
+      Blade::component('components.show_alert', 'show_alert');
       Blade::component('components.dash.modal', 'modal');
       Blade::component('components.dash.sidebar', 'dash_sidebar');
       Blade::component('components.dash.data_table', 'data_table');

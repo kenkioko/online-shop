@@ -53,6 +53,7 @@
           <thead>
             <tr>
               <th scope="col">#</th>
+              <th scope="col">Id</th>
               <th scope="col">Oder No</th>
               <th scope="col">User</th>
               <th scope="col">Total</th>
@@ -63,7 +64,11 @@
             @foreach($orders as $order)
             <tr>
               <th scope="row">{{ $loop->iteration }}</th>
-              <td>{{ $order }}</td>
+              <td>{{ $order->id }}</td>
+              <td>{{ $order->order_no }}</td>
+              <td>{{ $order->user->name }}</td>
+              <td>{{ $order->total }}</td>
+              <td>{{ $order->status }}</td>
             </tr>
             @endforeach
           </tbody>
@@ -92,5 +97,16 @@
 
   <script type="text/javascript"
     src="{{ asset('/js/datatables.js') }}" >
+  </script>
+
+  <script type="text/javascript">
+  var table;          //datatable
+  var selected_row;   //selected table row
+  var action_url;     //url for action on selected row
+
+  $(function(){
+    // hide id column
+    table.column(1).visible(false);
+  });
   </script>
 @endsection

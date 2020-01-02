@@ -7,7 +7,6 @@ $(function(){
     wrapAround: true,
     pageDots: false,
     cellAlign: 'left',
-    contain: true
   });
 
 });

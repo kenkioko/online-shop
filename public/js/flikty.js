@@ -100,8 +100,7 @@ $(function () {
   $('.grid-container').flickity({
     wrapAround: true,
     pageDots: false,
-    cellAlign: 'left',
-    contain: true
+    cellAlign: 'left'
   });
 });
 

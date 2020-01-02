@@ -162,7 +162,7 @@ class CategoryController extends Controller
         $category->name = $validated['name'];
         $parent_category = Category::find($validated['parent_category_id']);
         if ($parent_category) {
-          $category->parent_category_id = $parent_category->id;
+          $category->parent_category()->associate($parent_category);
         }
 
         return $category->save();

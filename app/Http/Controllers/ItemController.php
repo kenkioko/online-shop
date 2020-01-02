@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Item;
+use App\Order;
 use App\Category;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ItemStoreRequest;
 use App\Http\Requests\ItemUpdateRequest;
@@ -81,8 +83,14 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
+        $user_id = Auth::user()->id;
+        $active_order = Order::where('user_id', $user_id)
+            ->where('status', 'items_in_cart')
+            ->first();
+
         return view('item')->with([
           'item' => $item,
+          'active_order' => $active_order,
           'files' => $this->get_image_files($item->images_folder),
         ]);
     }
@@ -165,7 +173,7 @@ class ItemController extends Controller
         $item->description = $validated['description'];
 
         $category = Category::findOrFail($validated['category_id']);
-        $item->category_id = $category->id;
+        $item->category()->associate($category);
 
         return $item->save();
     }

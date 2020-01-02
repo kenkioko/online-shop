@@ -18,9 +18,11 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <span class="navbar-text p-1 order-3">
-    <button class="btn btn-outline-light ml-5" type="button">CART</button>
-  </span>
+  @auth
+    <span class="navbar-text p-1 order-3">
+      <button class="btn btn-outline-light ml-5" type="button">CART</button>
+    </span>
+  @endauth
 
   <span class="navbar-text p-1 order-3">
     @php

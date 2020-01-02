@@ -18,20 +18,25 @@
   @breadcrum(['extra_class' => 'w-100 p-2 text-muted'])
     <li class="breadcrumb-item"><a href="/">Home</a></li>
     <li class="breadcrumb-item">
-      <a href="{{ route('categories.show',['category' => $item->category->id]) }}">
+      <a href="{{ route('categories.show',['category' => $item->category]) }}">
         {{ ucwords($item->category->name) }}
       </a>
     </li>
     <li class="breadcrumb-item active">{{ ucwords($item->name) }}</li>
   @endbreadcrum()
 
-
   <div class="container my-5">
+
+    @show_alert(['errors', $errors])
+    @endshow_alert
+
     <!-- Item Description -->
     <div class="row">
       <!-- Item Images -->
       <div class="col-sm-6 d-flex flex-column">
-        <img class="w-100" src="https://via.placeholder.com/500x300"/>
+        <img id="main_img" class="img-thumbnail shadow w-100 h-50"
+          src="https://via.placeholder.com/500x350"
+        />
 
         <div class="grid-container" id="item-images-grid">
           @foreach($files as $file)
@@ -39,13 +44,16 @@
               $url = Illuminate\Support\Facades\Storage::url($file);
             @endphp
 
-            <div class="card"><img class="card-img-top"
-              src="{{ asset($url) }}"
-            ></div>
+            @if ($loop->first)
+              <script type="text/javascript">
+                var first_img_url = '{{ asset($url) }}'
+              </script>
+            @endif
 
-            <div class="grid-item">
-              <img src="src="{{ asset($url) }}""/>
-            </div>
+            <div class="grid-item"><img src="{{ asset($url) }}"
+              onclick="view_image('{{ asset($url) }}')"
+              width="100" height="100"
+            /></div>
           @endforeach
         </div>
 
@@ -75,11 +83,34 @@
           <div class="size-item border">11</div>
         </div>
 
-        <button class="btn btn-primary w-100 add-cart my-5"
-          onclick="add_to_cart()"
+        @php
+          $form_action = route('orders.store');
+          $order_number = null;
+
+          if($active_order) {
+            $form_action = route('orders.update', ['order' => $active_order]);
+            $order_number = $active_order->order_no;
+          }
+        @endphp
+
+        <form class="d-none" method="post"
+          id="add_item_form"
+          action="{{ $form_action }}"
         >
-          ADD TO CART
-        </button>
+          @csrf
+
+          @if($active_order)
+            @method('PUT')
+          @endif
+
+          <input type="hidden" name="item_id" value="{{ $item->id }}">
+          <input type="hidden" name="order_number" value="{{ $order_number }}">
+        </form>
+
+        <button type="submit"
+          form="add_item_form"
+          class="btn btn-primary w-100 add-cart my-5"
+        >ADD TO CART</button>
       </div>
     </div>
     <!-- End Item Description -->
@@ -91,43 +122,12 @@
       <h3 id="category-header" class="mx-auto">You might also like</h3>
 
       <div class="grid-container" id="more-items-grid">
-        <div class="grid-item">
-          <img src="https://via.placeholder.com/150x150"/>
-          <p>Item 1</p>
-        </div>
-        <div class="grid-item">
-          <img src="https://via.placeholder.com/150x150"/>
-          <p>Item 2</p>
-        </div>
-        <div class="grid-item">
-          <img src="https://via.placeholder.com/150x150"/>
-          <p>Item 3</p>
-        </div>
-        <div class="grid-item">
-          <img src="https://via.placeholder.com/150x150"/>
-          <p>Item 4</p>
-        </div>
-        <div class="grid-item">
-          <img src="https://via.placeholder.com/150x150"/>
-          <p>Item 5</p>
-        </div>
-        <div class="grid-item">
-          <img src="https://via.placeholder.com/150x150"/>
-          <p>Item 6</p>
-        </div>
-        <div class="grid-item">
-          <img src="https://via.placeholder.com/150x150"/>
-          <p>Item 7</p>
-        </div>
-        <div class="grid-item">
-          <img src="https://via.placeholder.com/150x150"/>
-          <p>Item 8</p>
-        </div>
-        <div class="grid-item">
-          <img src="https://via.placeholder.com/150x150"/>
-          <p>Item 9</p>
-        </div>
-      </div>
+        @for($i = 0; $i < 10; $i++)
+          <div class="grid-item">
+            <img src="https://via.placeholder.com/150x150"/>
+            <p>Item {{ $i + 1 }}</p>
+          </div>
+        @endfor
     </div>
     <!-- More Items Grid -->
 
@@ -142,8 +142,12 @@
   <script src="{{ asset('/js/flikty.js') }}" type="text/javascript"></script>
 
   <script type="text/javascript">
-    function add_to_cart() {
-      console.log('add to cart');
+    function view_image(url) {
+      document.getElementById("main_img").src = url;
     }
+
+    $(function(){
+      view_image(first_img_url);
+    });
   </script>
 @endsection

@@ -17,8 +17,7 @@ class CreateOrdersTable extends Migration
             $table->bigIncrements('id');
             $table->uuid('order_no');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('item_id');
-            $table->unsignedInteger('total');
+            $table->unsignedDecimal('total', 8, 2);
             $table->enum('status', [
               'items_in_cart',
               'order_made',
@@ -32,10 +31,6 @@ class CreateOrdersTable extends Migration
             $table->foreign('user_id')
                   ->references('id')->on('users')
                   ->onDelete('cascade');
-
-            $table->foreign('item_id')
-                  ->references('id')->on('items')
-                  ->onDelete('restrict');
         });
     }
 
