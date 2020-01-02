@@ -17,7 +17,7 @@ class CreateItemsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->text('description');
-            $table->uuid('images_folder');
+            $table->uuid('images_folder')->nullable();
             $table->unsignedInteger('stock');
             $table->unsignedDecimal('price', 8, 2);
             $table->unsignedBigInteger('category_id');

@@ -7,8 +7,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Item::class, function (Faker $faker) {
     return [
-        'name' => $faker->unique()->word,
-        'images_folder' => $faker->image,
+        'name' => $faker->unique()->text($maxNbChars = 10),
+        'images_folder' => $faker->uuid,
         'stock' => $faker->numberBetween($min = 0, $max = 100),
         'price' => $faker->numberBetween($min = 100, $max = 9000),
         'description' => $faker->paragraph,
