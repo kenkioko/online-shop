@@ -34,11 +34,12 @@
     <div class="row">
       <!-- Item Images -->
       <div class="col-sm-6 d-flex flex-column">
-        <img id="main_img" class="img-thumbnail shadow w-100 h-50"
+        <img id="main_img" class="img-thumbnail shadow w-100"
           src="https://via.placeholder.com/500x350"
+          style="height: 60vh !important"
         />
 
-        <div class="grid-container" id="item-images-grid">
+        <div class="grid-container mt-auto" id="item-images-grid">
           @foreach($files as $file)
             @php
               $url = Illuminate\Support\Facades\Storage::url($file);

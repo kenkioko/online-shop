@@ -42,10 +42,21 @@
         <div class="card-columns m-2"  id="content-row">
 
           @foreach ($items as $item)
+
+            @php
+              $url = 'https://via.placeholder.com/150x150';
+              $directory = 'public/item_images/' . $item->images_folder;
+              $image_files = Storage::files($directory);
+
+              if($image_files){
+                $url = asset(Illuminate\Support\Facades\Storage::url($image_files[0]));
+              }
+            @endphp
+
             <!-- Card -->
-            <div class="card p-0">
+            <div class="card shadow p-0">
               <a href="{{ route('items.show',['item' => $item->id]) }}">
-                <img class="w-100" src="https://via.placeholder.com/150x150"/>
+                <img class="w-100" src="{{ $url }}"/>
               </a>
               <div class="card-body">
                 <a href="{{ route('items.show',['item' => $item->id]) }}"

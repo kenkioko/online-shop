@@ -88,7 +88,6 @@ class CategoryController extends Controller
         }
 
         $items = Item::where('category_id', $category->id)->get();
-
         return view('category')->with([
           'category' => $category,
           'items' => $items,

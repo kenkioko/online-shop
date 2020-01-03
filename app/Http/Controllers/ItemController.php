@@ -83,8 +83,8 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        $user_id = Auth::user()->id;
-        $active_order = Order::where('user_id', $user_id)
+        $user = Auth::user();
+        $active_order = Order::where('user_id', $user ? $user->id : null)
             ->where('status', 'items_in_cart')
             ->first();
 
