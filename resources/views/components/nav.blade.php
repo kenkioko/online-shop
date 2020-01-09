@@ -18,18 +18,26 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
+  @php
+    use Illuminate\Support\Facades\Auth;
+    use App\Order;
+    use App\User;
+
+    $user = Auth::user();
+  @endphp
+
   @auth
+    @php
+    $new_orders = Order::has('user', $user->id)->count();
+  @endphp
     <span class="navbar-text p-1 order-3">
-      <button class="btn btn-outline-light ml-5" type="button">CART</button>
+      <a class="btn btn-outline-light ml-5" type="button"
+        href="{{ route('orders.index') }}"
+      >CART <span class="badge badge-danger m-1">{{ $new_orders }}</span></a>
     </span>
   @endauth
 
   <span class="navbar-text p-1 order-3">
-    @php
-      use Illuminate\Support\Facades\Auth;
-      $user = Auth::user();
-    @endphp
-
     <ul class="navbar-nav mr-5">
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle text-light"
@@ -39,35 +47,43 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          @if ($user)
+          @auth
             {{ $user->name }}
-          @else
+          @endauth
+          @guest
             Login
-          @endif
-        </a>
+          @endguest
+        </a><!-- /.nav-link -->
         <div class="dropdown-menu dropdown-menu-right " aria-labelledby="navbarDropdown">
-          @if ($user)
+          @auth
             @if ($user->user_level === 'admin')
-              <a class="dropdown-item text-dark" href="{{ route('admin.dash') }}">
-                Admin Dashboard
-              </a>
+              <span class="dropdown-item text-dark">
+                <a type="button" class="btn btn-sm btn-secondary w-100 pop"
+                  href="{{ route('admin.dash') }}"
+                >Admin Dashboard</a>
+              </span>
             @endif
 
             @logout(['display' => 'text'])
               <!--print logout button -->
             @endlogout
-          @else
-            <a class="dropdown-item text-dark" href="{{ route('login') }}">
-              Login
-            </a>
-            <a class="dropdown-item text-dark" href="{{ route('register') }}">
-              Register
-            </a>
-          @endif
-        </div>
-      </li>
-    </ul>
-  </span>
+          @endauth
+          @guest
+            <span class="dropdown-item text-dark">
+              <a type="button" class="btn btn-sm btn-secondary w-100 pop"
+                href="{{ route('login') }}"
+              >Login</a>
+            </span>
+            <span class="dropdown-item text-dark">
+              <a type="button" class="btn btn-sm btn-secondary w-100 pop"
+                href="{{ route('register') }}"
+              >Register</a>
+            </span>
+          @endguest
+        </div><!-- /.dropdown-menu -->
+      </li><!-- /.nav-item -->
+    </ul><!-- /.navbar-nav -->
+  </span> <!-- /.navbar-text -->
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-5">

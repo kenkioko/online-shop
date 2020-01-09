@@ -31,18 +31,38 @@
     <div class="card">
       <div class="card-header">
         <div class="card-tools">
-          <button type="button" class="btn btn-sm btn-outline-primary">
+          <button type="button"
+            id="view_order"
+            class="btn btn-sm btn-outline-primary pop"
+            data-container="body" data-toggle="popover" data-placement="bottom"
+            data-content="View in site"
+          >
             <i class="nav-icon far fa-eye"></i>
-          </button>
-          <button type="button" class="btn btn-sm btn-outline-success">
+          </button><!-- /.button -->
+          <a type="button"
+            class="btn btn-sm btn-outline-success pop"
+            href="{{ route('admin.orders.create') }}"
+            data-container="body" data-toggle="popover" data-placement="bottom"
+            data-content="New"
+          >
             <i class="nav-icon fas fa-plus"></i>
-          </button>
-          <button type="button" class="btn btn-sm btn-outline-info">
+          </a><!-- /.button -->
+          <button type="button"
+            id="edit_table_row"
+            class="btn btn-sm btn-outline-info pop"
+            data-container="body" data-toggle="popover" data-placement="bottom"
+            data-content="Edit"
+          >
             <i class="nav-icon fas fa-edit"></i>
-          </button>
-          <button type="button" class="btn btn-sm btn-outline-danger">
-            <i class="nav-icon fas fa-times"></i>
-          </button>
+          </button><!-- /.button -->
+          <button type="button"
+            id="delete_table_row"
+            class="btn btn-sm btn-outline-danger pop"
+            data-container="body" data-toggle="popover" data-placement="bottom"
+            data-content="Delete"
+          >
+            <i class="nav-icon fas fa-trash-alt"></i>
+          </button><!-- /.button -->
         </div>
         <!-- /.card-tools -->
       </div>
@@ -79,6 +99,25 @@
     </div>
     <!-- /.card -->
 
+    @modal(['modal_id' => 'delete_modal'])
+      @slot('modal_title')
+        Delete '<span class="del_order_no"></span>'
+      @endslot
+
+      @slot('modal_body')
+        <p>Are you sure you want to delete '<span class="del_order_no"></span>'.</p>
+        <form method="post" class="d-none" id="del_order_form">
+          @csrf
+          @method('DELETE')
+        </form>
+      @endslot
+
+      @slot('modal_footer')
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger" form="del_order_form">Delete</button>
+      @endslot
+    @endmodal
+
   </div>
 @endsection
 
@@ -107,6 +146,43 @@
   $(function(){
     // hide id column
     table.column(1).visible(false);
+
+    // selected row actions
+    $('#view_order').click( function () {
+      if (selected_row) {
+        action_url = new URL(
+          'orders/' + selected_row[1],
+          "{{ route('orders.index') }}"
+        );
+
+        window.location.href = action_url;
+      }
+    });
+
+    $('#edit_table_row').click( function () {
+      if (selected_row) {
+        action_url = new URL(
+          'orders/' + selected_row[1] + '/edit',
+          "{{ route('admin.orders.index') }}"
+        );
+
+        window.location.href = action_url;
+      }
+    });
+
+    $('#delete_table_row').click( function () {
+      if (selected_row) {
+        $('.del_order_no').text(selected_row[2]);
+
+        action_url = new URL(
+          'orders/' + selected_row[1],
+          "{{ route('admin.orders.index') }}"
+        );
+
+        $("#del_order_form").attr('action', action_url);
+        $('#delete_modal').modal('show');
+      }
+    });
   });
   </script>
 @endsection

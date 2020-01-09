@@ -7,6 +7,7 @@ use App\Order;
 use App\OrderItem;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\OrderStoreRequest;
 use App\Http\Requests\OrderUpdateRequest;
@@ -22,7 +23,7 @@ class OrderController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('admin')->except([
-          'create','store', 'update'
+          'store', 'update'
         ]);
     }
 
@@ -33,8 +34,14 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::all();
-        return view('dash.orders')->with('orders', $orders);
+        // admin orders index
+        if (URL::current() === route('admin.orders.index')) {
+          $orders = Order::where('status', '!=', 'items_in_cart')->get();
+          return view('dash.orders')->with('orders', $orders);
+        }
+
+        $orders = Order::has('user')->get();
+        return view('cart')->with('orders', $orders);
     }
 
     /**
@@ -44,7 +51,9 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+        return view('dash.order_form')->with([
+          'order' => null,
+        ]);
     }
 
     /**
@@ -89,7 +98,9 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        return view('cart')->with([
+          'order' => $order,
+        ]);
     }
 
     /**
@@ -100,7 +111,9 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+        return view('dash.order_form')->with([
+          'order' => $order,
+        ]);
     }
 
     /**
