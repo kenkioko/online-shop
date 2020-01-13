@@ -56,13 +56,13 @@
         </a><!-- /.nav-link -->
         <div class="dropdown-menu dropdown-menu-right " aria-labelledby="navbarDropdown">
           @auth
-            @if ($user->user_level === 'admin')
+            @role('admin')
               <span class="dropdown-item text-dark">
                 <a type="button" class="btn btn-sm btn-secondary w-100 pop"
                   href="{{ route('admin.dash') }}"
                 >Admin Dashboard</a>
               </span>
-            @endif
+            @endrole
 
             @logout(['display' => 'text'])
               <!--print logout button -->

@@ -136,9 +136,11 @@ class UserController extends Controller
     {
         $user->name = $validated['name'];
         $user->email = $validated['email'];
-        $user->user_level = $validated['user_level'];
         $user->password = Hash::make($validated['password']);
 
-        return $user->save();
+        $save = $user->save();
+        $user->assignRole($validated['user_level']);
+
+        return $save;
     }
 }

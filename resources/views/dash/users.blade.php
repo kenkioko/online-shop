@@ -77,7 +77,7 @@
               <td>{{ $user->id }}</td>
               <td>{{ $user->name }}</td>
               <td>{{ $user->email }}</td>
-              <td>{{ $user->user_level }}</td>
+              <td>{{ implode(', ', $user->getRoleNames()->toArray()) }}</td>
               <td>{{ $user->created_at }}</td>
               <td>{{ $user->updated_at }}</td>
             </tr>

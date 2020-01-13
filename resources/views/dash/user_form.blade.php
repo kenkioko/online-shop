@@ -130,7 +130,7 @@
               @foreach(['buyer', 'admin'] as $level)
                 @if (old('user_level'))
                   <option selected value="{{ $level }}">{{ ucwords($level) }}</option>
-                @elseif ($user and $user->user_level === $level)
+                @elseif ($user and $user->hasRole($level))
                   <option selected value="{{ $level }}">{{ ucwords($level) }}</option>
                 @else
                   <option value="{{ $level }}">{{ ucwords($level) }}</option>

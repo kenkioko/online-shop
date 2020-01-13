@@ -5,10 +5,12 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +26,7 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $guarded = ['user_level'];
+    protected $guarded = [''];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -43,19 +45,4 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    /**
-     * Check if user has an admin user level
-     *
-     * @return boolean
-     */
-    public function is_admin()
-    {
-      $is_admin = False;
-      if ($this->user_level === 'admin') {
-        $is_admin = True;
-      }
-
-      return $is_admin;
-    }
 }

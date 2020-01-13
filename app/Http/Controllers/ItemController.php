@@ -44,7 +44,7 @@ class ItemController extends Controller
           return view('dash.items')->with('items', Item::all());
         }
 
-        return abort(404);
+        return abort(403);
     }
 
     /**
