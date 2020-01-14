@@ -126,6 +126,7 @@ class OrderController extends Controller
     public function update(OrderUpdateRequest $request, Order $order)
     {
         $validated = $request->validated();
+        dd($validated);
     }
 
     /**

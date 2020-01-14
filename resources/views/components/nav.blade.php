@@ -28,8 +28,11 @@
 
   @auth
     @php
-    $new_orders = Order::has('user', $user->id)->count();
-  @endphp
+      $new_orders = Order::where('user_id', $user->id)
+          ->where('status', 'items_in_cart')
+          ->count();
+    @endphp
+
     <span class="navbar-text p-1 order-3">
       <a class="btn btn-outline-light ml-5" type="button"
         href="{{ route('orders.index') }}"

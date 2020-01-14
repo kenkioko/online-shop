@@ -9,7 +9,9 @@ $factory->define(Order::class, function (Faker $faker) {
     return [
       'order_no' => $faker->unique()->uuid,
       'user_id' => function () {
-          return factory(App\User::class)->create()->id;
+          $user = factory(App\User::class)->create();
+          $user->assignRole('buyer');
+          return $user->id;
       },
       'total' => $faker->numberBetween($min = 150, $max = 5000),
       'status' => $faker->randomElement($array = array (
