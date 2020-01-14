@@ -9,13 +9,8 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
         "create-links": "npm-run-all --parallel adminlte-link fontawesome-link",
-<<<<<<< HEAD
-        "adminlte-link": "ln -sf ../node_modules/admin-lte/ public/",
-        "fontawesome-link": "ln -sf ../node_modules/@fortawesome/fontawesome-free/ public/"
-=======
-        "adminlte-link": "ln -sf node_modules/admin-lte/ public/",
-        "fontawesome-link": "ln -sf node_modules/@fortawesome/fontawesome-free/ public/"
->>>>>>> 4a8d55651a4431bc9fcf537d56be40d582d77073
+        "adminlte-link": "ln -sf ../node_modules/admin-lte/ public/adminlte",
+        "fontawesome-link": "ln -sf ../node_modules/@fortawesome/fontawesome-free/ public/fontawsome"
     },
     "devDependencies": {
         "axios": "^0.19",
