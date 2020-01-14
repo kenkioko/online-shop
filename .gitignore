@@ -2,7 +2,7 @@
 /public/hot
 /public/storage
 /public/adminlte
-/public/fontawsome
+/public/fontawesome
 /storage/*.key
 /vendor
 .env
