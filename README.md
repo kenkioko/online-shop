@@ -18,6 +18,8 @@ Use env.example file as a start point.
 ### Install dependancies (Composer update and npm install)
 Update the dependancies using `composer update` and `npm install` commands.
 
+To create links for node modules in `/public/` folder use `npm run create-links`.
+
 ## Running (dev only)
 Run the laravel web server using artisan `php artisan serve`. Follow the [Laravel](https://laravel.com/docs/6.x) Docs for more info.
 
