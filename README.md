@@ -8,6 +8,7 @@ It is written in [php](https://www.php.net/) using the [laravel framework ](http
 * composer version 1.9
 * laravel version 6.0
 * npm version 6.13
+* node version 12.16.1
 
 ## Getting started
 

@@ -26,7 +26,7 @@
     $user = Auth::user();
   @endphp
 
-  @auth
+  @role('buyer')
     @php
       $new_orders = Order::where('user_id', $user->id)
           ->where('status', 'items_in_cart')
@@ -38,7 +38,7 @@
         href="{{ route('orders.index') }}"
       >CART <span class="badge badge-danger m-1">{{ $new_orders }}</span></a>
     </span>
-  @endauth
+  @endrole
 
   <span class="navbar-text p-1 order-3">
     <ul class="navbar-nav mr-5">

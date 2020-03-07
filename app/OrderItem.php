@@ -7,7 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class OrderItem extends Model
 {
     /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['amount'];
+
+    /**
      * The order the items belongs to '1-2-1'.
+     *
+     * @return void
      */
     public function order()
     {
@@ -15,9 +24,11 @@ class OrderItem extends Model
     }
 
     /**
-     * The items in the order '1-2-M'.
+     * The items in the order '1-2-1'.
+     *
+     * @return void
      */
-    public function items()
+    public function item()
     {
         return $this->belongsTo('App\Item', 'item_id');
     }

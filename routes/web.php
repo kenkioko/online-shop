@@ -11,13 +11,6 @@
 |
 */
 
-// available resource controllers for website
-Route::resources([
-  'categories' => 'CategoryController',
-  'items' => 'ItemController',
-  'orders' => 'OrderController',
-]);
-
 //auth routes from laravel/ui
 Auth::routes();
 
@@ -26,8 +19,15 @@ Route::get('/', 'HomeController@index')->name('home.index');
 Route::redirect('/home', '/');
 Route::redirect('/index', '/');
 
+// available resource controllers for website
+Route::resources([
+  'categories' => 'CategoryController',
+  'items' => 'ItemController',
+  'orders' => 'OrderController',
+]);
+
 //admin routes
-Route::middleware(['auth', 'admin'])
+Route::middleware(['auth', 'role:admin'])
   ->prefix('admin')
   ->name('admin.')
   ->group(function () {

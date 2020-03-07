@@ -15,6 +15,8 @@ class Category extends Model
 
   /**
    * The parrent category '1-2-M'.
+   *
+   * @return void
    */
   public function parent_category()
   {

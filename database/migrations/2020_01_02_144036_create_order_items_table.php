@@ -17,6 +17,7 @@ class CreateOrderItemsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('item_id');
+            $table->unsignedDecimal('amount', 8, 2)->nullable();
             $table->timestamps();
 
             $table->foreign('order_id')
