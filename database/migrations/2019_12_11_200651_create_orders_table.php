@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Order;
 
 class CreateOrdersTable extends Migration
 {
@@ -18,14 +19,7 @@ class CreateOrdersTable extends Migration
             $table->uuid('order_no');
             $table->unsignedBigInteger('user_id');
             $table->unsignedDecimal('total', 8, 2);
-            $table->enum('status', [
-              'items_in_cart',
-              'order_made',
-              'processing',
-              'enroute',
-              'delivered',
-              'rejected',
-            ]);
+            $table->enum('status', Order::getOrderStatus(true));
             $table->timestamps();
 
             $table->foreign('user_id')

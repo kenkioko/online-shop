@@ -30,11 +30,17 @@
     @php
       $new_orders = Order::where('user_id', $user->id)
           ->where('status', 'items_in_cart')
-          ->count();
+          ->first();
+
+      if ($new_orders) {
+        $new_orders = $new_orders->items()->count();
+      } else {
+        $new_orders = 0;
+      }
     @endphp
 
     <span class="navbar-text p-1 order-3">
-      <a class="btn btn-outline-light ml-5" type="button"
+      <a class="btn btn-outline-primary ml-5" type="button"
         href="{{ route('orders.index') }}"
       >CART <span class="badge badge-danger m-1">{{ $new_orders }}</span></a>
     </span>

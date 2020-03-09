@@ -4,8 +4,9 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Order;
 
-class OrderUpdateRequest extends FormRequest
+class CartUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +15,12 @@ class OrderUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $order_user_id = Order::findOrFail($this->route('cart'))->user_id;
+        if ($order_user_id === $this->user()->id) {
+          return true;
+        }
+
+        return fale;
     }
 
     /**
@@ -26,8 +32,7 @@ class OrderUpdateRequest extends FormRequest
     {
         return [
           'item_id' => 'required|integer',
-          'order_number' => 'required|uuid',
-          'status' => 'nullable|string|max:255',
+          'order_number' => 'exists:orders,order_no',
           'update_type' => ['required', Rule::in(['add', 'remove'])],
         ];
     }

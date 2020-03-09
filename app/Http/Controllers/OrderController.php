@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Item;
 use App\Order;
-use App\OrderItem;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -23,7 +22,7 @@ class OrderController extends Controller
     {
         $this->middleware('auth');
         $this->middleware(['role:admin'])->except([
-          'store', 'update'
+          'index', 'show', 'store', 'update'
         ]);
     }
 
@@ -69,16 +68,16 @@ class OrderController extends Controller
         $order = new Order;
         $order->user()->associate(Auth::user());
         $order->order_no = Uuid::generate()->string;
+
         // order items
         $item = Item::findOrFail($validated['item_id']);
         $order->total = $item->price;
-        // save
+
         if ($order->save()) {
-          // order items
-          $order_items = new OrderItem;
-          $order_items->order()->associate($order);
-          $order_items->items()->associate($item);
-          $order_items->save();
+          $order->items()->save($item);
+          $order->items()->updateExistingPivot($item->id, [
+            'amount' => $item->price - $item->discount
+          ]);
 
           return redirect()->route('items.show', ['item' => $item])
             ->with([
@@ -126,7 +125,24 @@ class OrderController extends Controller
     public function update(OrderUpdateRequest $request, Order $order)
     {
         $validated = $request->validated();
-        dd($validated);
+        $item = Item::findOrFail($validated['item_id']);
+
+        // Item already in current order
+        if ($order->items()->find($item->id)) {
+          return back()->with('error', 'Item already in cart');
+        }
+
+        $order->total += $item->price;
+        $order->items()->save($item);
+        $order->items()->updateExistingPivot($item->id, [
+          'amount' => $item->price - $item->discount
+        ]);
+
+        if($order->push()){
+          return back()->with('success', 'Item successfully added to cart');
+        }
+
+        return back()->with('error', 'An error occurred adding item to cart');
     }
 
     /**

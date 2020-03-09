@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class OrderUpdateRequest extends FormRequest
+class CartStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,9 +25,6 @@ class OrderUpdateRequest extends FormRequest
     {
         return [
           'item_id' => 'required|integer',
-          'order_number' => 'required|uuid',
-          'status' => 'nullable|string|max:255',
-          'update_type' => ['required', Rule::in(['add', 'remove'])],
         ];
     }
 }

@@ -20,7 +20,7 @@
       <div class="col-sm-3">
         <div class="card sub-menu border-0">
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">
+            <li class="list-group-item bg-secondary">
               <h4 class="font-weight-bold">Filter By</h4>
               </li>
             <li class="list-group-item">Brand</li>
@@ -34,7 +34,7 @@
       <div class="col-sm w-100 mx-2">
         <!-- Content Header -->
         <h1 id="category-header" class="font-weight-bold p-2 border-bottom">
-          {{ ucwords($category->name) }}:
+          {{ ucwords($category->name) }}
         </h1>
         <!-- End Content Header -->
 

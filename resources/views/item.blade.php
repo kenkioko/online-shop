@@ -85,11 +85,11 @@
         </div>
 
         @php
-          $form_action = route('orders.store');
+          $form_action = route('cart.store');
           $order_number = null;
 
           if($active_order) {
-            $form_action = route('orders.update', ['order' => $active_order]);
+            $form_action = route('cart.update', ['cart' => $active_order]);
             $order_number = $active_order->order_no;
           }
         @endphp
@@ -106,12 +106,21 @@
 
           <input type="hidden" name="item_id" value="{{ $item->id }}">
           <input type="hidden" name="order_number" value="{{ $order_number }}">
+          <input type="hidden" name="update_type" value="add">
         </form>
 
-        <button type="submit"
-          form="add_item_form"
-          class="btn btn-primary w-100 add-cart my-5"
-        >ADD TO CART</button>
+        @auth
+          <button type="submit"
+            form="add_item_form"
+            class="btn btn-primary w-100 add-cart my-5"
+          >ADD TO CART</button>
+        @endauth
+
+        @guest
+          <a href="{{ route('login') }}" class="btn btn-primary w-100 add-cart my-5">
+            LOGIN TO PURCHASE ITEM
+          </a>
+        @endguest
       </div>
     </div>
     <!-- End Item Description -->

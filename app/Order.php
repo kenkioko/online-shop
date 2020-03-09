@@ -10,18 +10,22 @@ class Order extends Model
    * The status constant attributes in an associative array.
    *
    * The available statuses are :
-   * - draft
-   * - sent
-   * - partial
-   * - complete
+   * - items_in_cart
+   * - order_made
+   * - processing
+   * - enroute
+   * - delivered
+   * - rejected
    *
    * @var array
    */
   const STATUS = array(
-    'draft' => "DRAFT",
-    'sent' => "SENT",
-    'partial' => "PARTIAL",
-    'complete' => "COMPLETE",
+    'items_in_cart' => "ITEMS IN CART",
+    'order_made' => "ORDER MADE",
+    'processing' => "PROCESSING ORDER",
+    'enroute' => "ORDER ENROUTE",
+    'delivered' => "ORDER DELIVERED",
+    'rejected' => "ORDER REJECTED",
   );
 
   /**
@@ -29,7 +33,7 @@ class Order extends Model
    *
    * @var array
    */
-  protected $guarded = ['user', 'total', 'status'];
+  protected $guarded = ['order_no', 'user_id', 'total', 'status'];
 
   /**
    * The owner of the order '1-2-1'.
@@ -49,5 +53,20 @@ class Order extends Model
   public function items()
   {
       return $this->belongsToMany('App\Item', 'order_items', 'order_id', 'item_id');
+  }
+
+  public static function getOrderStatus($keys_only=false)
+  {
+      $status = self::STATUS;
+
+      if ($keys_only) {
+        $status = [];
+
+        foreach(self::STATUS as $key => $value) {
+          array_push($status, $key);
+        }
+      }
+
+      return $status;
   }
 }

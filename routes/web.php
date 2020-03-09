@@ -11,19 +11,28 @@
 |
 */
 
-//auth routes from laravel/ui
+// auth routes from laravel/ui
 Auth::routes();
 
-//index page
+// index page
 Route::get('/', 'HomeController@index')->name('home.index');
 Route::redirect('/home', '/');
 Route::redirect('/index', '/');
+
+// user profile
+Route::middleware(['auth'])
+  ->name('profile.')
+  ->group(function () {
+    Route::get('profile', 'ProfileController@show')->name('show');
+    Route::put('profile', 'ProfileController@update')->name('update');
+});
 
 // available resource controllers for website
 Route::resources([
   'categories' => 'CategoryController',
   'items' => 'ItemController',
   'orders' => 'OrderController',
+  'cart' => 'CartController',
 ]);
 
 //admin routes
