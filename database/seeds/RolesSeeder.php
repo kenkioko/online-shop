@@ -5,7 +5,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
 
-class RoleSeeder extends Seeder
+class RolesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -29,7 +29,7 @@ class RoleSeeder extends Seeder
         $view_dash = Permission::create(['name' => 'view dashboard']);
 
         // admin role
-        $admin_role = Role::create(['name' => 'admin',]);
+        $admin_role = Role::create(['name' => 'admin']);
         $admin_role->givePermissionTo($view_dash);
         $this->set_user_permissions(permissions, objects, $admin_role);
 
@@ -42,17 +42,17 @@ class RoleSeeder extends Seeder
 
         // seller role
         $seller_role = Role::create(['name' => 'seller']);
-        $buyer_role->givePermissionTo($view_dash);
+        $seller_role->givePermissionTo($view_dash);
         $this->set_user_permissions(permissions, [
           objects[2],  // items
           objects[4],  // orders
-        ], $buyer_role);
+        ], $seller_role);
     }
 
     protected function create_permissions($permissions, $object)
     {
         foreach ($permissions as $index => $permission) {
-          Permission::create(['name' => '' .$object . ' '   .$permission]);
+          Permission::create(['name' => $this->permission_name($permission, $object)]);
         }
     }
 
@@ -61,7 +61,7 @@ class RoleSeeder extends Seeder
         $get_permissions = function ($object) use ($permissions, $role)
         {
           foreach ($permissions as $index => $permission) {
-            $permission_name = '' .$object . ' '   .$permission;
+            $permission_name = $this->permission_name($permission, $object);
             $role->givePermissionTo($permission_name);
           }
         };
@@ -69,5 +69,10 @@ class RoleSeeder extends Seeder
         foreach ($objects as $index => $object) {
           $permissions = $get_permissions($object);
         }
+    }
+
+    private function permission_name($permission, $object)
+    {
+        return '' .$permission . ' '   .$object;
     }
 }

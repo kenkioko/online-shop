@@ -29,7 +29,11 @@ class CartController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth', 'role:buyer']);
+        $this->middleware(['auth']);
+        $this->middleware(['permission:view cart'])->only(['index', 'show']);
+        $this->middleware(['permission:create cart'])->only(['create', 'store']);
+        $this->middleware(['permission:update cart'])->only(['edit', 'update']);
+        $this->middleware(['permission:delete cart'])->only(['delete']);
     }
 
     /**
@@ -39,7 +43,11 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
+        $this->getOpennedOrder();
+
+        // dd($this->open_order->items()->get());
+
+        return view('cart')->with('cart', $this->open_order);
     }
 
     /**
@@ -66,12 +74,6 @@ class CartController extends Controller
 
         if ($this->saveCartItem($item)) {
           return back()->with('success', 'Item successfully added to cart');
-
-          // return redirect()->route('items.show', ['item' => $item])
-          //   ->with([
-          //     'items' => Item::all(),
-          //     'success' => 'Item successfully added to cart'
-          // ]);
         }
 
         return back()->with('error', 'An error occurred while adding item to cart');
@@ -173,7 +175,7 @@ class CartController extends Controller
         if ($this->open_order->save()) {
           $this->open_order->items()->save($item);
           $this->open_order->items()->updateExistingPivot($item->id, [
-            'amount' => $item->price - $item->discount
+            'amount' => $item->price - $item->discount_amount
           ]);
 
           $cart_saved = $this->open_order->push();

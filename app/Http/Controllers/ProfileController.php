@@ -8,13 +8,6 @@ use Illuminate\Support\Facades\Auth;
 class ProfileController extends Controller
 {
     /**
-     * The currently loggen in user.
-     *
-     * @var \App\User
-     */
-    private $user = null;
-
-    /**
      * Instantiate a new controller instance.
      * Fetch the currently loged in user details
      *
@@ -22,8 +15,7 @@ class ProfileController extends Controller
      */
     public function __construct()
     {
-        // Get the currently authenticated user...
-        $this->user = Auth::user();
+        // $this->middleware(['permission:view dashboard'])->only('show');
     }
 
     /**
@@ -34,7 +26,9 @@ class ProfileController extends Controller
      */
     public function show(Request $request)
     {
-        //
+        //Auth::user();
+        $this->resist();
+
     }
 
     /**
@@ -46,5 +40,10 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         //
+    }
+
+    private function resist()
+    {
+        // code...
     }
 }

@@ -46,7 +46,7 @@ class Order extends Model
   }
 
   /**
-   * The items in the order '1-2-M'.
+   * The items in the order 'M-2-M'.
    *
    * @return void
    */

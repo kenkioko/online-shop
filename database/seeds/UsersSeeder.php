@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use App\User;
 
-class UserSeeder extends Seeder
+class UsersSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -27,6 +27,13 @@ class UserSeeder extends Seeder
                 'email_verified_at'=> date("Y-m-d H:i:s"),
                 'created_at' => date("Y-m-d H:i:s"),
             ),
+            array(
+                'name'=>'janedoe',
+                'email' => 'jane@doe.com',
+                'password' => bcrypt('password'),
+                'email_verified_at'=> date("Y-m-d H:i:s"),
+                'created_at' => date("Y-m-d H:i:s"),
+            ),
         ));
 
         User::where('email','admin@admin.com')
@@ -36,5 +43,9 @@ class UserSeeder extends Seeder
         User::where('email','john@doe.com')
             ->first()
             ->assignRole('buyer');
+
+        User::where('email','jane@doe.com')
+            ->first()
+            ->assignRole('seller');
     }
 }

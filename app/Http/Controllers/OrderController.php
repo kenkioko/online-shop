@@ -40,7 +40,7 @@ class OrderController extends Controller
         }
 
         $orders = Order::has('user')->get();
-        return view('cart')->with('orders', $orders);
+        return view('order')->with('orders', $orders);
     }
 
     /**
@@ -76,7 +76,7 @@ class OrderController extends Controller
         if ($order->save()) {
           $order->items()->save($item);
           $order->items()->updateExistingPivot($item->id, [
-            'amount' => $item->price - $item->discount
+            'amount' => $item->price - $item->discount_amount
           ]);
 
           return redirect()->route('items.show', ['item' => $item])
@@ -135,7 +135,7 @@ class OrderController extends Controller
         $order->total += $item->price;
         $order->items()->save($item);
         $order->items()->updateExistingPivot($item->id, [
-          'amount' => $item->price - $item->discount
+          'amount' => $item->price - $item->discount_amount
         ]);
 
         if($order->push()){

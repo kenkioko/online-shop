@@ -41,8 +41,8 @@
 
     <span class="navbar-text p-1 order-3">
       <a class="btn btn-outline-primary ml-5" type="button"
-        href="{{ route('orders.index') }}"
-      >CART <span class="badge badge-danger m-1">{{ $new_orders }}</span></a>
+        href="{{ route('cart.index') }}"
+      >CART <span class="badge badge-primary m-1">{{ $new_orders }}</span></a>
     </span>
   @endrole
 

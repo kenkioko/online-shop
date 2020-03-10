@@ -84,6 +84,14 @@
           <div class="size-item border">11</div>
         </div>
 
+        <div class="mt-2">
+          <h4>Price: </h4>
+          <p>
+            @show_item_price(['item' => $item])
+            @endshow_item_price
+          </p>
+        </div>
+
         @php
           $form_action = route('cart.store');
           $order_number = null;
@@ -110,14 +118,13 @@
         </form>
 
         @auth
-          <button type="submit"
-            form="add_item_form"
-            class="btn btn-primary w-100 add-cart my-5"
-          >ADD TO CART</button>
+          <button type="submit" form="add_item_form" class="btn btn-primary my-5">
+            ADD TO CART
+          </button>
         @endauth
 
         @guest
-          <a href="{{ route('login') }}" class="btn btn-primary w-100 add-cart my-5">
+          <a href="{{ route('login') }}" class="btn btn-primary my-5">
             LOGIN TO PURCHASE ITEM
           </a>
         @endguest

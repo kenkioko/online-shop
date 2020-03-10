@@ -16,19 +16,15 @@
   <div class="container my-5 d-flex">
 
     <div class="row w-100">
-      <!-- Side Menu -->
-      <div class="col-sm-3">
-        <div class="card sub-menu border-0">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item bg-secondary">
-              <h4 class="font-weight-bold">Filter By</h4>
-              </li>
-            <li class="list-group-item">Brand</li>
-            <li class="list-group-item">Size</li>
-          </ul>
-        </div>
-      </div>
-      <!-- End Side Menu -->
+
+      @side_menu([
+        'title' => 'FITER BY',
+        'menu_items' => [
+          ['name' => 'Brand','url' => '#'],
+          ['name' => 'Size','url' => '#'],
+        ]
+      ])
+      @endside_menu
 
       <!-- Main Content-->
       <div class="col-sm w-100 mx-2">

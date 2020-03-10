@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class OrderItemSeeder extends Seeder
+class ItemsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,7 @@ class OrderItemSeeder extends Seeder
      */
     public function run()
     {
-        $items = factory(App\OrderItem::class, 10)->create();
+        //seed db with ten items
+        $items = factory(App\Item::class, 10)->create();
     }
 }
