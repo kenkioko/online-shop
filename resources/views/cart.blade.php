@@ -83,7 +83,9 @@
 
   @modal([
     'modal_id' => 'confirm_delete_modal',
-    'modal_title' => 'Remove From Cart'
+    'modal_title' => 'Remove From Cart',
+    'modal_class' => 'modal-dialog-centered',
+    'modal_header_class' => 'bg-danger'
   ])
 
     @slot('modal_body')
@@ -95,8 +97,8 @@
     @endslot
 
     @slot('modal_footer')
-      <button type="button" class="btn btn-dark" data-dismiss="modal">Cancel</button>
-      <button type="submit" form="delete_item_form" class="btn btn-outline-light">OK</button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      <button type="submit" form="delete_item_form" class="btn btn-outline-danger">OK</button>
     @endslot
   @endmodal
 

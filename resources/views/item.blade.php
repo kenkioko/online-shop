@@ -67,11 +67,23 @@
         </h1>
 
         <p class="my-4">
-          <span class="font-weight-bold">
-            Description:
-          </span><br>
+          <span class="font-weight-bold">Description:</span><br>
+
           {{ ucwords($item->description) }}
         </p>
+
+        <div class="mt-2">
+          <span class="font-weight-bold">Seller:</span><br>
+          <p> {{ $item->shop()->first()->name }} </p>
+        </div>
+
+        <div class="mt-2">
+          <h4>Price: </h4>
+          <p>
+            @show_item_price(['item' => $item])
+            @endshow_item_price
+          </p>
+        </div>
 
         <p><span class="font-weight-bold">
             Select Size:
@@ -82,14 +94,6 @@
           <div class="size-item border">9</div>
           <div class="size-item border">10</div>
           <div class="size-item border">11</div>
-        </div>
-
-        <div class="mt-2">
-          <h4>Price: </h4>
-          <p>
-            @show_item_price(['item' => $item])
-            @endshow_item_price
-          </p>
         </div>
 
         @php

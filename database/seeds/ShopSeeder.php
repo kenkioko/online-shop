@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class OrderItemsSeeder extends Seeder
+class ShopSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,7 @@ class OrderItemsSeeder extends Seeder
      */
     public function run()
     {
-        $items = factory(App\OrderItem::class, 10)->create();
+        //seed db with two shops
+        $items = factory(App\Shop::class, 2)->create();
     }
 }

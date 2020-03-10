@@ -44,9 +44,6 @@ class CartController extends Controller
     public function index()
     {
         $this->getOpennedOrder();
-
-        // dd($this->open_order->items()->get());
-
         return view('cart')->with('cart', $this->open_order);
     }
 

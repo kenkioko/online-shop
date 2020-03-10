@@ -29,4 +29,14 @@ class Item extends Model
   {
       return $this->belongsTo('App\Category');
   }
+
+  /**
+   * The item's category '1-2-1'.
+   *
+   * @return void
+   */
+  public function shop()
+  {
+      return $this->belongsTo('App\Shop');      
+  }
 }

@@ -15,5 +15,8 @@ $factory->define(Item::class, function (Faker $faker) {
         'category_id' => function () {
             return factory(App\Category::class)->create()->id;
         },
+        'shop_id' => function () {
+            return factory(App\Shop::class)->create()->id;
+        },
     ];
 });
