@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\OrderStoreRequest;
 use App\Http\Requests\OrderUpdateRequest;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrderController extends Controller
 {
@@ -35,11 +36,14 @@ class OrderController extends Controller
     {
         // admin orders index
         if (URL::current() === route('admin.orders.index')) {
-          $orders = Order::where('status', '!=', 'items_in_cart')->get();
+          $orders = Order::where('status', '!=', Order::getStatus('items_in_cart'))->get();
           return view('dash.orders')->with('orders', $orders);
         }
 
-        $orders = Order::has('user')->get();
+        $orders = Order::whereHas('user', function (Builder $query) {
+          $query->where('id', Auth::user()->id);
+        })->get();
+
         return view('order')->with('orders', $orders);
     }
 
@@ -64,29 +68,18 @@ class OrderController extends Controller
     public function store(OrderStoreRequest $request)
     {
         $validated = $request->validated();
-        // new order
-        $order = new Order;
-        $order->user()->associate(Auth::user());
-        $order->order_no = Uuid::generate()->string;
-
-        // order items
-        $item = Item::findOrFail($validated['item_id']);
-        $order->total = $item->price;
-
-        if ($order->save()) {
-          $order->items()->save($item);
-          $order->items()->updateExistingPivot($item->id, [
-            'amount' => $item->price - $item->discount_amount
-          ]);
-
-          return redirect()->route('items.show', ['item' => $item])
-            ->with([
-              'items' => Item::all(),
-              'success' => 'Item successfully added to cart'
-            ]);
+        // make order
+        $order = Order::where('order_no', $validated['order_number'])->firstOrFail();
+        if ($order->user()->first() != Auth::user()) {
+          abort(403);
         }
 
-        return back()->withInput();
+        $order->status = Order::getStatus('order_made');
+        if ($order->save()) {
+          return back()->with('success', 'Order No: ' .$order->order_no .' has been made.');
+        }
+
+        return back()->with('error', 'Order No: ' .$order->order_no .' occurred an error while processing.');
     }
 
     /**

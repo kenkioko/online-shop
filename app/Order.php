@@ -52,9 +52,18 @@ class Order extends Model
    */
   public function items()
   {
-      return $this->belongsToMany('App\Item', 'order_items', 'order_id', 'item_id');
+      return $this->belongsToMany('App\Item', 'order_items', 'order_id', 'item_id')
+          ->withPivot('quantity', 'amount')
+          ->withTimestamps();
   }
 
+  /**
+   * Returns the STATUS constant.
+   * Can be used to retreive keys only.
+   *
+   * @param bool $keys_only
+   * @return array
+   */
   public static function getOrderStatus($keys_only=false)
   {
       $status = self::STATUS;
@@ -68,5 +77,31 @@ class Order extends Model
       }
 
       return $status;
+  }
+
+  /**
+   * Returns a particular status.
+   * Either the key or the value is returned specified by a parameter.
+   *
+   * @param string $$status
+   * @param bool $key
+   * @return array
+   */
+  public static function getStatus($status, $key_only=true)
+  {
+      $status_ = self::STATUS[$status];
+
+      if ($key_only) {
+        $status_ = array_keys(self::STATUS, $status);
+
+        foreach(self::STATUS as $key => $value) {
+          if ($key == $status) {
+            $status_ = $key;
+            break;
+          }
+        }
+      }
+
+      return $status_;
   }
 }

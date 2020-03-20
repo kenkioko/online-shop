@@ -11,6 +11,11 @@
     <li class="breadcrumb-item active">Items in Cart</li>
   @endbreadcrum()
 
+  <div class="container">
+    @show_alert(['errors', $errors])
+    @endshow_alert
+  </div>
+
   <div class="container my-5 d-flex">
 
     <div class="row w-100">
@@ -40,37 +45,97 @@
 
         <!-- Cart Body-->
         <div class="m-2 p-2 border-bottom"  id="content-row">
-          @foreach($cart->items()->get() as $item)
+          @if($cart->items()->count() == 0)
+            <div class="p-2 mb-2">
+              <p>No items in cart.</p>
+            </div>
+          @endif
 
-            <div class="card p-2 mb-2 d-flex flex-row align-items-center">
+          @foreach($cart->items()->get() as $item)
+            <div class="card p-2 mb-2 d-flex flex-row align-items-center cart-item">
               <a class="text-decoration-none" href="{{ route('items.show', ['item' => $item]) }}">
                 <img class="shadow m-2 rounded-pill" src="https://via.placeholder.com/100x70"/>
               </a>
 
               <a class="text-decoration-none" href="{{ route('items.show', ['item' => $item]) }}">
-                <p class="ml-4 m-2 text-body">
-                  <strong>{{ $item->name }}</strong> <br>
-
-                  @show_item_price(['item' => $item])
-                  @endshow_item_price
-                </p>
+                <div class="text-body ml-4 p-2 border-left">
+                  <h5 class="border-bottom"> <strong>{{ $item->name }}</strong> </h6>
+                  <p>
+                    <strong>Price:</strong>
+                    @show_item_price(['item' => $item])
+                    @endshow_item_price
+                  </p>
+                </div>
               </a>
 
-              <button type="button" class="ml-auto p-2 btn btn-danger close" onclick="removeItem('{{ $item->name }}')"
+              <div class="ml-auto p-2 border-left">
+                <div class="input-group mb-3">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">QTY:</span>
+                  </div>
+
+                  <form id="item{{$item->id}}_form" class="d-none" action="{{ route('cart.update', ['cart' => $cart]) }}" method="post">
+                    @csrf
+                    @method('PUT')
+
+                    <input type="hidden" name="item_id" value="{{ $item->id }}">
+                    <input type="hidden" name="order_number" value="{{ $cart->order_no }}">
+                    <input type="hidden" name="update_type" value="edit">
+                  </form>
+                  <input type="number" class="form-control" min="1" max="{{ $item->stock }}"
+                    id="item{{$item->id}}_qty"
+                    form="item{{$item->id}}_form"
+                    name="quantity" value="{{ $item->pivot->quantity }}"
+                    onchange="edit_type(
+                      {{ $item->pivot->quantity }},
+                      {{ $item->price }},
+                      'item{{$item->id}}_qty',
+                      'item{{$item->id}}_disp'
+                      {{ $item->discount_amount }}
+                    )"
+                  >
+
+                  <div class="input-group-append">
+                    <button type="submit" form="item{{$item->id}}_form" class="input-group-text">
+                      save
+                    </button>
+                  </div>
+                </div>
+
+                <p>
+                  <strong>Total:</strong>
+                  <span id="item{{$item->id}}_disp">
+                    {{ number_format($item->pivot->amount, 2) }}
+                  </span>
+                </p>
+              </div>
+
+
+              <form id="delete_item_form" action="{{ route('cart.destroy', ['cart' => $item]) }}" method="post">
+                @csrf
+                @method('DELETE')
+              </form>
+
+              <button type="button" class="ml-auto mb-auto p-2 btn btn-danger close" onclick="removeItem('{{ $item->name }}')"
                 data-toggle="modal" data-target="#confirm_delete_modal"
               ><span aria-hidden="true">&times;</span>  </button>
             </div><!-- /.card -->
-
           @endforeach
+
         <!-- End Cart Body-->
         </div>
 
         <!-- Cart Body-->
         <div class="p-2 d-flex flex-row align-items-center">
-          <button type="button"class="btn btn-primary">Confirm Order</button>
+
+          @if($cart->items()->count() > 0)
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#complete_order_modal">
+              Complete Order
+            </button>
+          @endif
 
           <h4 class="ml-auto">
-            <strong>Total:</strong>
+            <strong>Grand Total:</strong>
             <span class="text-muted ml-2"> {{ number_format($cart->total, 2) }}</span>
           </h4>
         </div>
@@ -80,7 +145,7 @@
     </div>
   </div>
 
-
+  <!-- remove item from cart confirmation modal -->
   @modal([
     'modal_id' => 'confirm_delete_modal',
     'modal_title' => 'Remove From Cart',
@@ -89,16 +154,36 @@
   ])
 
     @slot('modal_body')
-      <form id="delete_item_form" action="{{ route('cart.destroy', ['cart' => $cart]) }}" method="post">
-        @csrf
-        @method('DELETE')
-      </form>
       Are you sure you want to delete '<span id="confirm_item_name"></span>' from the cart?
     @endslot
 
     @slot('modal_footer')
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
       <button type="submit" form="delete_item_form" class="btn btn-outline-danger">OK</button>
+    @endslot
+  @endmodal
+
+
+  <!-- complete order confirmation modal -->
+  @modal([
+    'modal_id' => 'complete_order_modal',
+    'modal_title' => 'Complete Order',
+    'modal_class' => 'modal-dialog-centered',
+    'modal_header_class' => 'bg-success'
+  ])
+
+    @slot('modal_body')
+      Are you sure you want to complete the order?
+
+      <form id="confirm_order_form" class="d-none" action="{{ route('orders.store') }}" method="post">
+        @csrf
+        <input type="hidden" name="order_number" value="{{ $cart->order_no }}">
+      </form>
+    @endslot
+
+    @slot('modal_footer')
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      <button type="submit" form="confirm_order_form" class="btn btn-outline-success">YES</button>
     @endslot
   @endmodal
 
@@ -112,4 +197,18 @@
       $('#confirm_item_name').text(name);
     }
   </script>
+
+  <script type="text/javascript">
+    $(function() {
+      $('.cart-item').mouseenter(function () {
+        $(this).addClass('shadow');
+      });
+
+      $('.cart-item').mouseleave(function () {
+        $(this).removeClass('shadow');
+      });
+    });
+  </script>
+
+  @include('shared.change_price')
 @endsection

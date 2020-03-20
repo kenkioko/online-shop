@@ -85,7 +85,7 @@
           </p>
         </div>
 
-        <p><span class="font-weight-bold">
+        <!-- <p><span class="font-weight-bold">
             Select Size:
         </span><br></p>
         <div class="grid-sizes">
@@ -94,16 +94,20 @@
           <div class="size-item border">9</div>
           <div class="size-item border">10</div>
           <div class="size-item border">11</div>
-        </div>
+        </div> -->
 
         @php
           $form_action = route('cart.store');
           $order_number = null;
+          $edited_item = null;      // item to be edited if in the cart
 
           if($active_order) {
             $form_action = route('cart.update', ['cart' => $active_order]);
             $order_number = $active_order->order_no;
+            $edited_item = $active_order->items()->find($item->id);
           }
+
+          // dd($active_order);
         @endphp
 
         <form class="d-none" method="post"
@@ -118,13 +122,54 @@
 
           <input type="hidden" name="item_id" value="{{ $item->id }}">
           <input type="hidden" name="order_number" value="{{ $order_number }}">
-          <input type="hidden" name="update_type" value="add">
+          <input type="hidden" name="update_type" value="add" id="item_update_type">
         </form>
 
         @auth
-          <button type="submit" form="add_item_form" class="btn btn-primary my-5">
-            ADD TO CART
-          </button>
+          <hr>
+          @if($edited_item)
+            <small class="muted">
+              * This item is added to your cart.
+              You can change the quantity you want to buy.
+            </small>
+          @endif
+
+          <div class="d-flex flex-row my-3">
+            <div class="d-flex align-items-center">
+              <p class="mb-0 mr-2"> QTY: </p>
+              <input id="item_qty" type="number" form="add_item_form" name="quantity" min="1", max="{{ $item->stock }}"
+
+                value="{{ old('quantity', $edited_item->pivot->quantity ?? 1) }}"
+                onchange="edit_type_withid(
+                  {{ old('quantity', 1) }},
+                  {{ $item->price }},
+                  'item_qty', 'item_total', 'item_update_type'
+                  {{ $item->discount_amount }},
+                )"
+
+              >
+            </div>
+
+            <div class="d-flex align-items-center ml-auto">
+              <p class="mb-0">
+                <strong>Total: </strong>
+
+                <span id="item_total">
+                  @if($edited_item)
+                    {{ number_format(($item->price - $item->discount_amount) * $edited_item->pivot->quantity, 2) }}
+                  @else
+                    {{ number_format($item->price, 2) }}
+                  @endif
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <div class="d-flex">
+            <button type="submit" form="add_item_form" class="btn btn-primary ml-auto">
+              ADD TO CART
+            </button>
+          </div>
         @endauth
 
         @guest
@@ -162,13 +207,17 @@
   <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
   <script src="{{ asset('/js/flikty.js') }}" type="text/javascript"></script>
 
-  <script type="text/javascript">
-    function view_image(url) {
-      document.getElementById("main_img").src = url;
-    }
+  @if(count($files) > 0)
+    <script type="text/javascript">
+      function view_image(url) {
+        document.getElementById("main_img").src = url;
+      }
 
-    $(function(){
-      view_image(first_img_url);
-    });
-  </script>
+      $(function(){
+        view_image(first_img_url);
+      });
+    </script>
+  @endif
+
+  @include('shared.change_price')
 @endsection

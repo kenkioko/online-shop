@@ -20,7 +20,7 @@ class CartUpdateRequest extends FormRequest
           return true;
         }
 
-        return fale;
+        return false;
     }
 
     /**
@@ -32,8 +32,9 @@ class CartUpdateRequest extends FormRequest
     {
         return [
           'item_id' => 'required|integer',
-          'order_number' => 'exists:orders,order_no',
-          'update_type' => ['required', Rule::in(['add', 'remove'])],
+          'quantity' => 'required|integer',
+          'order_number' => 'required|exists:orders,order_no',
+          'update_type' => ['required', Rule::in(['add', 'edit'])],
         ];
     }
 }

@@ -24,9 +24,7 @@ class OrderStoreRequest extends FormRequest
     public function rules()
     {
         return [
-          'item_id' => 'required|integer',
-          'order_number' => 'nullable|uuid',
-          'status' => 'nullable|string|max:255',
+          'order_number' => 'required|exists:orders,order_no',
         ];
     }
 }

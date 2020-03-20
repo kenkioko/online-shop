@@ -18,8 +18,8 @@ class CreateOrdersTable extends Migration
             $table->bigIncrements('id');
             $table->uuid('order_no');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedDecimal('total', 8, 2);
-            $table->enum('status', Order::getOrderStatus(true));
+            $table->unsignedDecimal('total', 8, 2)->default(0);
+            $table->enum('status', Order::getOrderStatus(true))->default('items_in_cart');
             $table->timestamps();
 
             $table->foreign('user_id')

@@ -25,6 +25,7 @@ class CartStoreRequest extends FormRequest
     {
         return [
           'item_id' => 'required|integer',
+          'quantity' => 'required|integer',
         ];
     }
 }

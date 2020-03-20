@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Item;
 
 class CreateOrderItemsTable extends Migration
 {
@@ -17,7 +18,9 @@ class CreateOrderItemsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('item_id');
-            $table->unsignedDecimal('amount', 8, 2)->nullable();
+            $table->unsignedInteger('quantity')->default(1);
+            $table->unsignedDecimal('amount', 8, 2);
+            $table->enum('status', Item::getOrderItemStatus(true))->default('queue');
             $table->timestamps();
 
             $table->foreign('order_id')
