@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Shop;
 use App\Item;
 use App\Order;
 use App\Category;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ItemStoreRequest;
 use App\Http\Requests\ItemUpdateRequest;
+use Illuminate\Database\Eloquent\Builder;
 
 class ItemController extends Controller
 {
@@ -41,7 +43,16 @@ class ItemController extends Controller
     public function index()
     {
         if (URL::current() === route('admin.items.index')) {
-          return view('dash.items')->with('items', Item::all());
+
+          $items = Item::whereHas('shop', function (Builder $query) {
+            $shop_id = Shop::whereHas('user', function (Builder $query) {
+              $query->where('id', Auth::user()->id);
+            })->firstOrFail()->id;
+
+            $query->where('id', $shop_id);
+          })->get();
+
+          return view('dash.items')->with('items', $items);
         }
 
         return abort(403);

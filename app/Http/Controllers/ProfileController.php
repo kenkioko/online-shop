@@ -15,7 +15,7 @@ class ProfileController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware(['permission:view dashboard'])->only('show');
+        // $this->middleware(['permission:dashboard.view'])->only('show');
     }
 
     /**

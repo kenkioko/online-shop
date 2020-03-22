@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
-@section('title')
-  Cart
-@endsection
+@section('title', 'Cart')
 
 @section('content')
 
@@ -23,7 +21,7 @@
         'title' => 'SIDE MENU',
         'menu_items' => [
           ['name' => 'Items in Cart','url' => route('cart.index'),'active' => true],
-          ['name' => 'My Order','url' => route('orders.index')],
+          ['name' => 'My Orders','url' => route('orders.index')],
         ]
       ])
       @endside_menu
@@ -51,20 +49,21 @@
             </div>
           @endif
 
-          @foreach($cart->items()->get() as $item)
+          @foreach($cart->items()->get() as $index => $item)
             <div class="card p-2 mb-2 d-flex flex-row align-items-center cart-item">
-              <a class="text-decoration-none" href="{{ route('items.show', ['item' => $item]) }}">
-                <img class="shadow m-2 rounded-pill" src="https://via.placeholder.com/100x70"/>
-              </a>
 
               <a class="text-decoration-none" href="{{ route('items.show', ['item' => $item]) }}">
-                <div class="text-body ml-4 p-2 border-left">
-                  <h5 class="border-bottom"> <strong>{{ $item->name }}</strong> </h6>
-                  <p>
-                    <strong>Price:</strong>
-                    @show_item_price(['item' => $item])
-                    @endshow_item_price
-                  </p>
+                <div class=" d-flex flex-row">
+                  <img class="shadow m-2 rounded-pill" src="https://via.placeholder.com/100x70"/>
+
+                  <div class="text-body ml-4 p-2 border-left">
+                    <h5 class="border-bottom"> <strong>{{ $item->name }}</strong> </h6>
+                    <p>
+                      <strong>Price:</strong>
+                      @show_item_price(['item' => $item])
+                      @endshow_item_price
+                    </p>
+                  </div>
                 </div>
               </a>
 
@@ -74,7 +73,7 @@
                     <span class="input-group-text">QTY:</span>
                   </div>
 
-                  <form id="item{{$item->id}}_form" class="d-none" action="{{ route('cart.update', ['cart' => $cart]) }}" method="post">
+                  <form id="item{{$index}}_form" class="d-none" action="{{ route('cart.update', ['cart' => $cart]) }}" method="post">
                     @csrf
                     @method('PUT')
 
@@ -83,20 +82,20 @@
                     <input type="hidden" name="update_type" value="edit">
                   </form>
                   <input type="number" class="form-control" min="1" max="{{ $item->stock }}"
-                    id="item{{$item->id}}_qty"
-                    form="item{{$item->id}}_form"
+                    id="item{{$index}}_qty"
+                    form="item{{$index}}_form"
                     name="quantity" value="{{ $item->pivot->quantity }}"
                     onchange="edit_type(
                       {{ $item->pivot->quantity }},
                       {{ $item->price }},
-                      'item{{$item->id}}_qty',
-                      'item{{$item->id}}_disp'
-                      {{ $item->discount_amount }}
+                      'item{{$index}}_qty',
+                      'item{{$index}}_disp',
+                      {{ $item->discount_amount ?? 0 }}
                     )"
                   >
 
                   <div class="input-group-append">
-                    <button type="submit" form="item{{$item->id}}_form" class="input-group-text">
+                    <button type="submit" form="item{{$index}}_form" class="input-group-text">
                       save
                     </button>
                   </div>
@@ -104,7 +103,7 @@
 
                 <p>
                   <strong>Total:</strong>
-                  <span id="item{{$item->id}}_disp">
+                  <span id="item{{$index}}_disp">
                     {{ number_format($item->pivot->amount, 2) }}
                   </span>
                 </p>
@@ -198,17 +197,6 @@
     }
   </script>
 
-  <script type="text/javascript">
-    $(function() {
-      $('.cart-item').mouseenter(function () {
-        $(this).addClass('shadow');
-      });
-
-      $('.cart-item').mouseleave(function () {
-        $(this).removeClass('shadow');
-      });
-    });
-  </script>
-
+  @include('shared.cart_item_hover')
   @include('shared.change_price')
 @endsection

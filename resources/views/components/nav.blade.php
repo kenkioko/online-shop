@@ -26,7 +26,7 @@
     $user = Auth::user();
   @endphp
 
-  @role('buyer')
+  @can('cart.view')
     @php
       $new_orders = Order::where('user_id', $user->id)
           ->where('status', 'items_in_cart')
@@ -44,7 +44,7 @@
         href="{{ route('cart.index') }}"
       >CART <span class="badge badge-primary m-1">{{ $new_orders }}</span></a>
     </span>
-  @endrole
+  @endcan
 
   <span class="navbar-text p-1 order-3">
     <ul class="navbar-nav mr-5">
@@ -65,13 +65,13 @@
         </a><!-- /.nav-link -->
         <div class="dropdown-menu dropdown-menu-right " aria-labelledby="navbarDropdown">
           @auth
-            @role('admin')
+            @can('dashboard.view')
               <span class="dropdown-item text-dark">
                 <a type="button" class="btn btn-sm btn-secondary w-100 pop"
                   href="{{ route('admin.dash') }}"
-                >Admin Dashboard</a>
+                >Dashboard</a>
               </span>
-            @endrole
+            @endcan
 
             @logout(['display' => 'text'])
               <!--print logout button -->

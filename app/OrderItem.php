@@ -2,9 +2,9 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class OrderItem extends Model
+class OrderItem extends Pivot
 {
     /**
      * All of the relationships to be touched.
@@ -14,11 +14,19 @@ class OrderItem extends Model
     protected $touches = ['order'];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+    ];
+
+    /**
      * The attributes that aren't mass assignable.
      *
      * @var array
      */
-    protected $guarded = ['amount', 'quantity'];
+    protected $guarded = ['amount', 'quantity', 'status'];
 
     /**
      * The order the items belongs to '1-2-1'.

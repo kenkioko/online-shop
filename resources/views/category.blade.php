@@ -60,7 +60,7 @@
                 >
                   <h5 class="card-title">{{ $item->name }}</h5>
                 </a>
-                <p class="card-text">Ksh. {{ $item->price }}</p>
+                <p class="card-text">Ksh. {{ number_format($item->price, 2) }}</p>
               </div>
             </div>
             <!-- End Card -->

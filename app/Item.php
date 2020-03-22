@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\WithStatus;
 
 class Item extends Model
 {
+  use WithStatus;
+  
   /**
    * The order processing status of an item by the seller.
    * Attributes in an associative array.
@@ -57,27 +60,5 @@ class Item extends Model
   public function shop()
   {
       return $this->belongsTo('App\Shop');
-  }
-
-  /**
-   * Returns the STATUS constant.
-   * Can be used to retreive keys only.
-   *
-   * @param bool $keys_only
-   * @return array
-   */
-  public static function getOrderItemStatus($keys_only=false)
-  {
-      $status = self::STATUS;
-
-      if ($keys_only) {
-        $status = [];
-
-        foreach(self::STATUS as $key => $value) {
-          array_push($status, $key);
-        }
-      }
-
-      return $status;
   }
 }

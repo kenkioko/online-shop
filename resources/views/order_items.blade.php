@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'My Orders')
+@section('title', 'View Order')
 
 @section('content')
 
@@ -16,7 +16,8 @@
         'title' => 'SIDE MENU',
         'menu_items' => [
           ['name' => 'Items in Cart','url' => route('cart.index')],
-          ['name' => 'My Order','url' => route('orders.index'),'active' => true,],
+          ['name' => 'My Orders','url' => route('orders.index')],
+          ['name' => 'View Order','url' => '#','active' => true],
         ]
       ])
       @endside_menu
@@ -24,28 +25,23 @@
       <!-- Main Content-->
       <div class="col-sm w-100 mx-2">
         <!-- Content Header -->
-        <h1 id="category-header" class="font-weight-bold p-2 border-bottom">
-          My Order History
-        </h1>
+        <div id="category-header" class="p-2 border-bottom d-flex flex-row align-items-end">
+          <h1 class="font-weight-bold"> Order Number:</h1>
+          <h4 class="text-muted ml-auto">{{ $order->order_no }}</h4>
+        </div>
         <!-- End Content Header -->
 
         <!-- Content Body-->
         <div class="m-2"  id="content-row">
-          @if($orders->count() == 0)
+          @if($order->items()->count() == 0)
             <div class="p-2 mb-2">
               <p>No orders have been made so far.</p>
             </div>
           @endif
 
-          @foreach ($orders as $index => $order)
+          @foreach ($order->items()->get() as $index => $item)
             <div class="card p-2 mb-2 cart-item">
-              <a class="text-decoration-none text-body" href="{{ route('orders.show', ['order' => $order]) }}">
-                <h5 class="border-bottom p-2">
-                  <strong>Order Number: </strong> {{ $order->order_no }}
-                </h5>
-              </a>
-
-              {{ $index + 1 }}
+              {{ $index + 1 }} {{ $item->name }}
             </div>
           @endforeach
         <!-- End Content Body-->

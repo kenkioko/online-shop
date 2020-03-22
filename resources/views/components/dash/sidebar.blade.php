@@ -28,6 +28,8 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+        @can('users.view')
         <li class="nav-item">
           <a href="{{ route('admin.users.index') }}"
             class="nav-link @if ($page === 'users') active @endif"
@@ -36,18 +38,34 @@
             <p>Registered Users</p>
           </a>
         </li><!-- /.nav-item -->
+        @endcan
+
+        @php
+          use App\Shop;
+          use App\Item;
+          use App\Order;
+          use App\OrderItem;
+          use Illuminate\Database\Eloquent\Builder;
+
+          $new_orders = OrderItem::whereHas('item', function (Builder $query) {
+            $shop_id = Shop::whereHas('user', function (Builder $query) {
+              $query->where('id', Auth::user()->id);
+            })->firstOrFail()->id;
+
+            $query->where('shop_id', $shop_id);
+          })->whereHas('order', function (Builder $query) {
+            $query->where('status', '!=', Order::getStatus('items_in_cart'));
+          })->where('status', Item::getStatus('queue'))
+            ->count();
+        @endphp
+
+        @can('orders.view')
         <li class="nav-item">
           <a href="{{ route('admin.orders.index') }}"
             class="nav-link @if ($page === 'orders') active @endif"
           >
             <i class="nav-icon fas fa-shopping-cart"></i>
             <p> Orders
-
-              @php
-                use App\Order;
-                $new_orders = Order::where('status', 'order_made')->count();
-              @endphp
-
               @if($new_orders)
                 <span class="right badge badge-danger">
                   {{ $new_orders }} New
@@ -56,7 +74,10 @@
             </p>
           </a>
         </li><!-- /.nav-item -->
+        @endcan
 
+        @canany(['categories.view', 'items.view'])
+        <!-- .nav-item -->
         @if ($page === 'categories' or $page === 'items')
           <li class="nav-item has-treeview menu-open">
             <a href="#" class="nav-link active">
@@ -71,6 +92,7 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
+            @can('categories.view')
             <li class="nav-item">
               <a href="{{ route('admin.categories.index') }}"
                 class="nav-link @if ($page === 'categories') active @endif"
@@ -79,6 +101,9 @@
                 <p>Categories</p>
               </a>
             </li>
+            @endcan
+
+            @can('items.view')
             <li class="nav-item">
               <a href="{{ route('admin.items.index') }}"
                 class="nav-link @if ($page === 'items') active @endif"
@@ -87,8 +112,11 @@
                 <p>Items</p>
               </a>
             </li>
+            @endcan
           </ul>
         </li><!-- /.nav-item -->
+        @endcan
+
       </ul>
     </nav>
     <!-- /.sidebar-menu -->

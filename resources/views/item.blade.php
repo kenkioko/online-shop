@@ -106,8 +106,6 @@
             $order_number = $active_order->order_no;
             $edited_item = $active_order->items()->find($item->id);
           }
-
-          // dd($active_order);
         @endphp
 
         <form class="d-none" method="post"
@@ -138,15 +136,23 @@
             <div class="d-flex align-items-center">
               <p class="mb-0 mr-2"> QTY: </p>
               <input id="item_qty" type="number" form="add_item_form" name="quantity" min="1", max="{{ $item->stock }}"
-
                 value="{{ old('quantity', $edited_item->pivot->quantity ?? 1) }}"
-                onchange="edit_type_withid(
-                  {{ old('quantity', 1) }},
-                  {{ $item->price }},
-                  'item_qty', 'item_total', 'item_update_type'
-                  {{ $item->discount_amount }},
-                )"
 
+                @if($edited_item)
+                  onchange="edit_type_update(
+                    {{ old('quantity', 1) }},
+                    {{ $item->price }},
+                    'item_qty', 'item_total', 'item_update_type',
+                    {{ $item->discount_amount ?? 0 }}
+                  )"
+                @else
+                  onchange="edit_type(
+                    {{ old('quantity', 1) }},
+                    {{ $item->price }},
+                    'item_qty', 'item_total',
+                    {{ $item->discount_amount ?? 0 }}
+                  )"
+                @endif
               >
             </div>
 

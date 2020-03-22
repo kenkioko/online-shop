@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
 use App\Item;
 use App\Order;
 use App\OrderItem;
@@ -11,7 +12,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\CartStoreRequest;
 use App\Http\Requests\CartUpdateRequest;
-use Illuminate\Database\Eloquent\Builder;
 
 class CartController extends Controller
 {
@@ -32,10 +32,10 @@ class CartController extends Controller
     public function __construct()
     {
         $this->middleware(['auth']);
-        $this->middleware(['permission:view cart'])->only(['index', 'show']);
-        $this->middleware(['permission:create cart'])->only(['create', 'store']);
-        $this->middleware(['permission:update cart'])->only(['edit', 'update']);
-        $this->middleware(['permission:delete cart'])->only(['delete']);
+        $this->middleware(['permission:cart.view'])->only(['index', 'show']);
+        $this->middleware(['permission:cart.create'])->only(['create', 'store']);
+        $this->middleware(['permission:cart.update'])->only(['edit', 'update']);
+        $this->middleware(['permission:cart.delete'])->only(['delete']);
     }
 
     /**
@@ -56,7 +56,7 @@ class CartController extends Controller
      */
     public function create()
     {
-        return redirect()->route('cart.index');
+        abort(403);
     }
 
     /**
@@ -86,7 +86,7 @@ class CartController extends Controller
      */
     public function show($id)
     {
-        return redirect()->route('cart.index');
+        abort(403);
     }
 
     /**
@@ -97,7 +97,7 @@ class CartController extends Controller
      */
     public function edit($id)
     {
-        return redirect()->route('cart.index');
+        abort(403);
     }
 
     /**

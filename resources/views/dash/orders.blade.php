@@ -74,21 +74,27 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Id</th>
-              <th scope="col">Oder No</th>
+              <th scope="col">Order No</th>
+              <th scope="col">Item Name</th>
               <th scope="col">User</th>
               <th scope="col">Total</th>
               <th scope="col">Status</th>
             </tr>
           </thead>
           <tbody>
-            @foreach($orders as $order)
+            @foreach($orders as $key => $order_item)
+              @php
+                $order = $order_item->order()->first();
+                $item = $order_item->item()->first();
+              @endphp
             <tr>
               <th scope="row">{{ $loop->iteration }}</th>
               <td>{{ $order->id }}</td>
               <td>{{ $order->order_no }}</td>
+              <td>{{ $item->name }}</td>
               <td>{{ $order->user->name }}</td>
-              <td>{{ $order->total }}</td>
-              <td>{{ $order->status }}</td>
+              <td>{{ number_format($order_item->amount, 2) }}</td>
+              <td>{{ App\Item::getStatus($order_item->status, false) }}
             </tr>
             @endforeach
           </tbody>

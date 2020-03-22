@@ -1,5 +1,5 @@
 <script type="text/javascript">
-  function edit_type_withid(original_val, price, input_id, display_id, update_type_id, discount=0) {
+  function edit_type_update(original_val, price, input_id, display_id, update_type_id, discount=0) {
     var value = edit_type(original_val, price, input_id, display_id, discount);
     change_update_type(update_type_id, original_val, value);
   }

@@ -126,4 +126,6 @@ return [
 
         'store' => 'default',
     ],
+
+    'enable_wildcard_permission' => true,
 ];

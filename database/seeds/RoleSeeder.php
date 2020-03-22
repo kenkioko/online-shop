@@ -26,7 +26,7 @@ class RoleSeeder extends Seeder
         }
 
         // non-object permissions
-        $view_dash = Permission::create(['name' => 'view dashboard']);
+        $view_dash = Permission::create(['name' => 'dashboard.view']);
 
         // admin role
         $admin_role = Role::create(['name' => 'admin']);
@@ -73,6 +73,6 @@ class RoleSeeder extends Seeder
 
     private function permission_name($permission, $object)
     {
-        return '' .$permission . ' '   .$object;
+        return '' .$object. '.' .$permission;
     }
 }

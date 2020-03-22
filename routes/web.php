@@ -31,12 +31,21 @@ Route::middleware(['auth'])
 Route::resources([
   'categories' => 'CategoryController',
   'items' => 'ItemController',
-  'orders' => 'OrderController',
-  'cart' => 'CartController',
+  // 'orders' => 'OrderController',
+  // 'cart' => 'CartController',
 ]);
 
+Route::namespace('Web')->group(function () {
+  Route::resource('orders', 'OrderController')->only([
+    'index', 'store', 'show'
+  ]);
+  Route::resource('cart', 'CartController')->except([
+    'create', 'show', 'edit'
+  ]);
+});
+
 //admin routes
-Route::middleware(['auth', 'role:admin'])
+Route::middleware(['auth', 'permission:dashboard.view'])
   ->prefix('admin')
   ->name('admin.')
   ->group(function () {
@@ -48,7 +57,13 @@ Route::middleware(['auth', 'role:admin'])
     Route::resources([
       'categories' => 'CategoryController',
       'items' => 'ItemController',
-      'orders' => 'OrderController',
+      // 'orders' => 'OrderController',
       'users' => 'UserController',
     ]);
+
+    Route::namespace('Dash')->group(function () {
+      Route::resources([
+        'orders' => 'OrderController',
+      ]);
+    });
 });

@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Item;
 
-class CreateOrderItemsTable extends Migration
+class CreateOrderItemTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,13 +14,13 @@ class CreateOrderItemsTable extends Migration
      */
     public function up()
     {
-        Schema::create('order_items', function (Blueprint $table) {
+        Schema::create('order_item', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('item_id');
             $table->unsignedInteger('quantity')->default(1);
             $table->unsignedDecimal('amount', 8, 2);
-            $table->enum('status', Item::getOrderItemStatus(true))->default('queue');
+            $table->enum('status', Item::getStatusAll(true))->default('queue');
             $table->timestamps();
 
             $table->foreign('order_id')
@@ -40,6 +40,6 @@ class CreateOrderItemsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order_items');
+        Schema::dropIfExists('order_item');
     }
 }

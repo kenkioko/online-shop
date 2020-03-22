@@ -14,6 +14,6 @@ $factory->define(Order::class, function (Faker $faker) {
           return $user->id;
       },
       'total' => $faker->numberBetween($min = 150, $max = 5000),
-      'status' => $faker->randomElement($array = Order::getOrderStatus(true)),
+      'status' => $faker->randomElement($array = Order::getStatusAll(true)),
     ];
 });
