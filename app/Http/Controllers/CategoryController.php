@@ -36,7 +36,7 @@ class CategoryController extends Controller
           ]);
         }
 
-        return abort(403);
+        return abort(404);
     }
 
     /**

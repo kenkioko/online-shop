@@ -62,8 +62,8 @@
       <!-- /.card-header -->
       <div class="card-body">
 
-        <table class="table table-sm" id="table_list">
-          <thead>
+        @data_table(['table_id' => 'table_list'])
+          @slot('head')
             <tr>
               <th scope="col">#</th>
               <th scope="col">Id</th>
@@ -72,20 +72,19 @@
               <th scope="col">Price</th>
               <th scope="col">Stock</th>
             </tr>
-          </thead>
-          <tbody>
-            @foreach($items as $item)
-            <tr>
-              <th scope="row">{{ $loop->iteration }}</th>
-              <td>{{ $item->id }}</td>
-              <td>{{ $item->name }}</td>
-              <td>{{ $item->category->name }}</td>
-              <td>{{ $item->price }}</td>
-              <td>{{ $item->stock }}</td>
-            </tr>
-            @endforeach
-          </tbody>
-        </table>
+          @endslot
+
+          @foreach($items as $item)
+          <tr>
+            <th scope="row">{{ $loop->iteration }}</th>
+            <td>{{ $item->id }}</td>
+            <td>{{ $item->name }}</td>
+            <td>{{ $item->category->name }}</td>
+            <td>{{ number_format($item->price, 2) }}</td>
+            <td>{{ number_format($item->stock) }}</td>
+          </tr>
+          @endforeach
+        @enddata_table
 
       </div>
       <!-- /.card-body -->

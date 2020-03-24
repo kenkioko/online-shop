@@ -35,17 +35,24 @@ class RoleSeeder extends Seeder
 
         // buyer role
         $buyer_role = Role::create(['name' => 'buyer']);
-        $this->set_user_permissions(permissions, [
+        $this->set_user_permissions(permissions, [      // All permissions
           objects[4],  // orders
           objects[5],  // cart
+        ], $buyer_role);
+        $this->set_user_permissions([permissions[0]], [   // view permissions
+          objects[2],  // items
+          objects[3],  // categories
         ], $buyer_role);
 
         // seller role
         $seller_role = Role::create(['name' => 'seller']);
         $seller_role->givePermissionTo($view_dash);
-        $this->set_user_permissions(permissions, [
+        $this->set_user_permissions(permissions, [      // All permissions
           objects[2],  // items
           objects[4],  // orders
+        ], $seller_role);
+        $this->set_user_permissions([permissions[0]], [   // view permissions
+          objects[3],  // categories
         ], $seller_role);
     }
 

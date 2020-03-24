@@ -56,7 +56,7 @@ class CartController extends Controller
      */
     public function create()
     {
-        abort(403);
+        abort(404);
     }
 
     /**
@@ -86,7 +86,7 @@ class CartController extends Controller
      */
     public function show($id)
     {
-        abort(403);
+        abort(404);
     }
 
     /**
@@ -97,7 +97,7 @@ class CartController extends Controller
      */
     public function edit($id)
     {
-        abort(403);
+        abort(404);
     }
 
     /**

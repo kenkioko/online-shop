@@ -16,9 +16,7 @@ class Order extends Model
    * - items_in_cart
    * - order_made
    * - processing
-   * - enroute
-   * - delivered
-   * - rejected
+   * - completed
    *
    * @var array
    */
@@ -26,9 +24,7 @@ class Order extends Model
     'items_in_cart' => "ITEMS IN CART",
     'order_made' => "ORDER MADE",
     'processing' => "PROCESSING ORDER",
-    'enroute' => "ORDER ENROUTE",
-    'delivered' => "ORDER DELIVERED",
-    'rejected' => "ORDER REJECTED",
+    'completed' => "ORDER COMPLETED",
   );
 
   /**
@@ -36,7 +32,16 @@ class Order extends Model
    *
    * @var array
    */
-  protected $guarded = ['order_no', 'user_id', 'total', 'status'];
+  protected $guarded = ['order_no', 'user_id', 'total', 'status', 'order_date'];
+
+  /**
+   * The attributes that should be cast to native types.
+   *
+   * @var array
+   */
+  protected $casts = [
+      'order_date' => 'datetime',
+  ];
 
   /**
    * The owner of the order '1-2-1'.
@@ -56,7 +61,7 @@ class Order extends Model
   public function items()
   {
       return $this->belongsToMany('App\Item', 'order_item', 'order_id', 'item_id')
-          ->withPivot('quantity', 'amount')
+          ->withPivot('quantity', 'amount', 'status')
           ->withTimestamps();
   }
 }

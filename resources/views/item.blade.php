@@ -123,7 +123,7 @@
           <input type="hidden" name="update_type" value="add" id="item_update_type">
         </form>
 
-        @auth
+        @canany(['cart.create','cart.update'])
           <hr>
           @if($edited_item)
             <small class="muted">
@@ -176,7 +176,7 @@
               ADD TO CART
             </button>
           </div>
-        @endauth
+        @endcanany
 
         @guest
           <a href="{{ route('login') }}" class="btn btn-primary my-5">

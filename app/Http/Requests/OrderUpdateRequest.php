@@ -3,7 +3,12 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
+use App\Item;
+use App\OrderItem;
+use App\Http\Controllers\Dash\OrderController;
+
 
 class OrderUpdateRequest extends FormRequest
 {
@@ -14,7 +19,18 @@ class OrderUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $shop = OrderController::getOwnShop($this->user());
+        $order = $this->route('order');
+
+        $total_items = $order::whereHas('items', function (Builder $query) use ($shop) {
+          $query->where('shop_id', $shop->id);
+        })->count();
+
+        if ($total_items > 0) {
+          return true;
+        }
+
+        return false;
     }
 
     /**
@@ -25,10 +41,7 @@ class OrderUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-          'item_id' => 'required|integer',
-          'order_number' => 'required|uuid',
-          'status' => 'nullable|string|max:255',
-          'update_type' => ['required', Rule::in(['add', 'remove'])],
+          'status' => ['required', 'json'],
         ];
     }
 }

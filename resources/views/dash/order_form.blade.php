@@ -1,11 +1,9 @@
 @extends('layouts.dash')
 
-@section('page_header')
-  {{ $order }}
-@endsection
+@section('page_header', 'Processing Order')
 
 @section('sidebar')
-  @dash_sidebar(['page' => 'items'])
+  @dash_sidebar(['page' => 'orders'])
     <!-- print sidebar -->
   @enddash_sidebar
 @endsection
@@ -18,11 +16,7 @@
     <li class="breadcrumb-item">
       <a href="{{ route('admin.orders.index') }}">Orders</a>
     </li>
-    @if ($order)
-      <li class="breadcrumb-item active">{{ ucwords($item->name) }}</li>
-    @else
-      <li class="breadcrumb-item active">New</li>
-    @endif
+    <li class="breadcrumb-item active">{{ $order->order_no }}</li>
   @endbreadcrum()
 @endsection
 
@@ -39,211 +33,187 @@
     <div class="card">
       <div class="card-header">
         <div class="card-tools">
-          @if ($item)
-            <a type="button"
-              class="btn btn-sm btn-outline-primary pop"
-              href="{{ route('admin.items.show', ['item' => $item]) }}"
-              data-container="body" data-toggle="popover" data-placement="bottom"
-              data-content="View in site"
-            ><i class="nav-icon far fa-eye"></i></a><!-- /.button -->
-
+          @if($order->status != App\Order::getStatus('completed'))
             <button type="button"
-              class="btn btn-sm btn-outline-warning pop"
+              class="btn btn-sm btn-outline-success pop"
               data-container="body" data-toggle="popover" data-placement="bottom"
-              data-content="Delete item"
-              onclick="on_delete()"
-            ><i class="nav-icon fas fa-trash-alt"></i></button><!-- /.button -->
+              data-content="Save"
+              onclick="on_save()"
+            ><i class="nav-icon fas fa-save"></i></button><!-- /.button -->
+            <button type="button"
+              class="btn btn-sm btn-outline-danger pop"
+              data-container="body" data-toggle="popover" data-placement="bottom"
+              data-content="Reject Order"
+              onclick="on_reject()"
+            ><i class="nav-icon fas fa-times-circle"></i></button><!-- /.button -->
           @endif
-
-          <button type="submit"
-            form="item_form"
-            class="btn btn-sm btn-outline-success pop"
-            data-container="body" data-toggle="popover" data-placement="bottom"
-            data-content="Save changes"
-          ><i class="nav-icon fas fa-save"></i></button><!-- /.button -->
-          <a type="button"
-            href="{{ route('admin.items.index') }}"
-            class="btn btn-sm btn-outline-danger pop"
-            data-container="body" data-toggle="popover" data-placement="bottom"
-            data-content="Discard changes"
-          ><i class="nav-icon fas fa-times-circle"></i></a><!-- /.button -->
         </div>
         <!-- /.card-tools -->
       </div>
       <!-- /.card-header -->
+
       <div class="card-body">
 
-        @php
-          $form_action = route('admin.items.store');
-          if ($item) {
-            $form_action = route('admin.items.update', [
-              'item' => $item
-            ]);
-          }
-        @endphp
+        <div class="d-flex flex-row">
+          <!-- Order Details -->
+          <table id="order_details">
+            <tr>
+              <td><strong>Order No: </strong></td>
+              <td class="px-2">{{ $order->order_no }}</td>
+            </tr>
+            <tr>
+              <td><strong>Order Date: </strong></td>
+              <td class="px-2">{{ $order->order_date->toDayDateTimeString() }}</td>
+            </tr>
+            <tr>
+              <td><strong>Order Status: </strong></td>
+              <td class="px-2">{{ App\Order::getStatus($order->status) }}</td>
+            </tr>
+            <tr>
+              <td><strong>Order Amount: </strong></td>
+              <td class="px-2"><span id="order_total"></span></td>
+            </tr>
+          </table>
 
-        <form action="{{ $form_action }}" method="post" id="item_form" enctype="multipart/form-data">
-          @csrf
 
-          @if ($item)
-            @method('PUT')
-          @endif
+          <table id="Customer_details" class="ml-auto">
+            <!-- Customer Details -->
+            <tr>
+              <td><strong>Customer Name: </strong></td>
+              <td class="px-2">{{ $order->user()->first()->name }}</td>
+            </tr>
 
-          <div class="form-group">
-            <label for="name_input">Name:</label>
-            <input type="text"
-              id="name_input"
-              name="name"
-              class="form-control"
-              placeholder="Enter the item's name"
+            <!-- Seller Details -->
+            <tr>
+              <td><strong>Seller Name: </strong></td>
+              <td class="px-2">{{ $shop->name }}</td>
+            </tr>
+          </table>
+        </div><!-- /.d-flex -->
 
-              @if (old('name'))
-                value="{{ old('name') }}"
-              @elseif ($item)
-                value="{{ $item->name }}"
-              @endif
-            >
-          </div><!-- /.form-group -->
-          <div class="form-group">
+        <div class="border-top border-bottom mt-3">
+          <h5>Order Details:</h5>
+          @data_table(['table_id' => 'table_list'])
+            @slot('head')
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Progress Status</th>
+              </tr>
+            @endslot
+
             @php
-              $description_value = null;
-              if (old('description')) {
-                $description_value = old('description');
-              } else if ($item) {
-                $description_value = $item->description;
-              }
+              $order_total = 0;
             @endphp
 
-            <label for="desription_input">Description:</label>
-            <textarea
-              rows="3"
-              id="desription_input"
-              name="description"
-              class="form-control"
-              placeholder="Short description for the item"
-            >{{ $description_value }}</textarea>
-          </div><!-- /.form-group -->
-          <div class="form-group">
-            <label>Select a parent item:</label>
-            <select class="custom-select" name="category_id">
-              @if (($item and $item->category) or old('description'))
-                <option value="">Choose A Category</option>
-              @else
-                <option selected value="">Choose A Category</option>
-              @endif
+            <script type="text/javascript">
+              var items_status = {};
+            </script>
 
+            @foreach($order_items as $item)
               @php
-                $categories = App\Category::all();
+                $order_total += $item->amount;
               @endphp
 
-              @foreach ($categories as $cat)
-                @if (old('category_id') == $cat->id)
-                  <option selected value="{{ $cat->id }}">{{ $cat->name }}</option>
-                @elseif ($item and ($item->category->id === $cat->id))
-                  <option selected value="{{ $cat->id }}">{{ $cat->name }}</option>
-                @else
-                  <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                @endif
-              @endforeach
-            </select>
-          </div><!-- /.form-group -->
+              <script type="text/javascript">
+                items_status['item_{{ $item->id }}'] = {
+                  'id':'{{ $item->id }}',
+                  'current_status':'{{ $item->status }}',
+                };
+              </script>
 
-          <div class="row">
-            <div class="form-group col-6">
-              <label for="price_input">Price:</label>
-              <input type="text"
-                rows="3"
-                id="price_input"
-                name="price"
-                class="form-control"
-                placeholder="Enter the item's price"
+              <tr>
+                <th scope="row">{{ $loop->iteration }}</th>
+                <td>{{ $item->item()->first()->name }}</td>
+                <td>{{ $item->quantity }}</td>
+                <td>{{ number_format($item->amount, 2) }}</td>
 
-                @if (old('price'))
-                  value="{{ old('price') }}"
-                @elseif ($item)
-                  value="{{ $item->price }}"
-                @endif
-              >
-            </div><!-- /.form-group -->
-            <div class="form-group col-6">
-              <label for="stock_input">Remaining in Stock:</label>
-              <input type="text"
-                rows="3"
-                id="stock_input"
-                name="stock"
-                class="form-control"
-                placeholder="Enter no of item's remaining in stock"
+                <!-- set progress status -->
+                <td>
+                  <select id="status_item_{{ $item->id }}" class="form-control" onchange="change_status({{ $item->id }})">
+                    @foreach(App\Item::getStatusAll() as $key => $value )
+                      @php
+                        $print_option = true;
 
-                @if (old('stock'))
-                  value="{{ old('stock') }}"
-                @elseif ($item)
-                  value="{{ $item->stock }}"
-                @endif
-              >
-            </div><!-- /.form-group -->
-          </div><!-- /.row -->
+                        if($key == App\Item::getStatus('reject')){
+                          $print_option = false;
+                        }
 
-          <div class="form-group"><!-- /.form-group -->
-            <label for="image_preview">Item images:</label>
-            <div class="custom-file">
-              <input multiple type="file" accept="image/*"
-                id="item_images" name="images[]"
-                class="custom-file-input"
-              >
-              <label class="custom-file-label" for="item_images" id="item_images_label">
-                Choose Item Images
-              </label>
-            </div><!-- /.custom-file -->
-            <div class="card-columns p-2 my-2" id="image_preview">
-              <!-- Previev images -->
-              @if($item)
-                @foreach($files as $file)
-                  @php
-                    $url = Illuminate\Support\Facades\Storage::url($file);
-                  @endphp
+                        if($item->status != App\Item::getStatus('queue') and $key == App\Item::getStatus('queue')){
+                          $print_option = false;
+                        }
 
-                  <div class="card"><img class="card-img-top"
-                    src="{{ asset($url) }}"
-                  ></div>
-                @endforeach
-              @endif
-            </div>
-          </div>
+                        if($item->status == App\Item::getStatus('sending') and $key != App\Item::getStatus('sending')){
+                          $print_option = false;
+                        }
+                      @endphp
 
-        </form>
-
+                      @if($print_option)
+                        <option value="{{ $key }}"
+                          @if($item->status == $key) selected @endif
+                          @if($item->status == App\Item::getStatus('sending')) disabled @endif
+                        >{{ $value }}</option>
+                      @endif
+                    @endforeach
+                  </select>
+                </td>
+                <!-- end progress status -->
+              </tr>
+            @endforeach
+          @enddata_table
+        </div>
       </div>
       <!-- /.card-body -->
     </div>
     <!-- /.card -->
 
-    @if ($item)
+    <!-- reject order modal -->
+    @modal(['modal_id' => 'reject_modal'])
+      @slot('modal_title')
+        Reject Order
+      @endslot
 
-      @modal(['modal_id' => 'delete_modal'])
-        @slot('modal_title')
-          Delete '{{ $item->name }}'
-        @endslot
+      @slot('modal_body')
+        <p>Are you sure you want to reject order no. <br> {{ $order->order_no }}</p>
+        <form method="post" class="d-none" id="reject_order_form"
+          action="{{ route('admin.orders.destroy', ['order' => $order]) }}"
+        >
+          @csrf
+          @method('DELETE')
+        </form>
+      @endslot
 
-        @slot('modal_body')
-          <p>Are you sure you want to delete '{{ $item->name }}'.</p>
-          <form method="post" class="d-none"
-            id="delete_item_form"
-            action="{{ route('admin.items.destroy', [
-              'item' => $item
-            ]) }}"
-          >
-            @csrf
-            @method('DELETE')
-          </form>
-        @endslot
+      @slot('modal_footer')
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger" form="reject_order_form">Reject</button>
+      @endslot
+    @endmodal
 
-        @slot('modal_footer')
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-danger" form="delete_item_form">Delete</button>
-        @endslot
-      @endmodal
 
-    @endif
+    <!-- save order modal -->
+    @modal(['modal_id' => 'save_modal'])
+      @slot('modal_title')
+        Save Details
+      @endslot
+
+      @slot('modal_body')
+        <p>Are you sure you save details of order no. <br> {{ $order->order_no }} </p>
+        <form method="post" class="d-none" id="save_order_form"
+          action="{{ route('admin.orders.update', ['order' => $order]) }}"
+        >
+          @csrf
+          @method('PUT')
+          <input type="hidden" name="status" id="items_status">
+        </form>
+      @endslot
+
+      @slot('modal_footer')
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success" form="save_order_form">Save</button>
+      @endslot
+    @endmodal
 
   </div>
 @endsection
@@ -252,71 +222,26 @@
   @parent
 
   <script type="text/javascript">
-    function on_delete() {
-      $('#delete_modal').modal('show');
+    function on_reject() {
+      $('#reject_modal').modal('show');
+    }
+
+    function on_save() {
+      $('#save_modal').modal('show');
+    }
+
+    function change_status(item_id) {
+      var status = $('#status_item_' + item_id).val();
+
+      items_status['item_' + item_id]['changed_status'] = status;
+      $('#items_status').val(JSON.stringify(items_status));
     }
   </script>
 
   <script type="text/javascript">
-  $(function(){
-    const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
-    var images = [];
-
-    $('#item_images').change(function () {
-      delete_previous();
-
-      var length = 0;
-      $.each( this.files, function( index, file ) {
-        if (validImageTypes.includes(file.type)) {
-          var url = window.URL.createObjectURL(file);
-          create_card(url);
-
-          images.push(file);
-          length += 1;
-        }
-      });
-
-      $('#item_images_label').text(
-       length + ' image file(s) selected.'
-      );
-
-      console.log(images);
-    });
-
-    function delete_previous(files) {
-      var preview = document.getElementById('image_preview');
-      while(preview.firstChild){
-        preview.removeChild(preview.firstChild);
-      }
-    }
-
-    function create_card(url) {
-      // card element
-      var card = document.createElement('div');
-      card.classList.add("card");
-
-      // card image element
-      var image = document.createElement('img');
-      image.classList.add("card-img-top");
-      image.src = url;
-
-      //append
-      card.appendChild(image);
-      document.getElementById('image_preview').appendChild(card);
-    }
-
-    $('#submit_item_form').click(function (event) {
-      let form = document.getElementById('item_form');
-      let formData = new FormData(form);
-
-      formData.delete('images[]');
-      $.each( images, function( index, image ) {
-        formData.append('images[]', image, image.name);
-      });
-
-      console.log(formData);
-      $(form).submit(); //Change to use ajax for image file filters
-    });
-  });
+    $(function () {
+      $('#order_total').text('{{ number_format($order_total, 2)}}');
+      $('#items_status').val(JSON.stringify(items_status));
+    })
   </script>
 @endsection

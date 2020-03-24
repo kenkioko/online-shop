@@ -8,7 +8,7 @@ use App\Traits\WithStatus;
 class Item extends Model
 {
   use WithStatus;
-  
+
   /**
    * The order processing status of an item by the seller.
    * Attributes in an associative array.
@@ -23,6 +23,7 @@ class Item extends Model
    */
   const STATUS = array(
     'queue' => "ITEM IN QUEUE",
+    'reject' => "ORDER REJECTED",
     'received' => "RECEIVED ORDER FOR ITEM",
     'preparing' => "PREPARING ITEM",
     'sending' => "SENDING ITEM",

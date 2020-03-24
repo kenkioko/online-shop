@@ -41,7 +41,7 @@
 
           @foreach ($order->items()->get() as $index => $item)
             <div class="card p-2 mb-2 cart-item">
-              {{ $index + 1 }} {{ $item->name }}
+              {{ $index + 1 }}. {{ $item->name }} {{ App\Item::getStatus($item->pivot->status, false) }}
             </div>
           @endforeach
         <!-- End Content Body-->

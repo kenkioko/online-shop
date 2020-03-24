@@ -32,34 +32,18 @@
       <div class="card-header">
         <div class="card-tools">
           <button type="button"
-            id="view_order"
-            class="btn btn-sm btn-outline-primary pop"
-            data-container="body" data-toggle="popover" data-placement="bottom"
-            data-content="View in site"
-          >
-            <i class="nav-icon far fa-eye"></i>
-          </button><!-- /.button -->
-          <a type="button"
-            class="btn btn-sm btn-outline-success pop"
-            href="{{ route('admin.orders.create') }}"
-            data-container="body" data-toggle="popover" data-placement="bottom"
-            data-content="New"
-          >
-            <i class="nav-icon fas fa-plus"></i>
-          </a><!-- /.button -->
-          <button type="button"
             id="edit_table_row"
             class="btn btn-sm btn-outline-info pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
-            data-content="Edit"
+            data-content="Process Order"
           >
-            <i class="nav-icon fas fa-edit"></i>
+            <i class="nav-icon far fa-eye"></i>
           </button><!-- /.button -->
           <button type="button"
             id="delete_table_row"
             class="btn btn-sm btn-outline-danger pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
-            data-content="Delete"
+            data-content="Delete Order"
           >
             <i class="nav-icon fas fa-trash-alt"></i>
           </button><!-- /.button -->
@@ -69,8 +53,8 @@
       <!-- /.card-header -->
       <div class="card-body">
 
-        <table class="table table-sm" id="table_list">
-          <thead>
+        @data_table(['table_id' => 'table_list'])
+          @slot('head')
             <tr>
               <th scope="col">#</th>
               <th scope="col">Id</th>
@@ -80,25 +64,24 @@
               <th scope="col">Total</th>
               <th scope="col">Status</th>
             </tr>
-          </thead>
-          <tbody>
-            @foreach($orders as $key => $order_item)
-              @php
-                $order = $order_item->order()->first();
-                $item = $order_item->item()->first();
-              @endphp
-            <tr>
-              <th scope="row">{{ $loop->iteration }}</th>
-              <td>{{ $order->id }}</td>
-              <td>{{ $order->order_no }}</td>
-              <td>{{ $item->name }}</td>
-              <td>{{ $order->user->name }}</td>
-              <td>{{ number_format($order_item->amount, 2) }}</td>
-              <td>{{ App\Item::getStatus($order_item->status, false) }}
-            </tr>
-            @endforeach
-          </tbody>
-        </table>
+          @endslot
+
+          @foreach($orders as $key => $order_item)
+            @php
+              $order = $order_item->order()->first();
+              $item = $order_item->item()->first();
+            @endphp
+          <tr>
+            <th scope="row">{{ $loop->iteration }}</th>
+            <td>{{ $order->id }}</td>
+            <td>{{ $order->order_no }}</td>
+            <td>{{ $item->name }}</td>
+            <td>{{ $order->user->name }}</td>
+            <td>{{ number_format($order_item->amount, 2) }}</td>
+            <td>{{ App\Item::getStatus($order_item->status, false) }}
+          </tr>
+          @endforeach
+        @enddata_table
 
       </div>
       <!-- /.card-body -->
@@ -154,21 +137,10 @@
     table.column(1).visible(false);
 
     // selected row actions
-    $('#view_order').click( function () {
-      if (selected_row) {
-        action_url = new URL(
-          'orders/' + selected_row[1],
-          "{{ route('orders.index') }}"
-        );
-
-        window.location.href = action_url;
-      }
-    });
-
     $('#edit_table_row').click( function () {
       if (selected_row) {
         action_url = new URL(
-          'orders/' + selected_row[1] + '/edit',
+          'orders/' + selected_row[1],
           "{{ route('admin.orders.index') }}"
         );
 

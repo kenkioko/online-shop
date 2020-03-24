@@ -62,8 +62,8 @@ Route::middleware(['auth', 'permission:dashboard.view'])
     ]);
 
     Route::namespace('Dash')->group(function () {
-      Route::resources([
-        'orders' => 'OrderController',
+      Route::resource('orders', 'OrderController')->except([
+        'create', 'store', 'edit'
       ]);
     });
 });
