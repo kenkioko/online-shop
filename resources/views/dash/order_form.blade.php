@@ -31,9 +31,9 @@
     @endshow_alert
 
     <div class="card">
-      <div class="card-header">
+      @if($order->status != App\Order::getStatus('completed'))
+        <div class="card-header">
         <div class="card-tools">
-          @if($order->status != App\Order::getStatus('completed'))
             <button type="button"
               class="btn btn-sm btn-outline-success pop"
               data-container="body" data-toggle="popover" data-placement="bottom"
@@ -46,11 +46,11 @@
               data-content="Reject Order"
               onclick="on_reject()"
             ><i class="nav-icon fas fa-times-circle"></i></button><!-- /.button -->
-          @endif
+          </div>
+          <!-- /.card-tools -->
         </div>
-        <!-- /.card-tools -->
-      </div>
-      <!-- /.card-header -->
+        <!-- /.card-header -->
+      @endif
 
       <div class="card-body">
 

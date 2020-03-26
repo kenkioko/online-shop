@@ -30,18 +30,22 @@ Route::middleware(['auth'])
 // available resource controllers for website
 Route::resources([
   'categories' => 'CategoryController',
-  'items' => 'ItemController',
+  // 'items' => 'ItemController',
   // 'orders' => 'OrderController',
   // 'cart' => 'CartController',
 ]);
 
 Route::namespace('Web')->group(function () {
+  Route::resource('items', 'ItemController')->only([
+    'show'
+  ]);
   Route::resource('orders', 'OrderController')->only([
     'index', 'store', 'show'
   ]);
   Route::resource('cart', 'CartController')->except([
     'create', 'show', 'edit'
   ]);
+
 });
 
 //admin routes
@@ -56,14 +60,18 @@ Route::middleware(['auth', 'permission:dashboard.view'])
     // available resource controllers for admin dashboard
     Route::resources([
       'categories' => 'CategoryController',
-      'items' => 'ItemController',
+      // 'items' => 'ItemController',
       // 'orders' => 'OrderController',
       'users' => 'UserController',
     ]);
 
     Route::namespace('Dash')->group(function () {
+      Route::resource('items', 'ItemController')->except([
+        'show',
+      ]);
       Route::resource('orders', 'OrderController')->except([
         'create', 'store', 'edit'
       ]);
+
     });
 });

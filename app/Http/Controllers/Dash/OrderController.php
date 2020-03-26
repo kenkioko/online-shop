@@ -8,7 +8,6 @@ use App\Order;
 use App\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\OrderUpdateRequest;
 use App\Http\Controllers\OrderController as Controller;
@@ -22,7 +21,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $shop_id = $this->getOwnShop()->id;
+        $shop_id = Shop::getOwnShop()->id;
         $order_items = OrderItem::whereHas('item', function (Builder $query) use ($shop_id) {
           $query->where('shop_id', $shop_id);
         })->whereHas('order', function (Builder $query) {
@@ -61,19 +60,12 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        // $shop_id = $this->getOwnShop()->id;
-        // $order_items = OrderItem::whereHas('item', function (Builder $query) use ($shop_id) {
-        //   $query->where('shop_id', $shop_id);
-        // })->whereHas('order', function (Builder $query) use ($order) {
-        //   $query->where('order_no', $order->order_no);
-        // })->get();
-
         $order_items = $this->getOrderItems($order->order_no);
 
         return view('dash.order_form')->with([
           'order' => $order,
           'order_items' => $order_items,
-          'shop' => $this->getOwnShop(),
+          'shop' => Shop::getOwnShop(),
         ]);
     }
 
@@ -108,29 +100,25 @@ class OrderController extends Controller
           };
 
           $changed = false;
-          $order_status = Order::getStatus('completed');
           foreach (json_decode($validated['status'], true) as $key => $item) {
             $order_item = OrderItem::findOrFail($item['id']);
+
             // get current status
             if ($item['current_status'] !== $order_item->status) {
               return $ret_value('error', 'Order current status is off.');
             }
-            // get changed status
-            if (!isset($item['changed_status'])) {
-              continue;
-            }
 
-            if ($item['changed_status'] !== $order_item->status) {
+            // save order items
+            if ( $this->save_order_items(
+              $order_item,
+              isset($item['changed_status']) ? $item['changed_status'] : null
+            )) {
               $changed = true;
-            }
-            // change order status
-            if ($item['changed_status'] !== Item::getStatus('sending')) {
-              $order_status = Order::getStatus('processing');
-            }
-            // change and save order item status
-            $order_item->status = Item::getStatus($item['changed_status']);
-            if (!$order_item->save()) {
-              return $ret_value('error', 'Something went wrong saving item.' .$order_item->name);
+            } else {
+              return $ret_value(
+                'error',
+                'Something went wrong saving item.' .$order_item->name
+              );
             }
           }
 
@@ -138,16 +126,53 @@ class OrderController extends Controller
           if (!$changed) {
             return $ret_value('error', 'Nothing was changed.');
           }
+
           // save order
-          $order->status = $order_status;
-          if (!$order->save()) {
+          if (!$this->save_order($order)) {
             return $ret_value('error', 'Something went wrong saving order no.' .$order->order_no);
           }
 
+          // success
           return $ret_value('success', 'The order was saved successfully.');
         });
 
         return back()->with($message['code'], $message['message']);
+    }
+
+    /**
+     * Save the order items' status in the order.
+     *
+     * @param $item
+     */
+    private function save_order_items($order_item, $chgd_status=null)
+    {
+        $no_error = true;
+        // get changed status
+        if ($chgd_status and $chgd_status !== $order_item->status) {
+          $order_item->status = Item::getStatus($chgd_status);
+          $no_error = $order_item->save();
+        }
+
+        return $no_error;
+    }
+
+    private function save_order($order)
+    {
+        $no_error = true;
+        $order_status = Order::getStatus('completed');
+        foreach ($order->items()->get() as $index => $order_item) {
+          if ($order_item->status !== Item::getStatus('sending')) {
+            $order_status = Order::getStatus('processing');
+          }
+        }
+
+        if ($order->status != $order_status) {
+          $order->status = $order_status;
+          $no_error = $order->save();
+        }
+
+        $order->status = $order_status;
+        return $no_error;
     }
 
     /**
@@ -161,27 +186,9 @@ class OrderController extends Controller
         dd('delete', $order);
     }
 
-    /**
-     * Returns the shop that corresponds to the loged in user.
-     *
-     * @param int $user_id
-     * @return \App\Shop
-     */
-    public static function getOwnShop($user=null)
-    {
-        // dd($user);
-        return Shop::whereHas('user', function (Builder $query) use ($user) {
-          if (!$user) {
-            $user = Auth::user();
-          }
-          $query->where('id', $user->id);
-        })->firstOrFail();
-    }
-
     private function getOrderItems($order_no)
     {
-        $shop_id = $this->getOwnShop()->id;
-
+        $shop_id = Shop::getOwnShop()->id;
         return OrderItem::whereHas('item', function (Builder $query) use ($shop_id) {
           $query->where('shop_id', $shop_id);
         })->whereHas('order', function (Builder $query) use ($order_no) {

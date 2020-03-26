@@ -30,7 +30,39 @@
         <!-- End Content Header -->
 
         <!-- Content Body-->
-        <div class="m-2"  id="content-row">
+        <div class="m-2">
+          @data_table(['table_id' => 'table_list'])
+            @slot('head')
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Order Date</th>
+                <th scope="col">Order No</th>
+                <th scope="col">Order Total</th>
+                <th scope="col">Status</th>
+                <th></th>
+              </tr>
+            @endslot
+
+            @foreach ($orders as $index => $order)
+              <tr class="cart-item">
+                <th scope="row">{{ $loop->iteration }}</th>
+                <td>{{ $order->order_date->toDayDateTimeString() }}</td>
+                <td>{{ $order->order_no }}</td>
+                <td>{{ number_format($order->total,2) }}</td>
+                <td>{{ App\Order::getStatus($order->status, false) }}</td>
+                <td>
+                  <a type="button" class="text-decoration-none text-body btn btn-sm btn-info"
+                    href="{{ route('orders.show', ['order' => $order]) }}"
+                  >
+                    view Details
+                </td>
+              </tr>
+            @endforeach
+          @enddata_table
+        </div>
+
+
+        <!-- <div class="m-2"  id="content-row">
           @if($orders->count() == 0)
             <div class="p-2 mb-2">
               <p>No orders have been made so far.</p>
@@ -47,7 +79,7 @@
 
               {{ $index + 1 }}
             </div>
-          @endforeach
+          @endforeach -->
         <!-- End Content Body-->
         </div>
       <!-- End Main Content-->
@@ -62,4 +94,9 @@
 @section('page_js')
   @parent
   @include('shared.cart_item_hover')
+
+  <script type="text/javascript">
+    var table;          //datatable
+    var selected_row;   //selected table row
+  </script>
 @endsection

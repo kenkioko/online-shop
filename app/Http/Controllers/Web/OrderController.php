@@ -16,6 +16,17 @@ use App\Http\Controllers\OrderController as Controller;
 class OrderController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+      parent::__construct();
+      $this->middleware(['permission:website.view']);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

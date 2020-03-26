@@ -32,37 +32,52 @@
     <div class="card">
       <div class="card-header">
         <div class="card-tools">
+
+          @can('items.view')
           <button type="button"
             id="view_btn"
             class="btn btn-sm btn-outline-primary pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="View in site"
           ><i class="nav-icon far fa-eye"></i></button><!-- /.button -->
+          @endcan
+
+          @can('items.create')
           <a type="button"
             class="btn btn-sm btn-outline-success pop"
             href="{{ route('admin.items.create') }}"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="New"
           ><i class="nav-icon fas fa-plus"></i></a><!-- /.button -->
+          @endcan
+
+          @can('items.update')
           <button type="button"
             id="edit_btn"
             class="btn btn-sm btn-outline-info pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Edit"
           ><i class="nav-icon fas fa-edit"></i></button><!-- /.button -->
+          @endcan
+
+          @can('items.delete')
           <button type="button"
             id="delete_btn"
             class="btn btn-sm btn-outline-danger pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Delete"
           ><i class="nav-icon fas fa-trash-alt"></i></button><!-- /.button -->
+          @endcan
         </div>
         <!-- /.card-tools -->
       </div>
       <!-- /.card-header -->
       <div class="card-body">
+        @php
+          $table_id = 'table_list';
+        @endphp
 
-        @data_table(['table_id' => 'table_list'])
+        @data_table(['table_id' => $table_id])
           @slot('head')
             <tr>
               <th scope="col">#</th>
@@ -71,6 +86,18 @@
               <th scope="col">Category</th>
               <th scope="col">Price</th>
               <th scope="col">Stock</th>
+
+              @can('items.view')
+                <th scope="col">View Url</th>
+              @endcan
+
+              @can('items.update')
+                <th scope="col">Edit Url</th>
+              @endcan
+
+              @can('items.delete')
+                <th scope="col">Delete Url</th>
+              @endcan
             </tr>
           @endslot
 
@@ -82,6 +109,18 @@
             <td>{{ $item->category->name }}</td>
             <td>{{ number_format($item->price, 2) }}</td>
             <td>{{ number_format($item->stock) }}</td>
+
+            @can('items.view')
+              <td>{{ route('items.show', ['item' => $item]) }}</td>
+            @endcan
+
+            @can('items.update')
+              <td>{{ route('admin.items.edit', ['item' => $item]) }}</td>
+            @endcan
+
+            @can('items.delete')
+              <td>{{ route('admin.items.destroy', ['item' => $item]) }}</td>
+            @endcan
           </tr>
           @endforeach
         @enddata_table
@@ -91,6 +130,22 @@
     </div>
     <!-- /.card -->
 
+    <!-- No Selected Item Modal -->
+    @modal(['modal_id' => 'select_item_modal'])
+      @slot('modal_title')
+        Select Item
+      @endslot
+
+      @slot('modal_body')
+        <p>Please select an item from the table.</p>
+      @endslot
+
+      @slot('modal_footer')
+        <button type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+      @endslot
+    @endmodal
+
+    <!-- Delete Item Modal -->
     @modal(['modal_id' => 'delete_modal'])
       @slot('modal_title')
         Delete '<span class="del_item_name"></span>'
@@ -134,48 +189,63 @@
     var table;          //datatable
     var selected_row;   //selected table row
     var action_url;     //url for action on selected row
+    var table_id = '{{ $table_id }}';   //datatable table id
 
     $(function(){
-      // hide id column
+      // hide id and url columns
       table.column(1).visible(false);
+      @can('items.view')
+        table.column(6).visible(false);
+      @endcan
+
+      @can('items.update')
+        table.column(7).visible(false);
+      @endcan
+
+      @can('items.delete')
+        table.column(8).visible(false);
+      @endcan
+
+      function select_item() {
+        var selected = true;
+
+        if (!selected_row) {
+          $('#select_item_modal').modal('show');
+        }
+
+        return selected;
+      }
 
       // selected row actions
+      @can('items.view')
       $('#view_btn').click( function () {
-        if (selected_row) {
-          action_url = new URL(
-            'items/' + selected_row[1],
-            "{{ route('items.index') }}"
-          );
-
+        if (select_item()) {
+          action_url = selected_row[6];
           window.location.href = action_url;
         }
       });
+      @endcan
 
+      @can('items.update')
       $('#edit_btn').click( function () {
-        if (selected_row) {
-          action_url = new URL(
-            'items/' + selected_row[1] + '/edit',
-            "{{ route('admin.items.index') }}"
-          );
-
+        if (select_item()) {
+          action_url = selected_row[7];
           window.location.href = action_url;
         }
       });
+      @endcan
 
+      @can('items.delete')
       $('#delete_btn').click( function () {
-        var data = table.row('.selected').data();
-        if (data) {
+        if (select_item()) {
           $('.del_item_name').text(selected_row[2]);
-
-          action_url = new URL(
-            'items/' + selected_row[1],
-            "{{ route('admin.items.index') }}"
-          );
-
+          action_url = selected_row[8];
           $("#delete_item_form").attr('action', action_url);
           $('#delete_modal').modal('show');
         }
       });
+      @endcan
+
     });
   </script>
 @endsection

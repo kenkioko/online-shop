@@ -27,6 +27,7 @@ class RoleSeeder extends Seeder
 
         // non-object permissions
         $view_dash = Permission::create(['name' => 'dashboard.view']);
+        $view_web = Permission::create(['name' => 'website.view']);
 
         // admin role
         $admin_role = Role::create(['name' => 'admin']);
@@ -35,6 +36,7 @@ class RoleSeeder extends Seeder
 
         // buyer role
         $buyer_role = Role::create(['name' => 'buyer']);
+        $buyer_role->givePermissionTo($view_web);
         $this->set_user_permissions(permissions, [      // All permissions
           objects[4],  // orders
           objects[5],  // cart

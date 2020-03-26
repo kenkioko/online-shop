@@ -46,17 +46,10 @@
           @if ($item)
             <a type="button"
               class="btn btn-sm btn-outline-primary pop"
-              href="{{ route('admin.items.show', ['item' => $item]) }}"
+              href="{{ route('items.show', ['item' => $item]) }}"
               data-container="body" data-toggle="popover" data-placement="bottom"
               data-content="View in site"
             ><i class="nav-icon far fa-eye"></i></a><!-- /.button -->
-
-            <button type="button"
-              class="btn btn-sm btn-outline-warning pop"
-              data-container="body" data-toggle="popover" data-placement="bottom"
-              data-content="Delete item"
-              onclick="on_delete()"
-            ><i class="nav-icon fas fa-trash-alt"></i></button><!-- /.button -->
           @endif
 
           <button type="submit"
@@ -65,6 +58,16 @@
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Save changes"
           ><i class="nav-icon fas fa-save"></i></button><!-- /.button -->
+
+          @if ($item)
+            <button type="button"
+              class="btn btn-sm btn-outline-warning pop"
+              data-container="body" data-toggle="popover" data-placement="bottom"
+              data-content="Delete item"
+              onclick="on_delete()"
+            ><i class="nav-icon fas fa-trash-alt"></i></button><!-- /.button -->
+          @endif
+          
           <a type="button"
             href="{{ route('admin.items.index') }}"
             class="btn btn-sm btn-outline-danger pop"

@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
+use App\Shop;
 use App\Item;
 use App\OrderItem;
 use App\Http\Controllers\Dash\OrderController;
@@ -19,7 +20,7 @@ class OrderUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        $shop = OrderController::getOwnShop($this->user());
+        $shop = Shop::getOwnShop($this->user());
         $order = $this->route('order');
 
         $total_items = $order::whereHas('items', function (Builder $query) use ($shop) {
