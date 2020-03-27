@@ -113,7 +113,7 @@ $(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/kioko/Projects/shop/resources/js/flikty.js */"./resources/js/flikty.js");
+module.exports = __webpack_require__(/*! /home/kioko/Projects/online-shop/resources/js/flikty.js */"./resources/js/flikty.js");
 
 
 /***/ })

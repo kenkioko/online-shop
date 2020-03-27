@@ -133,9 +133,9 @@ $(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/kioko/Projects/shop/resources/js/app.js */"./resources/js/app.js");
-__webpack_require__(/*! /home/kioko/Projects/shop/resources/sass/app.scss */"./resources/sass/app.scss");
-module.exports = __webpack_require__(/*! /home/kioko/Projects/shop/resources/sass/dash.scss */"./resources/sass/dash.scss");
+__webpack_require__(/*! /home/kioko/Projects/online-shop/resources/js/app.js */"./resources/js/app.js");
+__webpack_require__(/*! /home/kioko/Projects/online-shop/resources/sass/app.scss */"./resources/sass/app.scss");
+module.exports = __webpack_require__(/*! /home/kioko/Projects/online-shop/resources/sass/dash.scss */"./resources/sass/dash.scss");
 
 
 /***/ })

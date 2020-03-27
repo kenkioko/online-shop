@@ -25,6 +25,7 @@ class Order extends Model
     'order_made' => "ORDER MADE",
     'processing' => "PROCESSING ORDER",
     'completed' => "ORDER COMPLETED",
+    'completed_partial' => "ORDER PARTIALLY COMPLETED",
   );
 
   /**

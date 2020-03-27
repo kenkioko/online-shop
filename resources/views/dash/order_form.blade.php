@@ -34,18 +34,23 @@
       @if($order->status != App\Order::getStatus('completed'))
         <div class="card-header">
         <div class="card-tools">
+          @can('orders.update')
             <button type="button"
               class="btn btn-sm btn-outline-success pop"
               data-container="body" data-toggle="popover" data-placement="bottom"
               data-content="Save"
               onclick="on_save()"
             ><i class="nav-icon fas fa-save"></i></button><!-- /.button -->
+          @endcan
+
+          @can('orders.delete')
             <button type="button"
               class="btn btn-sm btn-outline-danger pop"
               data-container="body" data-toggle="popover" data-placement="bottom"
               data-content="Reject Order"
               onclick="on_reject()"
             ><i class="nav-icon fas fa-times-circle"></i></button><!-- /.button -->
+          @endcan
           </div>
           <!-- /.card-tools -->
         </div>
@@ -137,7 +142,7 @@
                       @php
                         $print_option = true;
 
-                        if($key == App\Item::getStatus('reject')){
+                        if($key == App\Item::getStatus('reject') or $key == App\Item::getStatus('received')){
                           $print_option = false;
                         }
 

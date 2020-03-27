@@ -150,6 +150,12 @@ class OrderController extends Controller
         // get changed status
         if ($chgd_status and $chgd_status !== $order_item->status) {
           $order_item->status = Item::getStatus($chgd_status);
+
+          if ($chgd_status === Item::getStatus('sending')) {
+            $item = $order_item->item()->firstOrFail();
+            $item->stock -= $order_item->quantity;
+            $item->save();
+          }
           $no_error = $order_item->save();
         }
 
@@ -158,11 +164,19 @@ class OrderController extends Controller
 
     private function save_order($order)
     {
-        $no_error = true;
+        $no_error = $all_completed = true;
         $order_status = Order::getStatus('completed');
-        foreach ($order->items()->get() as $index => $order_item) {
-          if ($order_item->status !== Item::getStatus('sending')) {
+        foreach ($order->items()->get() as $index => $item) {
+          $order_received = ($item->pivot->status === Item::getStatus('received'));
+          $order_preparing = ($item->pivot->status === Item::getStatus('preparing'));
+          $order_sending = ($item->pivot->status === Item::getStatus('sending'));
+          $order_in_queue = ($item->pivot->status === Item::getStatus('queue'));
+          if ($order_received or $order_preparing or $order_sending or $order_in_queue) {
+            // order processing
             $order_status = Order::getStatus('processing');
+          } elseif ($item->pivot->status !== Item::getStatus('received')) {
+            // order completed state 'partial or total'
+            $order_status = Order::getStatus('completed_partial');
           }
         }
 

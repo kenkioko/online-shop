@@ -27,6 +27,7 @@ class Item extends Model
     'received' => "RECEIVED ORDER FOR ITEM",
     'preparing' => "PREPARING ITEM",
     'sending' => "SENDING ITEM",
+    'received' => "RECEIVED ITEM",
   );
 
   /**

@@ -44,36 +44,45 @@
       <div class="card-header">
         <div class="card-tools">
           @if ($item)
+            @can('items.view')
             <a type="button"
               class="btn btn-sm btn-outline-primary pop"
               href="{{ route('items.show', ['item' => $item]) }}"
               data-container="body" data-toggle="popover" data-placement="bottom"
               data-content="View in site"
             ><i class="nav-icon far fa-eye"></i></a><!-- /.button -->
+            @endcan
           @endif
 
+          @can('items.create')
           <button type="submit"
             form="item_form"
             class="btn btn-sm btn-outline-success pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Save changes"
           ><i class="nav-icon fas fa-save"></i></button><!-- /.button -->
+          @endcan
 
           @if ($item)
+            @can('items.delete')
             <button type="button"
               class="btn btn-sm btn-outline-warning pop"
               data-container="body" data-toggle="popover" data-placement="bottom"
               data-content="Delete item"
               onclick="on_delete()"
             ><i class="nav-icon fas fa-trash-alt"></i></button><!-- /.button -->
+            @endcan
           @endif
-          
+
+
           <a type="button"
             href="{{ route('admin.items.index') }}"
             class="btn btn-sm btn-outline-danger pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Discard changes"
           ><i class="nav-icon fas fa-times-circle"></i></a><!-- /.button -->
+
+
         </div>
         <!-- /.card-tools -->
       </div>

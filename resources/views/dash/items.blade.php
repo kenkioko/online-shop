@@ -206,7 +206,8 @@
         table.column(8).visible(false);
       @endcan
 
-      function select_item() {
+      @canany(['items.view', 'items.update', 'items.delete'])
+      function is_selected(modal_id) {
         var selected = true;
 
         if (!selected_row) {
@@ -215,11 +216,12 @@
 
         return selected;
       }
+      @endcanany
 
       // selected row actions
       @can('items.view')
       $('#view_btn').click( function () {
-        if (select_item()) {
+        if (is_selected('select_item_modal')) {
           action_url = selected_row[6];
           window.location.href = action_url;
         }
@@ -228,7 +230,7 @@
 
       @can('items.update')
       $('#edit_btn').click( function () {
-        if (select_item()) {
+        if (is_selected('select_item_modal')) {
           action_url = selected_row[7];
           window.location.href = action_url;
         }
@@ -237,7 +239,7 @@
 
       @can('items.delete')
       $('#delete_btn').click( function () {
-        if (select_item()) {
+        if (is_selected('select_item_modal')) {
           $('.del_item_name').text(selected_row[2]);
           action_url = selected_row[8];
           $("#delete_item_form").attr('action', action_url);
