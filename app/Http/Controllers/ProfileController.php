@@ -24,7 +24,7 @@ class ProfileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function index(Request $request)
     {
         //Auth::user();
         $this->resist();

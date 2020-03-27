@@ -20,12 +20,9 @@ Route::redirect('/home', '/');
 Route::redirect('/index', '/');
 
 // user profile
-Route::middleware(['auth'])
-  ->name('profile.')
-  ->group(function () {
-    Route::get('profile', 'ProfileController@show')->name('show');
-    Route::put('profile', 'ProfileController@update')->name('update');
-});
+Route::resource('profile', 'ProfileController')->only([
+  'index', 'update'
+])->middleware(['auth']);
 
 // available resource controllers for website
 Route::resources([
