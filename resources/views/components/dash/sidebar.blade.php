@@ -47,16 +47,19 @@
           use App\OrderItem;
           use Illuminate\Database\Eloquent\Builder;
 
-          $new_orders = OrderItem::whereHas('item', function (Builder $query) {
-            $shop_id = Shop::whereHas('user', function (Builder $query) {
-              $query->where('id', Auth::user()->id);
-            })->firstOrFail()->id;
+          $new_orders = null;
+          if(Auth::user()->can('orders.view')) {
+            $new_orders = OrderItem::whereHas('item', function (Builder $query) {
+              $shop_id = Shop::whereHas('user', function (Builder $query) {
+                $query->where('id', Auth::user()->id);
+              })->firstOrFail()->id;
 
-            $query->where('shop_id', $shop_id);
-          })->whereHas('order', function (Builder $query) {
-            $query->where('status', '!=', Order::getStatus('items_in_cart'));
-          })->where('status', Item::getStatus('queue'))
-            ->count();
+              $query->where('shop_id', $shop_id);
+            })->whereHas('order', function (Builder $query) {
+              $query->where('status', '!=', Order::getStatus('items_in_cart'));
+            })->where('status', Item::getStatus('queue'))
+              ->count();
+          }
         @endphp
 
         @can('orders.view')

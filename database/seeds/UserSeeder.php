@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Shop;
 use App\User;
 
 class UserSeeder extends Seeder
@@ -12,40 +13,43 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert(array(
-            array(
-                'name'=>'admin',
-                'email' => 'admin@admin.com',
-                'password' => bcrypt('password'),
-                'email_verified_at'=> date("Y-m-d H:i:s"),
-                'created_at' => date("Y-m-d H:i:s"),
-            ),
-            array(
-                'name'=>'johndoe',
-                'email' => 'john@doe.com',
-                'password' => bcrypt('password'),
-                'email_verified_at'=> date("Y-m-d H:i:s"),
-                'created_at' => date("Y-m-d H:i:s"),
-            ),
-            array(
-                'name'=>'janedoe',
-                'email' => 'jane@doe.com',
-                'password' => bcrypt('password'),
-                'email_verified_at'=> date("Y-m-d H:i:s"),
-                'created_at' => date("Y-m-d H:i:s"),
-            ),
-        ));
+        // admin user
+        $admin = User::create([
+          'name'=>'admin',
+          'email' => 'admin@admin.com',
+          'password' => bcrypt('password'),
+          'email_verified_at'=> date("Y-m-d H:i:s"),
+          'created_at' => date("Y-m-d H:i:s"),
+        ]);
+        $admin->assignRole('admin');
 
-        User::where('email','admin@admin.com')
-            ->first()
-            ->assignRole('admin');
+        // buyer user
+        $buyer = User::create([
+          'name'=>'johndoe',
+          'email' => 'john@doe.com',
+          'password' => bcrypt('password'),
+          'email_verified_at'=> date("Y-m-d H:i:s"),
+          'created_at' => date("Y-m-d H:i:s"),
+        ]);
+        $buyer->assignRole('buyer');
 
-        User::where('email','john@doe.com')
-            ->first()
-            ->assignRole('buyer');
+        // seller user
+        $seller = User::create([
+          'name'=>'janedoe',
+          'email' => 'jane@doe.com',
+          'password' => bcrypt('password'),
+          'email_verified_at'=> date("Y-m-d H:i:s"),
+          'created_at' => date("Y-m-d H:i:s"),
+        ]);
+        $seller->assignRole('seller');
 
-        User::where('email','jane@doe.com')
-            ->first()
-            ->assignRole('seller');
+        // seller shop
+        $faker = Faker\Factory::create();
+        $seller_shop = new Shop([
+          'name' => $faker->company(),
+          'address' => $faker->address(),
+        ]);
+        $seller_shop->user()->associate($seller);
+        $seller_shop->save();
     }
 }

@@ -19,8 +19,23 @@ class RoleSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         // object permissions
-        define('PERMISSIONS', ['view', 'create', 'update', 'delete'], true);
-        define('OBJECTS', ['users', 'roles', 'items', 'categories', 'orders', 'cart'], true);
+        define('PERMISSIONS', [
+          'view',     // permissions[0]
+          'create',   // permissions[1]
+          'update',   // permissions[2]
+          'delete',   // permissions[3]
+        ], true);
+        define('OBJECTS', [
+          'users',      // objects[0]
+          'roles',      // objects[1]
+          'items',      // objects[2]
+          'categories', // objects[3]
+          'orders',     // objects[4]
+          'cart',       // objects[5]
+          'shop',       // objects[6]
+        ], true);
+
+        // create object permissions
         foreach (objects as $index => $object) {
           $this->create_permissions(permissions, $object);
         }
@@ -32,7 +47,12 @@ class RoleSeeder extends Seeder
         // admin role
         $admin_role = Role::create(['name' => 'admin']);
         $admin_role->givePermissionTo($view_dash);
-        $this->set_user_permissions(permissions, objects, $admin_role);
+        $this->set_user_permissions(permissions, [      // All permissions
+          objects[0],  // users
+          objects[1],  // roles
+          objects[3],  // categories
+          objects[6],  // shop
+        ], $admin_role);
 
         // buyer role
         $buyer_role = Role::create(['name' => 'buyer']);
@@ -44,6 +64,7 @@ class RoleSeeder extends Seeder
         $this->set_user_permissions([permissions[0]], [   // view permissions
           objects[2],  // items
           objects[3],  // categories
+          objects[6],  // shop
         ], $buyer_role);
 
         // seller role
@@ -52,6 +73,7 @@ class RoleSeeder extends Seeder
         $this->set_user_permissions(permissions, [      // All permissions
           objects[2],  // items
           objects[4],  // orders
+          objects[6],  // shop
         ], $seller_role);
         $this->set_user_permissions([permissions[0]], [   // view permissions
           objects[3],  // categories
@@ -82,6 +104,6 @@ class RoleSeeder extends Seeder
 
     private function permission_name($permission, $object)
     {
-        return '' .$object. '.' .$permission;
+        return '' .$object. '.' .$permission;  // 'object.permission'
     }
 }
