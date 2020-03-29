@@ -31,7 +31,7 @@ class OrderItem extends Pivot
     /**
      * The order the items belongs to '1-2-1'.
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\BelongTo
      */
     public function order()
     {
@@ -41,7 +41,7 @@ class OrderItem extends Pivot
     /**
      * The items in the order '1-2-1'.
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\BelongTo
      */
     public function item()
     {

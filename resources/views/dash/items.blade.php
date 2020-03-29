@@ -207,7 +207,7 @@
       @endcan
 
       @canany(['items.view', 'items.update', 'items.delete'])
-      function is_selected(modal_id) {
+      function is_selected() {
         var selected = true;
 
         if (!selected_row) {

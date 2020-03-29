@@ -25,7 +25,7 @@ class Shop extends Model
     /**
      * The item's category '1-2-1'.
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\BelongTo
      */
     public function user()
     {

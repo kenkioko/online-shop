@@ -31,13 +31,18 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::whereHas('shop', function (Builder $query) {
-          $shop_id = Shop::whereHas('user', function (Builder $query) {
-            $query->where('id', Auth::user()->id);
-          })->firstOrFail()->id;
+        $items = null;
+        if (Auth::user()->hasRole('seller')) {
+          $items = Item::whereHas('shop', function (Builder $query) {
+            $shop_id = Shop::whereHas('user', function (Builder $query) {
+              $query->where('id', Auth::user()->id);
+            })->firstOrFail()->id;
 
-          $query->where('id', $shop_id);
-        })->get();
+            $query->where('id', $shop_id);
+          })->get();
+        } elseif (Auth::user()->hasRole('admin')) {
+          $items = Item::all();
+        }
 
         return view('dash.items')->with('items', $items);
     }

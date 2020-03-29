@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Dash;
 
+use App\Shop;
 use App\Item;
 use App\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\CategoryStoreRequest;
 use App\Http\Requests\CategoryUpdateRequest;
 use App\Http\Controllers\CategoryController as Controller;
@@ -64,7 +67,7 @@ class CategoryController extends Controller
 
         return redirect()->route('admin.categories.index')->with([
           'categories' => Category::all(),
-          'success' => 'Category added successfully'
+          'success' => 'Category added successfully',
         ]);
     }
 
@@ -76,7 +79,24 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return abort(404);
+        $items = null;
+        if (Auth::user()->hasRole('seller')) {
+          $items = $category->items()->whereHas('shop', function (Builder $query) {
+            $shop_id = Shop::whereHas('user', function (Builder $query) {
+              $query->where('id', Auth::user()->id);
+            })->firstOrFail()->id;
+
+            $query->where('id', $shop_id);
+          })->get();
+        } elseif (Auth::user()->hasRole('admin')) {
+          $items = $category->items()->get();
+        }
+
+        return view('dash.category_view')->with([
+          'category' => $category,
+          'items' => $items,
+          'sub_categories' => $category->sub_categories()->get(),
+        ]);
     }
 
     /**
@@ -121,16 +141,25 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        if (Category::where('parent_category_id', $category->id)->count() > 0) {
+        if ($category->sub_categories()->count() > 0) {
           return back()->with([
             'error' => 'Cannot delete a category with sub categories'
           ]);
         }
 
-        dd($category->delete());
-        return redirect()->route('admin.categories.index')->with([
-          'categories' => Category::all(),
-          'success' => 'Category deleted successfully'
-        ]);
+        if ($category->items()->count() > 0) {
+          return back()->with([
+            'error' => 'Cannot delete a category with saved items'
+          ]);
+        }
+
+        if ($category->delete()) {
+          return redirect()->route('admin.categories.index')->with([
+            'categories' => Category::all(),
+            'success' => 'Category deleted successfully'
+          ]);
+        }
+
+        return back()->with('error', 'Something went wrong when deteting category ' .$category->name);
     }
 }

@@ -70,7 +70,7 @@
             <i class="nav-icon fas fa-shopping-cart"></i>
             <p> Orders
               @if($new_orders)
-                <span class="right badge badge-danger">
+                <span class="right badge badge-success">
                   {{ $new_orders }} New
                 </span>
               @endif

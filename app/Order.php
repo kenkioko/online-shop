@@ -47,7 +47,7 @@ class Order extends Model
   /**
    * The owner of the order '1-2-1'.
    *
-   * @return void
+   * @return \Illuminate\Database\Eloquent\Relations\BelongTo
    */
   public function user()
   {
@@ -57,7 +57,7 @@ class Order extends Model
   /**
    * The items in the order 'M-2-M'.
    *
-   * @return void
+   * @return \Illuminate\Database\Eloquent\Relations\BelongToMany
    */
   public function items()
   {

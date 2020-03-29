@@ -53,6 +53,9 @@ class RoleSeeder extends Seeder
           objects[3],  // categories
           objects[6],  // shop
         ], $admin_role);
+        $this->set_user_permissions([permissions[0]], [   // view permissions
+          objects[2],  // items
+        ], $admin_role);
 
         // buyer role
         $buyer_role = Role::create(['name' => 'buyer']);

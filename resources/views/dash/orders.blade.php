@@ -53,6 +53,13 @@
             <i class="nav-icon fas fa-trash-alt"></i>
           </button><!-- /.button -->
           @endcan
+
+          <a type="button"
+            href="{{ route('admin.orders.index') }}"
+            class="btn btn-sm btn-outline-danger pop"
+            data-container="body" data-toggle="popover" data-placement="bottom"
+            data-content="Discard changes"
+          ><i class="nav-icon fas fa-times-circle"></i></a><!-- /.button -->
         </div>
         <!-- /.card-tools -->
       </div>
@@ -187,7 +194,7 @@
     @endcan
 
     @canany(['orders.view', 'orders.update', 'orders.delete'])
-    function is_selected(modal_id) {
+    function is_selected() {
       var selected = true;
 
       if (!selected_row) {

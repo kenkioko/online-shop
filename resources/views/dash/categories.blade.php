@@ -34,45 +34,61 @@
     <div class="card">
       <div class="card-header">
         <div class="card-tools">
+
+          @can('categories.view')
           <button type="button"
             id="view_category"
             class="btn btn-sm btn-outline-primary pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
-            data-content="View in site"
+            data-content="View category"
           >
             <i class="nav-icon far fa-eye"></i>
           </button><!-- /.button -->
+          @endcan
+
+          @can('categories.create')
           <a type="button"
             class="btn btn-sm btn-outline-success pop"
             href="{{ route('admin.categories.create') }}"
             data-container="body" data-toggle="popover" data-placement="bottom"
-            data-content="New"
+            data-content="New category"
           >
             <i class="nav-icon fas fa-plus"></i>
           </a><!-- /.button -->
+          @endcan
+
+          @can('categories.update')
           <button type="button"
             id="edit_table_row"
             class="btn btn-sm btn-outline-info pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
-            data-content="Edit"
+            data-content="Edit category"
           >
             <i class="nav-icon fas fa-edit"></i>
           </button><!-- /.button -->
+          @endcan
+
+          @can('categories.delete')
           <button type="button"
             id="delete_table_row"
             class="btn btn-sm btn-outline-danger pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
-            data-content="Delete"
+            data-content="Delete category"
           >
             <i class="nav-icon fas fa-trash-alt"></i>
           </button><!-- /.button -->
+          @endcan
+
         </div>
         <!-- /.card-tools -->
       </div>
       <!-- /.card-header -->
       <div class="card-body">
+        @php
+          $table_id = 'table_list';
+        @endphp
 
-        @data_table(['table_id' => 'table_list'])
+        @data_table(['table_id' => $table_id])
           @slot('head')
             <tr>
               <th scope="col">#</th>
@@ -81,6 +97,18 @@
               <th scope="col">Parent category</th>
               <th scope="col">Created</th>
               <th scope="col">Updated</th>
+
+              @can('categories.view')
+                <th scope="col">View Url</th>
+              @endcan
+
+              @can('categories.update')
+                <th scope="col">Edit Url</th>
+              @endcan
+
+              @can('categories.delete')
+                <th scope="col">Delete Url</th>
+              @endcan
             </tr>
           @endslot
 
@@ -98,6 +126,18 @@
 
               <td>{{ $category->created_at }}</td>
               <td>{{ $category->updated_at }}</td>
+
+              @can('categories.view')
+                <td>{{ route('admin.categories.show', ['category' => $category]) }}</td>
+              @endcan
+
+              @can('categories.update')
+                <td>{{ route('admin.categories.edit', ['category' => $category]) }}</td>
+              @endcan
+
+              @can('categories.delete')
+                <td>{{ route('admin.categories.destroy', ['category' => $category]) }}</td>
+              @endcan
             </tr>
           @endforeach
         @enddata_table
@@ -107,6 +147,22 @@
     </div>
     <!-- /.card -->
 
+    <!-- No Selected Item Modal -->
+    @modal(['modal_id' => 'select_item_modal'])
+      @slot('modal_title')
+        Select Item
+      @endslot
+
+      @slot('modal_body')
+        <p>Please select an item from the table.</p>
+      @endslot
+
+      @slot('modal_footer')
+        <button type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+      @endslot
+    @endmodal
+
+    <!-- Delete Category Modal -->
     @modal(['modal_id' => 'delete_modal'])
       @slot('modal_title')
         Delete '<span class="del_category_name"></span>'
@@ -150,48 +206,66 @@
     var table;          //datatable
     var selected_row;   //selected table row
     var action_url;     //url for action on selected row
+    var table_id = '{{ $table_id }}';   //datatable table id
 
 
     $(function(){
-      // hide id column
+      // hide id and url columns
       table.column(1).visible(false);
+      @can('categories.view')
+        table.column(6).visible(false);
+      @endcan
 
-      // selected row actions
+      @can('categories.update')
+        table.column(7).visible(false);
+      @endcan
+
+      @can('categories.delete')
+        table.column(8).visible(false);
+      @endcan
+
+
+      @canany(['categories.view', 'categories.update', 'categories.delete'])
+      function is_selected() {
+        var selected = true;
+
+        if (!selected_row) {
+          $('#select_item_modal').modal('show');
+        }
+
+        return selected;
+      }
+      @endcanany
+
+      @can('categories.view')
       $('#view_category').click( function () {
-        if (selected_row) {
-          action_url = new URL(
-            'categories/' + selected_row[1],
-            "{{ route('categories.index') }}"
-          );
-
+        if (is_selected()) {
+          action_url = selected_row[6];
           window.location.href = action_url;
         }
       });
+      @endcan
 
+      @can('categories.update')
       $('#edit_table_row').click( function () {
-        if (selected_row) {
-          action_url = new URL(
-            'categories/' + selected_row[1] + '/edit',
-            "{{ route('admin.categories.index') }}"
-          );
-
+        if (is_selected()) {
+          action_url = selected_row[7];
           window.location.href = action_url;
         }
       });
+      @endcan
 
+      @can('categories.delete')
       $('#delete_table_row').click( function () {
-        if (selected_row) {
+        if (is_selected()) {
           $('.del_category_name').text(selected_row[2]);
-
-          action_url = new URL(
-            'categories/' + selected_row[1],
-            "{{ route('admin.categories.index') }}"
-          );
-
+          action_url = action_url = selected_row[8];
           $("#delete_category_form").attr('action', action_url);
           $('#delete_modal').modal('show');
         }
       });
+      @endcan
+
     });
   </script>
 @endsection

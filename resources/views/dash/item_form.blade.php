@@ -54,14 +54,14 @@
             @endcan
           @endif
 
-          @can('items.create')
+          @canany(['items.create', 'items.update'])
           <button type="submit"
             form="item_form"
             class="btn btn-sm btn-outline-success pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Save changes"
           ><i class="nav-icon fas fa-save"></i></button><!-- /.button -->
-          @endcan
+          @endcanany
 
           @if ($item)
             @can('items.delete')

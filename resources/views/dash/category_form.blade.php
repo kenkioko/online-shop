@@ -39,31 +39,38 @@
     <div class="card">
       <div class="card-header">
         <div class="card-tools">
-          @if ($category)
-            <a type="button"
-              class="btn btn-sm btn-outline-primary pop"
-              href="{{ route('admin.categories.show', ['category' => $category]) }}"
-              data-container="body" data-toggle="popover" data-placement="bottom"
-              data-content="View in site"
-            >
-              <i class="nav-icon far fa-eye"></i>
-            </a><!-- /.button -->
 
+          @can('categories.view')
+          @if ($category)
+          <a type="button"
+            href="{{ route('admin.categories.show', ['category' => $category]) }}"
+            class="btn btn-sm btn-outline-primary pop"
+            data-container="body" data-toggle="popover" data-placement="bottom"
+            data-content="View category"
+          ><i class="nav-icon far fa-eye"></i></a><!-- /.button -->
+          @endif
+          @endcan
+
+          @canany(['categories.create', 'categories.update'])
+          <button type="submit"
+            form="category_form"
+            class="btn btn-sm btn-outline-success pop"
+            data-container="body" data-toggle="popover" data-placement="bottom"
+            data-content="Save category"
+          ><i class="nav-icon fas fa-save"></i></button><!-- /.button -->
+          @endcanany
+
+          @can('categories.delete')
+          @if ($category)
             <button type="button"
-              form="delete_category_form"
               class="btn btn-sm btn-outline-warning pop"
               data-container="body" data-toggle="popover" data-placement="bottom"
               data-content="Delete category"
               onclick="on_delete()"
             ><i class="nav-icon fas fa-trash-alt"></i></button><!-- /.button -->
           @endif
+          @endcan
 
-          <button type="submit"
-            form="category_form"
-            class="btn btn-sm btn-outline-success pop"
-            data-container="body" data-toggle="popover" data-placement="bottom"
-            data-content="Save changes"
-          ><i class="nav-icon fas fa-save"></i></button><!-- /.button -->
           <a type="button"
             href="{{ route('admin.categories.index') }}"
             class="btn btn-sm btn-outline-danger pop"
