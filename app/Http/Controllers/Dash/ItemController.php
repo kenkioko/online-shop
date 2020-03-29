@@ -14,6 +14,17 @@ use App\Http\Controllers\ItemController as Controller;
 class ItemController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware(['permission:items.view']);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response

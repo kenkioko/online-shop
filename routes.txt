@@ -1,78 +1,23 @@
-+--------+----------------------------------------+----------------------------------+--------------------------+------------------------------------------------------------------------+---------------------------------------------+
-| Domain | Method                                 | URI                              | Name                     | Action                                                                 | Middleware                                  |
-+--------+----------------------------------------+----------------------------------+--------------------------+------------------------------------------------------------------------+---------------------------------------------+
-|        | GET|HEAD                               | /                                | home.index               | App\Http\Controllers\HomeController@index                              | web                                         |
-|        | GET|HEAD|POST|PUT|PATCH|DELETE|OPTIONS | admin                            | admin.                   | Illuminate\Routing\RedirectController                                  | web,auth,role:admin                         |
-|        | POST                                   | admin/categories                 | admin.categories.store   | App\Http\Controllers\CategoryController@store                          | web,auth,role:admin                         |
-|        | GET|HEAD                               | admin/categories                 | admin.categories.index   | App\Http\Controllers\CategoryController@index                          | web,auth,role:admin                         |
-|        | GET|HEAD                               | admin/categories/create          | admin.categories.create  | App\Http\Controllers\CategoryController@create                         | web,auth,role:admin                         |
-|        | DELETE                                 | admin/categories/{category}      | admin.categories.destroy | App\Http\Controllers\CategoryController@destroy                        | web,auth,role:admin                         |
-|        | PUT|PATCH                              | admin/categories/{category}      | admin.categories.update  | App\Http\Controllers\CategoryController@update                         | web,auth,role:admin                         |
-|        | GET|HEAD                               | admin/categories/{category}      | admin.categories.show    | App\Http\Controllers\CategoryController@show                           | web,auth,role:admin                         |
-|        | GET|HEAD                               | admin/categories/{category}/edit | admin.categories.edit    | App\Http\Controllers\CategoryController@edit                           | web,auth,role:admin                         |
-|        | GET|HEAD                               | admin/dashboard                  | admin.dash               | App\Http\Controllers\DashboardController@index                         | web,auth,role:admin                         |
-|        | POST                                   | admin/items                      | admin.items.store        | App\Http\Controllers\ItemController@store                              | web,auth,role:admin                         |
-|        | GET|HEAD                               | admin/items                      | admin.items.index        | App\Http\Controllers\ItemController@index                              | web,auth,role:admin                         |
-|        | GET|HEAD                               | admin/items/create               | admin.items.create       | App\Http\Controllers\ItemController@create                             | web,auth,role:admin                         |
-|        | GET|HEAD                               | admin/items/{item}               | admin.items.show         | App\Http\Controllers\ItemController@show                               | web,auth,role:admin                         |
-|        | PUT|PATCH                              | admin/items/{item}               | admin.items.update       | App\Http\Controllers\ItemController@update                             | web,auth,role:admin                         |
-|        | DELETE                                 | admin/items/{item}               | admin.items.destroy      | App\Http\Controllers\ItemController@destroy                            | web,auth,role:admin                         |
-|        | GET|HEAD                               | admin/items/{item}/edit          | admin.items.edit         | App\Http\Controllers\ItemController@edit                               | web,auth,role:admin                         |
-|        | POST                                   | admin/orders                     | admin.orders.store       | App\Http\Controllers\Dash\OrderController@store                        | web,auth,role:admin,permission:create order |
-|        | GET|HEAD                               | admin/orders                     | admin.orders.index       | App\Http\Controllers\Dash\OrderController@index                        | web,auth,role:admin,permission:view order   |
-|        | GET|HEAD                               | admin/orders/create              | admin.orders.create      | App\Http\Controllers\Dash\OrderController@create                       | web,auth,role:admin,permission:create order |
-|        | GET|HEAD                               | admin/orders/{order}             | admin.orders.show        | App\Http\Controllers\Dash\OrderController@show                         | web,auth,role:admin,permission:view order   |
-|        | PUT|PATCH                              | admin/orders/{order}             | admin.orders.update      | App\Http\Controllers\Dash\OrderController@update                       | web,auth,role:admin,permission:update order |
-|        | DELETE                                 | admin/orders/{order}             | admin.orders.destroy     | App\Http\Controllers\Dash\OrderController@destroy                      | web,auth,role:admin                         |
-|        | GET|HEAD                               | admin/orders/{order}/edit        | admin.orders.edit        | App\Http\Controllers\Dash\OrderController@edit                         | web,auth,role:admin,permission:update order |
-|        | GET|HEAD                               | admin/users                      | admin.users.index        | App\Http\Controllers\UserController@index                              | web,auth,role:admin                         |
-|        | POST                                   | admin/users                      | admin.users.store        | App\Http\Controllers\UserController@store                              | web,auth,role:admin                         |
-|        | GET|HEAD                               | admin/users/create               | admin.users.create       | App\Http\Controllers\UserController@create                             | web,auth,role:admin                         |
-|        | DELETE                                 | admin/users/{user}               | admin.users.destroy      | App\Http\Controllers\UserController@destroy                            | web,auth,role:admin                         |
-|        | PUT|PATCH                              | admin/users/{user}               | admin.users.update       | App\Http\Controllers\UserController@update                             | web,auth,role:admin                         |
-|        | GET|HEAD                               | admin/users/{user}               | admin.users.show         | App\Http\Controllers\UserController@show                               | web,auth,role:admin                         |
-|        | GET|HEAD                               | admin/users/{user}/edit          | admin.users.edit         | App\Http\Controllers\UserController@edit                               | web,auth,role:admin                         |
-|        | GET|HEAD                               | cart                             | cart.index               | App\Http\Controllers\CartController@index                              | web,auth,permission:view cart               |
-|        | POST                                   | cart                             | cart.store               | App\Http\Controllers\CartController@store                              | web,auth,permission:create cart             |
-|        | GET|HEAD                               | cart/create                      | cart.create              | App\Http\Controllers\CartController@create                             | web,auth,permission:create cart             |
-|        | DELETE                                 | cart/{cart}                      | cart.destroy             | App\Http\Controllers\CartController@destroy                            | web,auth                                    |
-|        | GET|HEAD                               | cart/{cart}                      | cart.show                | App\Http\Controllers\CartController@show                               | web,auth,permission:view cart               |
-|        | PUT|PATCH                              | cart/{cart}                      | cart.update              | App\Http\Controllers\CartController@update                             | web,auth,permission:update cart             |
-|        | GET|HEAD                               | cart/{cart}/edit                 | cart.edit                | App\Http\Controllers\CartController@edit                               | web,auth,permission:update cart             |
-|        | POST                                   | categories                       | categories.store         | App\Http\Controllers\CategoryController@store                          | web,auth,role:admin                         |
-|        | GET|HEAD                               | categories                       | categories.index         | App\Http\Controllers\CategoryController@index                          | web                                         |
-|        | GET|HEAD                               | categories/create                | categories.create        | App\Http\Controllers\CategoryController@create                         | web,auth,role:admin                         |
-|        | DELETE                                 | categories/{category}            | categories.destroy       | App\Http\Controllers\CategoryController@destroy                        | web,auth,role:admin                         |
-|        | PUT|PATCH                              | categories/{category}            | categories.update        | App\Http\Controllers\CategoryController@update                         | web,auth,role:admin                         |
-|        | GET|HEAD                               | categories/{category}            | categories.show          | App\Http\Controllers\CategoryController@show                           | web                                         |
-|        | GET|HEAD                               | categories/{category}/edit       | categories.edit          | App\Http\Controllers\CategoryController@edit                           | web,auth,role:admin                         |
-|        | GET|HEAD|POST|PUT|PATCH|DELETE|OPTIONS | home                             |                          | Illuminate\Routing\RedirectController                                  | web                                         |
-|        | GET|HEAD|POST|PUT|PATCH|DELETE|OPTIONS | index                            |                          | Illuminate\Routing\RedirectController                                  | web                                         |
-|        | GET|HEAD                               | items                            | items.index              | App\Http\Controllers\ItemController@index                              | web                                         |
-|        | POST                                   | items                            | items.store              | App\Http\Controllers\ItemController@store                              | web,auth,role:admin                         |
-|        | GET|HEAD                               | items/create                     | items.create             | App\Http\Controllers\ItemController@create                             | web,auth,role:admin                         |
-|        | PUT|PATCH                              | items/{item}                     | items.update             | App\Http\Controllers\ItemController@update                             | web,auth,role:admin                         |
-|        | DELETE                                 | items/{item}                     | items.destroy            | App\Http\Controllers\ItemController@destroy                            | web,auth,role:admin                         |
-|        | GET|HEAD                               | items/{item}                     | items.show               | App\Http\Controllers\ItemController@show                               | web                                         |
-|        | GET|HEAD                               | items/{item}/edit                | items.edit               | App\Http\Controllers\ItemController@edit                               | web,auth,role:admin                         |
-|        | GET|HEAD                               | login                            | login                    | App\Http\Controllers\Auth\LoginController@showLoginForm                | web,guest                                   |
-|        | POST                                   | login                            |                          | App\Http\Controllers\Auth\LoginController@login                        | web,guest                                   |
-|        | POST                                   | logout                           | logout                   | App\Http\Controllers\Auth\LoginController@logout                       | web                                         |
-|        | GET|HEAD                               | orders                           | orders.index             | App\Http\Controllers\Web\OrderController@index                         | web,auth,permission:view order              |
-|        | POST                                   | orders                           | orders.store             | App\Http\Controllers\Web\OrderController@store                         | web,auth,permission:create order            |
-|        | GET|HEAD                               | orders/create                    | orders.create            | App\Http\Controllers\Web\OrderController@create                        | web,auth,permission:create order            |
-|        | PUT|PATCH                              | orders/{order}                   | orders.update            | App\Http\Controllers\Web\OrderController@update                        | web,auth,permission:update order            |
-|        | DELETE                                 | orders/{order}                   | orders.destroy           | App\Http\Controllers\Web\OrderController@destroy                       | web,auth                                    |
-|        | GET|HEAD                               | orders/{order}                   | orders.show              | App\Http\Controllers\Web\OrderController@show                          | web,auth,permission:view order              |
-|        | GET|HEAD                               | orders/{order}/edit              | orders.edit              | App\Http\Controllers\Web\OrderController@edit                          | web,auth,permission:update order            |
-|        | GET|HEAD                               | password/confirm                 | password.confirm         | App\Http\Controllers\Auth\ConfirmPasswordController@showConfirmForm    | web,auth                                    |
-|        | POST                                   | password/confirm                 |                          | App\Http\Controllers\Auth\ConfirmPasswordController@confirm            | web,auth                                    |
-|        | POST                                   | password/email                   | password.email           | App\Http\Controllers\Auth\ForgotPasswordController@sendResetLinkEmail  | web                                         |
-|        | POST                                   | password/reset                   | password.update          | App\Http\Controllers\Auth\ResetPasswordController@reset                | web                                         |
-|        | GET|HEAD                               | password/reset                   | password.request         | App\Http\Controllers\Auth\ForgotPasswordController@showLinkRequestForm | web                                         |
-|        | GET|HEAD                               | password/reset/{token}           | password.reset           | App\Http\Controllers\Auth\ResetPasswordController@showResetForm        | web                                         |
-|        | PUT                                    | profile                          | profile.update           | App\Http\Controllers\ProfileController@update                          | web,auth                                    |
-|        | GET|HEAD                               | profile                          | profile.show             | App\Http\Controllers\ProfileController@show                            | web,auth                                    |
-|        | POST                                   | register                         |                          | App\Http\Controllers\Auth\RegisterController@register                  | web,guest                                   |
-|        | GET|HEAD                               | register                         | register                 | App\Http\Controllers\Auth\RegisterController@showRegistrationForm      | web,guest                                   |
-+--------+----------------------------------------+----------------------------------+--------------------------+------------------------------------------------------------------------+---------------------------------------------+
+
+   Illuminate\Contracts\Container\BindingResolutionException  : Target class [App\Http\Controllers\Dash\DashboardController] does not exist.
+
+  at /home/kioko/Projects/online-shop/vendor/laravel/framework/src/Illuminate/Container/Container.php:805
+    801| 
+    802|         try {
+    803|             $reflector = new ReflectionClass($concrete);
+    804|         } catch (ReflectionException $e) {
+  > 805|             throw new BindingResolutionException("Target class [$concrete] does not exist.", 0, $e);
+    806|         }
+    807| 
+    808|         // If the type is not instantiable, the developer is attempting to resolve
+    809|         // an abstract type such as an Interface or Abstract Class and there is
+
+  Exception trace:
+
+  1   Illuminate\Foundation\Console\RouteListCommand::Illuminate\Foundation\Console\{closure}(Object(Illuminate\Routing\Route))
+      [internal]:0
+
+  2   ReflectionException::("Class App\Http\Controllers\Dash\DashboardController does not exist")
+      /home/kioko/Projects/online-shop/vendor/laravel/framework/src/Illuminate/Container/Container.php:803
+
+  Please use the argument -v to see more details.

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dash;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
@@ -13,7 +14,7 @@ class DashboardController extends Controller
    */
   public function __construct()
   {
-      $this->middleware(['auth', 'permission:dashboard.view']);
+      $this->middleware(['auth']);
   }
 
   /**

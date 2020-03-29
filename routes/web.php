@@ -15,7 +15,6 @@
 Auth::routes();
 
 // index page
-Route::get('/', 'HomeController@index')->name('home.index');
 Route::redirect('/home', '/');
 Route::redirect('/index', '/');
 
@@ -25,14 +24,12 @@ Route::resource('profile', 'ProfileController')->only([
 ])->middleware(['auth']);
 
 // available resource controllers for website
-Route::resources([
-  'categories' => 'CategoryController',
-  // 'items' => 'ItemController',
-  // 'orders' => 'OrderController',
-  // 'cart' => 'CartController',
-]);
-
 Route::namespace('Web')->group(function () {
+  Route::get('/', 'HomeController@index')->name('home.index');
+  Route::resource('categories', 'CategoryController')->only([
+    'index', 'show'
+  ]);
+
   Route::resource('items', 'ItemController')->only([
     'show'
   ]);
@@ -52,17 +49,14 @@ Route::middleware(['auth', 'permission:dashboard.view'])
   ->group(function () {
     // admin dashboard
     Route::redirect('/', '/admin/dashboard');
-    Route::get('dashboard', 'DashboardController@index')->name('dash');
-
     // available resource controllers for admin dashboard
-    Route::resources([
-      'categories' => 'CategoryController',
-      // 'items' => 'ItemController',
-      // 'orders' => 'OrderController',
-      'users' => 'UserController',
-    ]);
-
     Route::namespace('Dash')->group(function () {
+      Route::get('dashboard', 'DashboardController@index')->name('dash');
+      Route::resources([
+        'categories' => 'CategoryController',
+        'users' => 'UserController',
+      ]);
+
       Route::resource('items', 'ItemController')->except([
         'show',
       ]);

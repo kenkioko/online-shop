@@ -22,8 +22,7 @@ class OrderController extends Controller
      */
     public function __construct()
     {
-      parent::__construct();
-      $this->middleware(['permission:website.view']);
+        $this->middleware('auth');
     }
 
     /**
