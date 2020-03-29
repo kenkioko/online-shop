@@ -81,10 +81,9 @@
           <div class="mb-3">
             <h5>Sub categories:</h5>
             @foreach ($sub_categories as $index => $sub_category)
-            <a href="{{ route('admin.categories.show', ['category' => $sub_category]) }}"
-              class="text-decoration-none text-body"
-            ><span class="badge badge-pill badge-primary py-2 px-3 m-1 ">{{ $sub_category->name }}</span></a>
-
+              <a href="{{ route('admin.categories.show', ['category' => $sub_category]) }}"
+                class="text-decoration-none text-body"
+              ><span class="badge badge-pill badge-primary py-2 px-3 m-1 ">{{ $sub_category->name }}</span></a>
             @endforeach
           </div>
         @endif
