@@ -11,6 +11,6 @@ class OrderItemSeeder extends Seeder
      */
     public function run()
     {
-        $items = factory(App\Model\OrderItem::class, 10)->create();
+        $items = factory(App\Pivot\OrderItem::class, 10)->create();
     }
 }

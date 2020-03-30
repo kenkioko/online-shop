@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
 use App\Model\Shop;
 use App\Model\Item;
-use App\Model\OrderItem;
+use App\Pivot\OrderItem;
 use App\Http\Controllers\Dash\OrderController;
 
 

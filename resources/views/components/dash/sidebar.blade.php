@@ -44,7 +44,7 @@
           use App\Model\Shop;
           use App\Model\Item;
           use App\Model\Order;
-          use App\Model\OrderItem;
+          use App\Pivot\OrderItem;
           use Illuminate\Database\Eloquent\Builder;
 
           $new_orders = null;

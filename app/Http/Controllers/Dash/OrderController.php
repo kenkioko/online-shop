@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dash;
 use App\Model\Shop;
 use App\Model\Item;
 use App\Model\Order;
-use App\Model\OrderItem;
+use App\Pivot\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
