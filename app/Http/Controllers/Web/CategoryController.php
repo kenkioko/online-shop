@@ -59,7 +59,7 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         $items = Item::where('category_id', $category->id)->get();
-        return view('category')->with([
+        return view('web.category')->with([
           'category' => $category,
           'items' => $items,
         ]);

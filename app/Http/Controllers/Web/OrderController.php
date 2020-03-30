@@ -37,7 +37,7 @@ class OrderController extends Controller
         })->where('status', '!=', Order::getStatus('items_in_cart'))
           ->get();
 
-        return view('order')->with('orders', $orders);
+        return view('web.order')->with('orders', $orders);
     }
 
     /**
@@ -86,7 +86,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        return view('order_items')->with([
+        return view('web.order_items')->with([
           'order' => $order,
         ]);
     }

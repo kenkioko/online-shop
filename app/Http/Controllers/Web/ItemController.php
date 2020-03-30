@@ -57,7 +57,7 @@ class ItemController extends Controller
             ->where('status', Order::getStatus('items_in_cart'))
             ->first();
 
-        return view('item')->with([
+        return view('web.item')->with([
           'item' => $item,
           'active_order' => $active_order,
           'files' => $this->get_image_files($item->images_folder),

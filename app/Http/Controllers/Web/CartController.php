@@ -46,7 +46,7 @@ class CartController extends Controller
     public function index()
     {
         $this->getOpennedOrder();
-        return view('cart')->with('cart', $this->open_order);
+        return view('web.cart')->with('cart', $this->open_order);
     }
 
     /**

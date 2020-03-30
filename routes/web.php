@@ -29,7 +29,6 @@ Route::namespace('Web')->group(function () {
   Route::resource('categories', 'CategoryController')->only([
     'index', 'show'
   ]);
-
   Route::resource('items', 'ItemController')->only([
     'show'
   ]);
