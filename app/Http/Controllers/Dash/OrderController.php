@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Dash;
 
-use App\Shop;
-use App\Item;
-use App\Order;
-use App\OrderItem;
+use App\Model\Shop;
+use App\Model\Item;
+use App\Model\Order;
+use App\Model\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
@@ -66,7 +66,7 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Order  $order
+     * @param  \App\Model\Order  $order
      * @return \Illuminate\Http\Response
      */
     public function show(Order $order)
@@ -83,7 +83,7 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Order  $order
+     * @param  \App\Model\Order  $order
      * @return \Illuminate\Http\Response
      */
     public function edit(Order $order)
@@ -96,7 +96,7 @@ class OrderController extends Controller
      * request should be a json with each item's current and changed statuses.
      *
      * @param  \Illuminate\Http\Request  $request // request should be a json.
-     * @param  \App\Order  $order
+     * @param  \App\Model\Order  $order
      * @return \Illuminate\Http\Response
      */
     public function update(OrderUpdateRequest $request, Order $order)
@@ -203,7 +203,7 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Order  $order
+     * @param  \App\Model\Order  $order
      * @return \Illuminate\Http\Response
      */
     public function destroy(Order $order)

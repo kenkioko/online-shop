@@ -102,7 +102,7 @@
             <td>{{ $item->name }}</td>
             <td>{{ $order->user->name }}</td>
             <td>{{ number_format($order_item->amount, 2) }}</td>
-            <td>{{ App\Item::getStatus($order_item->status, false) }} </td>
+            <td>{{ App\Model\Item::getStatus($order_item->status, false) }} </td>
 
             @can('orders.update')
               <td>{{ route('admin.orders.show', ['order' => $order]) }}</td>

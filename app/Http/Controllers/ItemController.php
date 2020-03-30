@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Shop;
-use App\Item;
-use App\Category;
+use App\Model\Shop;
+use App\Model\Item;
+use App\Model\Category;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,7 +33,7 @@ class ItemController extends Controller
      * save category to database.
      *
      * @param  array  $validated
-     * @param  \App\Category  $category
+     * @param  \App\Model\Category  $category
      * @return boolean
      */
     protected function save($validated, $item, $edit=false)

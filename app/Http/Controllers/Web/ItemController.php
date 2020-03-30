@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Item;
-use App\Order;
+use App\Model\Item;
+use App\Model\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
@@ -47,7 +47,7 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Item  $item
+     * @param  \App\Model\Item  $item
      * @return \Illuminate\Http\Response
      */
     public function show(Item $item)
@@ -67,7 +67,7 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Item  $item
+     * @param  \App\Model\Item  $item
      * @return \Illuminate\Http\Response
      */
     public function edit(Item $item)
@@ -79,7 +79,7 @@ class ItemController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Item  $item
+     * @param  \App\Model\Item  $item
      * @return \Illuminate\Http\Response
      */
     public function update(ItemUpdateRequest $request, Item $item)
@@ -90,7 +90,7 @@ class ItemController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Item  $item
+     * @param  \App\Model\Item  $item
      * @return \Illuminate\Http\Response
      */
     public function destroy(Item $item)

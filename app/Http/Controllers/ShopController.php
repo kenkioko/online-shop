@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Shop;
+use App\Model\Shop;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
@@ -41,7 +41,7 @@ class ShopController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Shop  $shop
+     * @param  \App\Model\Shop  $shop
      * @return \Illuminate\Http\Response
      */
     public function show(Shop $shop)
@@ -52,7 +52,7 @@ class ShopController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Shop  $shop
+     * @param  \App\Model\Shop  $shop
      * @return \Illuminate\Http\Response
      */
     public function edit(Shop $shop)
@@ -64,7 +64,7 @@ class ShopController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Shop  $shop
+     * @param  \App\Model\Shop  $shop
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Shop $shop)
@@ -75,7 +75,7 @@ class ShopController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Shop  $shop
+     * @param  \App\Model\Shop  $shop
      * @return \Illuminate\Http\Response
      */
     public function destroy(Shop $shop)

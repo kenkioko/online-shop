@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -37,7 +37,7 @@ class Shop extends Model
      * should have a user or will return for the corresponds to the loged in user
      *
      * @param int $user_id
-     * @return \App\Shop
+     * @return \App\Model\Shop
      */
     public static function getOwnShop($user=null)
     {

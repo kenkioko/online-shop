@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Item;
+use App\Model\Item;
 use Faker\Generator as Faker;
 
 $factory->define(Item::class, function (Faker $faker) {
@@ -13,10 +13,10 @@ $factory->define(Item::class, function (Faker $faker) {
         'price' => $faker->numberBetween($min = 100, $max = 3000),
         'description' => $faker->paragraph,
         'category_id' => function () {
-            return factory(App\Category::class)->create()->id;
+            return factory(App\Model\Category::class)->create()->id;
         },
         'shop_id' => function () {
-            return factory(App\Shop::class)->create()->id;
+            return factory(App\Model\Shop::class)->create()->id;
         },
     ];
 });

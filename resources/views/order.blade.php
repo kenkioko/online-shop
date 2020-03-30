@@ -49,7 +49,7 @@
                 <td>{{ $order->order_date->toDayDateTimeString() }}</td>
                 <td>{{ $order->order_no }}</td>
                 <td>{{ number_format($order->total,2) }}</td>
-                <td>{{ App\Order::getStatus($order->status, false) }}</td>
+                <td>{{ App\Model\Order::getStatus($order->status, false) }}</td>
                 <td>
                   <a type="button" class="text-decoration-none text-body btn btn-sm btn-info"
                     href="{{ route('orders.show', ['order' => $order]) }}"

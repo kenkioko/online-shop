@@ -27,7 +27,7 @@ class UserController extends Controller
      * save user to database.
      *
      * @param  array  $validated
-     * @param  \App\Category  $category
+     * @param  \App\Model\Category  $category
      * @return boolean
      */
     protected function save($validated, $user)

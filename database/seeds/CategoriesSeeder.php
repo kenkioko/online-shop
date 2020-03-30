@@ -11,13 +11,13 @@ class CategoriesSeeder extends Seeder
      */
     public function run()
     {
-      // Create five App\Category instances,
+      // Create five App\Model\Category instances,
       // three with sub categories...
-      $categories = factory(App\Category::class, 2)->create();
-      $categories_sub = factory(App\Category::class, 3)
+      $categories = factory(App\Model\Category::class, 2)->create();
+      $categories_sub = factory(App\Model\Category::class, 3)
             ->create()
             ->each(function ($category) {
-                $parent = factory(App\Category::class)->create();
+                $parent = factory(App\Model\Category::class)->create();
                 $category->parent_category_id = $parent->id;
                 $category->save();
             });

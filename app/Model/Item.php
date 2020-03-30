@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\WithStatus;
@@ -51,7 +51,7 @@ class Item extends Model
    */
   public function category()
   {
-      return $this->belongsTo('App\Category');
+      return $this->belongsTo('App\Model\Category');
   }
 
   /**
@@ -61,6 +61,6 @@ class Item extends Model
    */
   public function shop()
   {
-      return $this->belongsTo('App\Shop');
+      return $this->belongsTo('App\Model\Shop');
   }
 }

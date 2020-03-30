@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -35,7 +35,7 @@ class OrderItem extends Pivot
      */
     public function order()
     {
-        return $this->belongsTo('App\Order');
+        return $this->belongsTo('App\Model\Order');
     }
 
     /**
@@ -45,6 +45,6 @@ class OrderItem extends Pivot
      */
     public function item()
     {
-        return $this->belongsTo('App\Item', 'item_id');
+        return $this->belongsTo('App\Model\Item', 'item_id');
     }
 }

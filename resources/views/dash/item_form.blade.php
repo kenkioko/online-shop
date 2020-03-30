@@ -149,7 +149,7 @@
               @endif
 
               @php
-                $categories = App\Category::all();
+                $categories = App\Model\Category::all();
               @endphp
 
               @foreach ($categories as $cat)

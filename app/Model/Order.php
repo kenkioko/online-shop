@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\WithStatus;
@@ -61,7 +61,7 @@ class Order extends Model
    */
   public function items()
   {
-      return $this->belongsToMany('App\Item', 'order_item', 'order_id', 'item_id')
+      return $this->belongsToMany('App\Model\Item', 'order_item', 'order_id', 'item_id')
           ->withPivot('quantity', 'amount', 'status')
           ->withTimestamps();
   }
