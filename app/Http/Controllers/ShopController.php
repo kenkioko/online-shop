@@ -8,78 +8,33 @@ use Illuminate\Http\Request;
 class ShopController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Instantiate a new controller instance.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function index()
+    public function __construct()
     {
-        //
+        $this->middleware(['permission:shops.create'])->only(['create', 'store']);
+        $this->middleware(['permission:shops.update'])->only(['edit', 'update']);
+        $this->middleware(['permission:shops.delete'])->only(['delete']);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public static function saveShopDetails($validated, $user)
     {
-        //
+        $shop = ($user->shop()->count() > 0) ? $user->shop()->first() : new Shop;
+
+        $shop->name = $validated['shop_name'];
+        $shop->address = $validated['shop_address'];
+        $user->shop()->save($shop);
+
+        return true;
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public static function validateData($request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Model\Shop  $shop
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Shop $shop)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Model\Shop  $shop
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Shop $shop)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Model\Shop  $shop
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Shop $shop)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Model\Shop  $shop
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Shop $shop)
-    {
-        //
+        return $request->validate([
+          'shop_name' => 'required|string|max:255',
+          'shop_address' => 'required|string|max:500'
+        ]);
     }
 }

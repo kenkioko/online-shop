@@ -30,15 +30,16 @@ class UserController extends Controller
      * @param  \App\Model\Category  $category
      * @return boolean
      */
-    protected function save($validated, $user)
+    protected function saveUser($validated, $user)
     {
         $user->name = $validated['name'];
         $user->email = $validated['email'];
         $user->password = Hash::make($validated['password']);
+        $saved = $user->save();
 
-        $save = $user->save();
-        $user->assignRole($validated['user_level']);
-
-        return $save;
+        if ($saved) {
+          $user->assignRole($validated['user_level']);
+        }
+        return $saved;
     }
 }

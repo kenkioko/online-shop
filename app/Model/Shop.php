@@ -33,20 +33,12 @@ class Shop extends Model
     }
 
     /**
-     * Returns the shop object.
-     * should have a user or will return for the corresponds to the loged in user
+     * The item's category '1-2-1'.
      *
-     * @param int $user_id
-     * @return \App\Model\Shop
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public static function getOwnShop($user=null)
+    public function items()
     {
-        // dd($user);
-        return Shop::whereHas('user', function (Builder $query) use ($user) {
-          if (!$user) {
-            $user = Auth::user();
-          }
-          $query->where('id', $user->id);
-        })->firstOrFail();
+        return $this->hasMany('App\Model\Item');
     }
 }

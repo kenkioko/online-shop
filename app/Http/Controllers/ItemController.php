@@ -53,7 +53,7 @@ class ItemController extends Controller
         $item->price = $validated['price'];
         $item->stock = $validated['stock'];
         $item->description = $validated['description'];
-        $item->shop()->associate(Shop::getOwnShop());
+        $item->shop()->associate(Auth::user()->shop()->firstOrFail());
 
         $category = Category::findOrFail($validated['category_id']);
         $item->category()->associate($category);

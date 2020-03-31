@@ -23,7 +23,7 @@ class Item extends Model
    */
   const STATUS = array(
     'queue' => "ITEM IN QUEUE",
-    'reject' => "ORDER REJECTED",
+    'reject' => "ORDER FOR ITEM REJECTED",
     'received' => "RECEIVED ORDER FOR ITEM",
     'preparing' => "PREPARING ITEM",
     'sending' => "SENDING ITEM",

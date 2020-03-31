@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\User;
 
 class UserStoreRequest extends FormRequest
 {
@@ -23,12 +24,10 @@ class UserStoreRequest extends FormRequest
      */
     public function rules()
     {
-        $user_levels=array('admin', 'buyer');
-
         return [
           'name' => 'required|unique:users|max:255',
-          'email' => 'required|email|max:255',
-          'user_level' => 'required|max:255|in:' . implode(',', $user_levels),
+          'email' => 'required|unique:users|email|max:255',
+          'user_level' => 'required|max:255|in:' . implode(',', User::getUserRoles()),
           'password' => 'required|confirmed|max:255',
         ];
     }

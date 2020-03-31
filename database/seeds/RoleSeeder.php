@@ -32,7 +32,7 @@ class RoleSeeder extends Seeder
           'categories', // objects[3]
           'orders',     // objects[4]
           'cart',       // objects[5]
-          'shop',       // objects[6]
+          'shops',       // objects[6]
         ], true);
 
         // create object permissions

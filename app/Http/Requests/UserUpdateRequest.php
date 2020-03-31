@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\User;
 
 class UserUpdateRequest extends FormRequest
 {
@@ -23,12 +24,10 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $user_levels=array('admin', 'buyer');
-
         return [
           'name' => 'required|max:255',
           'email' => 'required|email|max:255',
-          'user_level' => 'required|max:255|in:' . implode(',', $user_levels),
+          'user_level' => 'required|max:255|in:' . implode(',', User::getUserRoles()),
           'password' => 'nullable|confirmed|max:255',
         ];
     }

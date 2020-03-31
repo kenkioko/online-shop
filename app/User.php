@@ -45,4 +45,33 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The available user level 'roles'.
+     *
+     * @var array
+     */
+    protected const ROLES = [
+        'admin', 'buyer', 'seller'
+    ];
+
+    /**
+     * return the user roles.
+     *
+     * @return array
+     */
+    public static function getUserRoles()
+    {
+        return self::ROLES;
+    }
+
+    /**
+     * The item's category '1-2-1'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function shop()
+    {
+        return $this->hasOne('App\Model\Shop');
+    }
 }

@@ -33,7 +33,7 @@ class CartUpdateRequest extends FormRequest
         return [
           'item_id' => 'required|integer',
           'quantity' => 'required|integer',
-          'order_number' => 'required|exists:orders,order_no',
+          'order_number' => 'required|uuid|exists:orders,order_no',
           'update_type' => ['required', Rule::in(['add', 'edit'])],
         ];
     }

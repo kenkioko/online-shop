@@ -49,7 +49,7 @@
               data-container="body" data-toggle="popover" data-placement="bottom"
               data-content="Reject Order"
               onclick="on_reject()"
-            ><i class="nav-icon fas fa-times-circle"></i></button><!-- /.button -->
+            ><i class="nav-icon fas fa-trash-alt"></i></button><!-- /.button -->
           @endcan
           </div>
           <!-- /.card-tools -->

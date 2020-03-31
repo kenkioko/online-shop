@@ -34,31 +34,53 @@
     <div class="card">
       <div class="card-header">
         <div class="card-tools">
+
+          @can('users.view')
+          <button type="button"
+            id="view_btn"
+            class="btn btn-sm btn-outline-primary pop"
+            data-container="body" data-toggle="popover" data-placement="bottom"
+            data-content="View User"
+          ><i class="nav-icon far fa-eye"></i></button><!-- /.button -->
+          @endcan
+
+          @can('users.create')
           <a type="button"
             class="btn btn-sm btn-outline-success pop"
             href="{{ route('admin.users.create') }}"
             data-container="body" data-toggle="popover" data-placement="bottom"
-            data-content="New"
+            data-content="New User"
           ><i class="nav-icon fas fa-user-plus"></i></a><!-- /.button -->
+          @endcan
+
+          @can('users.update')
           <button type="button"
             id="edit_table_row"
             class="btn btn-sm btn-outline-info pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
-            data-content="Edit"
+            data-content="Edit User"
           ><i class="nav-icon fas fa-user-edit"></i></button><!-- /.button -->
+          @endcan
+
+          @can('users.delete')
           <button type="button"
             id="delete_table_row"
             class="btn btn-sm btn-outline-danger pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
-            data-content="Delete"
+            data-content="Delete User"
           ><i class="nav-icon fas fa-user-times"></i></button><!-- /.button -->
+          @endcan
+
         </div>
         <!-- /.card-tools -->
       </div>
       <!-- /.card-header -->
       <div class="card-body">
+        @php
+          $table_id = 'table_list';
+        @endphp
 
-        @data_table(['table_id' => 'table_list'])
+        @data_table(['table_id' => $table_id ])
           @slot('head')
             <tr>
               <th scope="col">#</th>
@@ -68,6 +90,18 @@
               <th scope="col">User Level</th>
               <th scope="col">Created</th>
               <th scope="col">Updated</th>
+
+              @can('users.view')
+                <th scope="col">View Url</th>
+              @endcan
+
+              @can('users.update')
+                <th scope="col">Edit Url</th>
+              @endcan
+
+              @can('users.delete')
+                <th scope="col">Reject Url</th>
+              @endcan
             </tr>
           @endslot
 
@@ -80,6 +114,18 @@
               <td>{{ implode(', ', $user->getRoleNames()->toArray()) }}</td>
               <td>{{ $user->created_at }}</td>
               <td>{{ $user->updated_at }}</td>
+
+              @can('users.view')
+                <td>{{ route('admin.users.show', ['user' => $user]) }}</td>
+              @endcan
+
+              @can('users.update')
+                <td>{{ route('admin.users.edit', ['user' => $user]) }}</td>
+              @endcan
+
+              @can('users.delete')
+                <td>{{ route('admin.users.destroy', ['user' => $user]) }}</td>
+              @endcan
             </tr>
           @endforeach
         @enddata_table
@@ -89,6 +135,22 @@
     </div>
     <!-- /.card -->
 
+    <!-- No Selected Item Modal -->
+    @modal(['modal_id' => 'select_item_modal'])
+      @slot('modal_title')
+        Select Item
+      @endslot
+
+      @slot('modal_body')
+        <p>Please select an item from the table.</p>
+      @endslot
+
+      @slot('modal_footer')
+        <button type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+      @endslot
+    @endmodal
+
+    <!-- Delete Item Modal -->
     @modal(['modal_id' => 'delete_modal'])
       @slot('modal_title')
         Delete '<span class="del_user_name"></span>'
@@ -132,38 +194,67 @@
     var table;          //datatable
     var selected_row;   //selected table row
     var action_url;     //url for action on selected row
+    var table_id = '{{ $table_id }}';   //datatable table id
 
     $(function(){
       // hide id column
       table.column(1).visible(false);
 
-      // selected row actions
-      $('#edit_table_row').click( function () {
-        if (selected_row) {
-          action_url = new URL(
-            'users/' + selected_row[1] + '/edit',
-            "{{ route('admin.users.index') }}"
-          );
+      @can('users.view')
+        table.column(7).visible(false);
+      @endcan
 
+      @can('users.update')
+        table.column(8).visible(false);
+      @endcan
+
+      @can('users.delete')
+        table.column(9).visible(false);
+      @endcan
+
+      @canany(['users.view', 'users.update', 'users.delete'])
+      function is_selected() {
+        var selected = true;
+
+        if (!selected_row) {
+          $('#select_item_modal').modal('show');
+        }
+
+        return selected;
+      }
+      @endcanany
+
+      // selected row actions
+      @can('items.view')
+      $('#view_btn').click( function () {
+        if (is_selected('select_item_modal')) {
+          action_url = selected_row[7];
           window.location.href = action_url;
         }
       });
+      @endcan
 
-      $('#delete_table_row').click( function () {
-        if (selected_row) {
-          $('.del_user_name').text(selected_row[2]);
-
-          action_url = new URL(
-            'users/' + selected_row[1],
-            "{{ route('admin.users.index') }}"
-          );
-
-          $("#delete_user_form").attr('action', action_url);
-          $('#delete_modal').modal('show');
-
-          console.log(action_url);
+      @can('users.update')
+      // selected row actions
+      $('#edit_table_row').click( function () {
+        if (is_selected()) {
+          action_url = selected_row[8];
+          window.location.href = action_url;
         }
       });
+      @endcan
+
+      @can('users.delete')
+      $('#delete_table_row').click( function () {
+        if (is_selected()) {
+          $('.del_user_name').text(selected_row[2]);
+          action_url = selected_row[9];
+          $("#delete_user_form").attr('action', action_url);
+          $('#delete_modal').modal('show');
+        }
+      });
+      @endcan
+
     });
   </script>
 @endsection

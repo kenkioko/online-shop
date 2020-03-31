@@ -26,6 +26,9 @@ Route::resource('profile', 'ProfileController')->only([
 // available resource controllers for website
 Route::namespace('Web')->group(function () {
   Route::get('/', 'HomeController@index')->name('home.index');
+  Route::resource('shops', 'ShopController')->only([
+    'show'
+  ]);
   Route::resource('categories', 'CategoryController')->only([
     'index', 'show'
   ]);

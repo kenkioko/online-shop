@@ -41,7 +41,7 @@
 
           @can('categories.delete')
           <button type="button"
-            class="btn btn-sm btn-outline-warning pop"
+            class="btn btn-sm btn-outline-danger pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Delete category"
             onclick="on_delete()"
@@ -50,10 +50,10 @@
 
           <a type="button"
             href="{{ route('admin.categories.index') }}"
-            class="btn btn-sm btn-outline-danger pop"
+            class="btn btn-sm btn-outline-secondary pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
-            data-content="Back to categories"
-          ><i class="nav-icon fas fa-times-circle"></i></a><!-- /.button -->
+            data-content="Discard changes"
+          ><i class="nav-icon fas fa-undo-alt"></i></a><!-- /.button -->
         </div>
         <!-- /.card-tools -->
       </div>
@@ -71,7 +71,8 @@
             <a href="{{ route('admin.categories.show', ['category' => $parent_category]) }}"
               class="text-decoration-none text-body"
             ><h5>
-              <strong>Parent Name:</strong> {{ $parent_category->name }}
+              <strong>Parent Name:</strong>
+              <span class="badge badge-pill badge-primary py-2 px-3 m-1 ">{{ $parent_category->name }}</span>
             </h5></a>
           @endif
         </div>
@@ -109,7 +110,7 @@
               <td>{{ $item->name }}</td>
               <td>{{ $item->stock }}</td>
               <td>{{ number_format($item->price, 2) }}</td>
-              <td>{{ $item->discount }}</td>
+              <td>{{ $item->discount ?? 0 }}</td>
               <td>{{ $item->shop()->firstOrFail()->name }}</td>
             </tr>
           @endforeach

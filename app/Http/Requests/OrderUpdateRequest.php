@@ -20,7 +20,7 @@ class OrderUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        $shop = Shop::getOwnShop($this->user());
+        $shop = $this->user()->shop()->firstOrFail();
         $order = $this->route('order');
 
         $total_items = $order::whereHas('items', function (Builder $query) use ($shop) {

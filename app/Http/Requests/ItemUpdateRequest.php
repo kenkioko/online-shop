@@ -13,6 +13,7 @@ class ItemUpdateRequest extends FormRequest
      */
     public function authorize()
     {
+        dd('ItemUpdateRequest', $this->route('item'));
         return true;
     }
 

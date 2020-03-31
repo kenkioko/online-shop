@@ -38,9 +38,7 @@
             class="btn btn-sm btn-outline-info pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Process Order"
-          >
-            <i class="nav-icon far fa-eye"></i>
-          </button><!-- /.button -->
+          ><i class="nav-icon far fa-eye"></i></button><!-- /.button -->
           @endcan
 
           @can('orders.delete')
@@ -49,17 +47,8 @@
             class="btn btn-sm btn-outline-danger pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Delete Order"
-          >
-            <i class="nav-icon fas fa-trash-alt"></i>
-          </button><!-- /.button -->
+          ><i class="nav-icon fas fa-trash-alt"></i></button><!-- /.button -->
           @endcan
-
-          <a type="button"
-            href="{{ route('admin.orders.index') }}"
-            class="btn btn-sm btn-outline-danger pop"
-            data-container="body" data-toggle="popover" data-placement="bottom"
-            data-content="Discard changes"
-          ><i class="nav-icon fas fa-times-circle"></i></a><!-- /.button -->
         </div>
         <!-- /.card-tools -->
       </div>

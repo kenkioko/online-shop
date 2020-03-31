@@ -39,37 +39,45 @@
     <div class="card">
       <div class="card-header">
         <div class="card-tools">
+
+          @can('users.view')
           @if ($user)
             <a type="button"
               class="btn btn-sm btn-outline-primary pop"
               href="{{ route('admin.users.show', ['user' => $user->id]) }}"
               data-container="body" data-toggle="popover" data-placement="bottom"
-              data-content="View in site"
-            >
-              <i class="nav-icon far fa-eye"></i>
-            </a><!-- /.button -->
-
-            <button type="button"
-              form="delete_user_form"
-              class="btn btn-sm btn-outline-warning pop"
-              data-container="body" data-toggle="popover" data-placement="bottom"
-              data-content="Delete user"
-              onclick="on_delete()"
-            ><i class="nav-icon fas fa-trash-alt"></i></button><!-- /.button -->
+              data-content="View User"
+            ><i class="nav-icon far fa-eye"></i></a><!-- /.button -->
           @endif
+          @endcan
 
+          @canany(['users.create','users.update'])
           <button type="submit"
             form="user_form"
             class="btn btn-sm btn-outline-success pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Save changes"
           ><i class="nav-icon fas fa-save"></i></button><!-- /.button -->
+          @endcanany
+
+          @can('users.delete')
+          @if ($user)
+            <button type="button"
+              form="delete_user_form"
+              class="btn btn-sm btn-outline-danger pop"
+              data-container="body" data-toggle="popover" data-placement="bottom"
+              data-content="Delete user"
+              onclick="on_delete()"
+            ><i class="nav-icon fas fa-trash-alt"></i></button><!-- /.button -->
+          @endif
+          @endcan
+
           <a type="button"
             href="{{ route('admin.users.index') }}"
-            class="btn btn-sm btn-outline-danger pop"
+            class="btn btn-sm btn-outline-secondary pop"
             data-container="body" data-toggle="popover" data-placement="bottom"
             data-content="Discard changes"
-          ><i class="nav-icon fas fa-times-circle"></i></a><!-- /.button -->
+          ><i class="nav-icon fas fa-undo-alt"></i></a><!-- /.button -->
         </div>
         <!-- /.card-tools -->
       </div>
@@ -90,72 +98,82 @@
             @method('PUT')
           @endif
 
-          <div class="form-group">
-            <label for="name_input">Name:</label>
-            <input type="text"
-              id="name_input"
-              name="name"
-              class="form-control"
-              placeholder="Enter the user's name"
+          <div class="row">
+            <div class="form-group col">
+              <label for="name_input">Name:</label>
+              <input type="text"
+                id="name_input"
+                name="name"
+                class="form-control"
+                placeholder="Enter the user's name"
+                value="@if (old('name')){{ old('name') }} @elseif ($user){{ $user->name }}@endif"
+                @if ($user) readonly  @endif
+              >
+            </div><!-- /.form-group -->
+            <div class="form-group col">
+              <label for="email_input">Email:</label>
+              <input type="email"
+                id="email_input"
+                name="email"
+                class="form-control"
+                placeholder="Enter the user's email"
+                value="@if (old('email')){{ old('email') }} @elseif ($user){{ $user->email }}@endif"
+              >
+            </div><!-- /.form-group -->
+          </div><!-- /.row -->
 
-              @if (old('name'))
-                value="{{ old('name') }}"
-              @elseif ($user)
-                value="{{ $user->name }}"
-              @endif
 
-              @if ($user)
-                readonly
-              @endif
-            >
-          </div><!-- /.form-group -->
-          <div class="form-group">
-            <label for="email_input">Email:</label>
-            <input type="email"
-              id="email_input"
-              name="email"
-              class="form-control"
-              placeholder="Enter the user's email"
+          <div class="row">
+            <div class="form-group col">
+              <label for="password_input">Password:</label>
+              <input type="password"
+                id="password_input"
+                name="password"
+                class="form-control"
+                placeholder="password"
+              >
+            </div><!-- /.form-group -->
+            <div class="form-group col">
+              <label for="password_confirmation_input">Confirm Password:</label>
+              <input type="password"
+                id="password_confirmation_input"
+                name="password_confirmation"
+                class="form-control"
+                placeholder="confirm password"
+              >
+            </div><!-- /.form-group -->
+          </div><!-- /.row -->
 
-              @if (old('email'))
-                value="{{ old('email') }}"
-              @elseif ($user)
-                value="{{ $user->email }}"
-              @endif
-            >
-          </div><!-- /.form-group -->
+
           <div class="form-group">
             <label>Select User Level:</label>
-            <select class="custom-select" name="user_level">
-              @foreach(['buyer', 'admin'] as $level)
-                @if (old('user_level'))
-                  <option selected value="{{ $level }}">{{ ucwords($level) }}</option>
-                @elseif ($user and $user->hasRole($level))
-                  <option selected value="{{ $level }}">{{ ucwords($level) }}</option>
-                @else
-                  <option value="{{ $level }}">{{ ucwords($level) }}</option>
-                @endif
+            <select class="custom-select" name="user_level" id="user_level_inp" onchange="on_change_userlevel()">
+              <option>Select Role</option>
+              @foreach(['admin', 'buyer', 'seller'] as $level)
+                <option value="{{ $level }}"
+                  @if ((old('user_level') === $level) or ($user and $user->hasRole($level))) selected @endif
+                >{{ ucwords($level) }}</option>
               @endforeach
             </select>
           </div><!-- /.form-group -->
-          <div class="form-group">
-            <label for="password_input">Password:</label>
-            <input type="password"
-              id="password_input"
-              name="password"
-              class="form-control"
-              placeholder="password"
-            >
-          </div><!-- /.form-group -->
-          <div class="form-group">
-            <label for="password_confirmation_input">Confirm Password:</label>
-            <input type="password"
-              id="password_confirmation_input"
-              name="password_confirmation"
-              class="form-control"
-              placeholder="confirm password"
-            >
-          </div><!-- /.form-group -->
+
+
+          <div class="d-none border-top p-2" id="shop_details">
+            <h4>Shop Details:</h4>
+
+            <div class="form-group">
+              <label for="password_input">Shop Name:</label>
+              <input type="text" class="form-control" placeholder="shop name" name="shop_name"
+                value="@if (old('shop_name')) {{ old('shop_name') }} @elseif ($shop) {{ $shop->name }} @endif"
+              >
+            </div><!-- /.form-group -->
+            <div class="form-group">
+              <label for="password_confirmation_input">Shop Address:</label>
+              <textarea class="form-control" name="shop_address" rows="8" cols="80"
+              >@if (old('shop_address')){{ old('shop_address') }} @elseif ($shop){{ $shop->address }}@endif</textarea>
+            </div><!-- /.form-group -->
+          </div>
+
         </form>
 
       </div>
@@ -164,7 +182,6 @@
     <!-- /.card -->
 
     @if ($user)
-
       @modal(['modal_id' => 'delete_modal'])
         @slot('modal_title')
           Delete '{{ $user->name }}'
@@ -199,5 +216,21 @@
     function on_delete() {
       $('#delete_modal').modal('show');
     }
+
+    function on_change_userlevel() {
+      var user_level = $('#user_level_inp').val();
+
+      if (user_level === 'seller') {
+        $('#shop_details').removeClass('d-none');
+      } else {
+        $('#shop_details').addClass('d-none');
+      }
+    }
+  </script>
+
+  <script type="text/javascript">
+    $(function () {
+      on_change_userlevel();
+    });
   </script>
 @endsection

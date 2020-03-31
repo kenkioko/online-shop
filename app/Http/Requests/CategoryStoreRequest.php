@@ -24,7 +24,7 @@ class CategoryStoreRequest extends FormRequest
     public function rules()
     {
         return [
-          'name' => 'required|unique:categories|max:255',
+          'name' => 'required|string|unique:categories|max:255',
           'parent_category_id' => 'nullable|numeric',
         ];
     }

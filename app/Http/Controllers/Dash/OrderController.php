@@ -8,6 +8,7 @@ use App\Model\Order;
 use App\Pivot\OrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\OrderUpdateRequest;
 use App\Http\Controllers\OrderController as Controller;
@@ -32,7 +33,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $shop_id = Shop::getOwnShop()->id;
+        $shop_id = Auth::user()->shop()->firstOrFail()->id;
         $order_items = OrderItem::whereHas('item', function (Builder $query) use ($shop_id) {
           $query->where('shop_id', $shop_id);
         })->whereHas('order', function (Builder $query) {
@@ -76,7 +77,7 @@ class OrderController extends Controller
         return view('dash.order_form')->with([
           'order' => $order,
           'order_items' => $order_items,
-          'shop' => Shop::getOwnShop(),
+          'shop' => Auth::user()->shop()->firstOrFail(),
         ]);
     }
 
@@ -213,7 +214,7 @@ class OrderController extends Controller
 
     private function getOrderItems($order_no)
     {
-        $shop_id = Shop::getOwnShop()->id;
+        $shop_id = Auth::user()->shop()->firstOrFail()->id;
         return OrderItem::whereHas('item', function (Builder $query) use ($shop_id) {
           $query->where('shop_id', $shop_id);
         })->whereHas('order', function (Builder $query) use ($order_no) {
