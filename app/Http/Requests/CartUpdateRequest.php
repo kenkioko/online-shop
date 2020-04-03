@@ -15,12 +15,8 @@ class CartUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        $order_user_id = Order::findOrFail($this->route('cart'))->user_id;
-        if ($order_user_id === $this->user()->id) {
-          return true;
-        }
-
-        return false;
+        $order_user = Order::findOrFail($this->route('cart'))->user()->firstOrFail();
+        return $order_user->is($this->user());
     }
 
     /**

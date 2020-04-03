@@ -1,4 +1,4 @@
-@if($item->discount_amount || $item->discount_percent)
+@if($item->discount_amount > 0 || $item->discount_percent > 0)
   Was: <span style="text-decoration:line-through">
     {{ number_format($item->price, 2) }}
   </span>

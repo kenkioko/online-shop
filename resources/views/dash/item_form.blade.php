@@ -112,14 +112,10 @@
               name="name"
               class="form-control"
               placeholder="Enter the item's name"
-
-              @if (old('name'))
-                value="{{ old('name') }}"
-              @elseif ($item)
-                value="{{ $item->name }}"
-              @endif
+              value=@if (old('name')) "{{ old('name') }}" @elseif ($item) "{{ $item->name }}" @else "" @endif
             >
           </div><!-- /.form-group -->
+
           <div class="form-group">
             @php
               $description_value = null;
@@ -129,7 +125,6 @@
                 $description_value = $item->description;
               }
             @endphp
-
             <label for="desription_input">Description:</label>
             <textarea
               rows="3"
@@ -139,67 +134,95 @@
               placeholder="Short description for the item"
             >{{ $description_value }}</textarea>
           </div><!-- /.form-group -->
+
           <div class="form-group">
             <label>Select a parent item:</label>
             <select class="custom-select" name="category_id">
-              @if (($item and $item->category) or old('description'))
-                <option value="">Choose A Category</option>
-              @else
-                <option selected value="">Choose A Category</option>
-              @endif
+              <option @if (!($item and $item->category) or !old('category_id')) selected @endif>
+                Choose A Category
+              </option>
 
               @php
                 $categories = App\Model\Category::all();
               @endphp
 
               @foreach ($categories as $cat)
-                @if (old('category_id') == $cat->id)
-                  <option selected value="{{ $cat->id }}">{{ $cat->name }}</option>
-                @elseif ($item and ($item->category->id === $cat->id))
-                  <option selected value="{{ $cat->id }}">{{ $cat->name }}</option>
-                @else
-                  <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                @endif
+                <option @if ((old('category_id') == $cat->id) or ($item and ($item->category->id === $cat->id))) selected  @endif
+                  value="{{ $cat->id }}"
+                >{{ $cat->name }}</option>
               @endforeach
             </select>
           </div><!-- /.form-group -->
 
           <div class="row">
-            <div class="form-group col-6">
-              <label for="price_input">Price:</label>
+            <div class="form-group col">
+              <label for="price_input">Original Price:</label>
               <input type="text"
-                rows="3"
                 id="price_input"
                 name="price"
                 class="form-control"
                 placeholder="Enter the item's price"
-
-                @if (old('price'))
-                  value="{{ old('price') }}"
-                @elseif ($item)
-                  value="{{ $item->price }}"
-                @endif
+                value=@if (old('price')) "{{ old('price') }}" @elseif ($item) "{{ $item->price }}" @else "" @endif
+                onchange="change_price_js()"
               >
             </div><!-- /.form-group -->
-            <div class="form-group col-6">
-              <label for="stock_input">Remaining in Stock:</label>
-              <input type="text"
-                rows="3"
-                id="stock_input"
-                name="stock"
-                class="form-control"
-                placeholder="Enter no of item's remaining in stock"
 
-                @if (old('stock'))
-                  value="{{ old('stock') }}"
-                @elseif ($item)
-                  value="{{ $item->stock }}"
-                @endif
+            <div class="form-group col">
+              <label for="discount_percent_input">Discount percent (&percnt;):</label>
+              <input type="number" min="0" max="99"
+                id="discount_percent_input"
+                name="discount_percent"
+                class="form-control"
+                placeholder="Enter Discount (&percnt;)"
+                value=@if (old('discount_percent')) "{{ old('discount_percent') }}"
+                  @elseif ($item)
+                    "{{ $item->discount_percent ?? 0 }}"
+                  @else "" @endif
+                onchange="calculate_discount()"
+              >
+            </div><!-- /.form-group -->
+
+            <div class="form-group col">
+              <label for="discount_amount_input">Discount amount:</label>
+              <input disabled type="text"
+                id="discount_amount_input"
+                class="form-control"
+                name="discount_amount"
+                placeholder="The discounted amount"
+                value=@if (old('discount_amount')) "{{ old('discount_amount') }}"
+                  @elseif ($item)
+                    "{{ number_format($item->discount_amount, 2) ?? 0.00 }}"
+                  @else "" @endif
+              >
+            </div><!-- /.form-group -->
+
+            <div class="form-group col">
+              <label for="discounted_price_input">Discounted Price:</label>
+              <input disabled type="text"
+                id="discounted_price_input"
+                class="form-control"
+                name="discounted_price"
+                placeholder="Amount after discount"
+                value=@if (old('discounted_price')) "{{ old('discounted_price') }}"
+                  @elseif ($item)
+                    "{{ number_format(($item->price - $item->discount_amount), 2) }}"
+                  @else "" @endif
               >
             </div><!-- /.form-group -->
           </div><!-- /.row -->
 
-          <div class="form-group"><!-- /.form-group -->
+          <div class="form-group">
+            <label for="stock_input">Remaining in Stock:</label>
+            <input type="text"
+              id="stock_input"
+              name="stock"
+              class="form-control"
+              placeholder="Enter no of item's remaining in stock"
+              value=@if (old('stock')) "{{ old('stock') }}" @elseif ($item) "{{ $item->stock }}" @else "" @endif
+            >
+          </div><!-- /.form-group -->
+
+          <div class="form-group col"><!-- /.form-group -->
             <label for="image_preview">Item images:</label>
             <div class="custom-file">
               <input multiple type="file" accept="image/*"
@@ -266,10 +289,34 @@
 
 @section('page_js')
   @parent
+  @include('shared.format_number_js')
 
   <script type="text/javascript">
     function on_delete() {
       $('#delete_modal').modal('show');
+    }
+
+    function change_price_js() {
+      var price = $('#price_input').val();
+
+      // set values
+      $('#discounted_price_input').val(format_number(price));
+      $('#discount_amount_input').val(0.00);
+      $('#discount_percent_input').val(0);
+    }
+
+    function calculate_discount() {
+      var discount_percent = $('#discount_percent_input').val();
+      var price = $('#price_input').val();
+      // calculate
+      var discount_amount = price * (discount_percent / 100);
+      // set values
+      $('#discount_amount_input').val(format_number(discount_amount));
+      $('#discounted_price_input').val(format_number(price - discount_amount));
+    }
+
+    function format() {
+
     }
   </script>
 
@@ -295,8 +342,6 @@
       $('#item_images_label').text(
        length + ' image file(s) selected.'
       );
-
-      console.log(images);
     });
 
     function delete_previous(files) {
@@ -330,7 +375,6 @@
         formData.append('images[]', image, image.name);
       });
 
-      console.log(formData);
       $(form).submit(); //Change to use ajax for image file filters
     });
   });

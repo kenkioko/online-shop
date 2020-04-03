@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
          $this->call([
            RoleSeeder::class,
            UserSeeder::class,   //disabled on production
-           // ItemSeeder::class,   //disabled on production
+           ItemSeeder::class,   //disabled on production
          ]);
     }
 }

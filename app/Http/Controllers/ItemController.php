@@ -6,6 +6,8 @@ use App\Model\Shop;
 use App\Model\Item;
 use App\Model\Category;
 use Webpatser\Uuid\Uuid;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
@@ -30,7 +32,7 @@ class ItemController extends Controller
     }
 
     /**
-     * save category to database.
+     * Saves the item to the database.
      *
      * @param  array  $validated
      * @param  \App\Model\Category  $category
@@ -38,29 +40,43 @@ class ItemController extends Controller
      */
     protected function save($validated, $item, $edit=false)
     {
-        if ($edit and isset($validated['images'])) {
-          $this->delete_image_files($item->images_folder);
-          $path = $this->save_image_files($validated['images']);
-          $item->images_folder = $path;
-        }
+        // dd('\App\Http\Controllers\ItemController@save', $validated);
 
-        if (! $edit) {
-          $path = $this->save_image_files($validated['images']);
-          $item->images_folder = $path;
-        }
+        return DB::transaction(function () use ($validated, $item, $edit) {
+          if ($edit and isset($validated['images'])) {
+            dd('ItemController@save', $this->delete_image_files($item->images_folder));
 
-        $item->name = $validated['name'];
-        $item->price = $validated['price'];
-        $item->stock = $validated['stock'];
-        $item->description = $validated['description'];
-        $item->shop()->associate(Auth::user()->shop()->firstOrFail());
+            $this->delete_image_files($item->images_folder);
+            $path = $this->save_image_files($validated['images']);
+            $item->images_folder = $path;
+          }
 
-        $category = Category::findOrFail($validated['category_id']);
-        $item->category()->associate($category);
+          if (! $edit) {
+            $path = $this->save_image_files($validated['images']);
+            $item->images_folder = $path;
+          }
 
-        return $item->save();
+          $item->name = $validated['name'];
+          $item->price = $validated['price'];
+          $item->stock = $validated['stock'];
+          $item->description = $validated['description'];
+          $item->discount_percent = $validated['discount_percent'];
+          $item->discount_amount = $item->price * ($item->discount_percent / 100);
+          $item->shop()->associate(Auth::user()->shop()->firstOrFail());
+
+          $category = Category::findOrFail($validated['category_id']);
+          $item->category()->associate($category);
+
+          return $item->save();
+        });
     }
 
+    /**
+     * Saves the image files in storage folder.
+     *
+     * @param  array  $images
+     * @return string   // The folder name
+     */
     protected function save_image_files($images)
     {
         $items_folder_name = Uuid::generate()->string;
@@ -72,15 +88,43 @@ class ItemController extends Controller
         return $items_folder_name;
     }
 
+    /**
+     * Gets the image files stored in storage folder.
+     *
+     * @param  array  $images
+     * @return \Illuminate\Support\Facades\Storage   // The image folder
+     */
     protected function get_image_files($image_folder)
     {
         $directory = 'public/' . $this::item_image_folder . '/' . $image_folder;
         return Storage::files($directory);
     }
 
+    /**
+     * Gets the image files stored in storage folder.
+     *
+     * @param  array  $images
+     * @return \Illuminate\Support\Facades\Storage   // The image folder
+     */
     protected function delete_image_files($image_folder)
     {
         $directory = 'public/' . $this::item_image_folder . '/' . $image_folder;
         return Storage::deleteDirectory($directory);
+    }
+
+    /**
+     * Deletes the item in the  database.
+     *
+     * @param  \App\Model\Item  $item
+     * @return boolean
+     */
+    protected function delete(Item $item)
+    {
+        return DB::transaction(function () use ($item) {
+          $files_delete = $this->delete_image_files($item->images_folder);
+          $item_delete = $item->delete();
+
+          return ($files_delete and $item_delete);
+        });
     }
 }

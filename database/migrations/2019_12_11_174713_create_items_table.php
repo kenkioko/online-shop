@@ -21,7 +21,7 @@ class CreateItemsTable extends Migration
             $table->unsignedInteger('stock');
             $table->unsignedDecimal('price', 8, 2);
             $table->unsignedDecimal('discount_amount', 8, 2)->nullable();
-            $table->unsignedDecimal('discount_percent', 2, 2)->nullable();
+            $table->unsignedInteger('discount_percent')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('shop_id');
             $table->timestamps();

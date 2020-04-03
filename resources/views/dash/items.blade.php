@@ -107,7 +107,10 @@
             <td>{{ $item->id }}</td>
             <td>{{ $item->name }}</td>
             <td>{{ $item->category->name }}</td>
-            <td>{{ number_format($item->price, 2) }}</td>
+            <td>
+              @show_item_price(['item' => $item])
+              @endshow_item_price
+            </td>
             <td>{{ number_format($item->stock) }}</td>
 
             @can('items.view')

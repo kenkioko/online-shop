@@ -66,6 +66,12 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>
+
+                                <span class="mx-2">-OR-</span>
+
+                                <button type="button" class="btn btn-success">
+                                    {{ __('Create a shop') }}
+                                </button>
                             </div>
                         </div>
                     </form>

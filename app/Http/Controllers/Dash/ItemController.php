@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dash;
 use App\Model\Shop;
 use App\Model\Item;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ItemStoreRequest;
 use App\Http\Requests\ItemUpdateRequest;
@@ -127,11 +128,10 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        if(! $this->delete_image_files($item->images_folder)) {
+        if (! $this->delete($item)) {
           return back()->withInput();
         }
 
-        $item->delete();
         return redirect()->route('admin.items.index')->with([
           'items' => Item::all(),
           'success' => 'Item deleted successfully'

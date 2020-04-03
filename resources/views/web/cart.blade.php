@@ -197,6 +197,6 @@
     }
   </script>
 
-  @include('shared.cart_item_hover')
-  @include('shared.change_price')
+  @include('shared.cart_item_hover_js')
+  @include('shared.change_price_js')
 @endsection

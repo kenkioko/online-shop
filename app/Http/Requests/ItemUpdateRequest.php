@@ -13,8 +13,8 @@ class ItemUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        dd('ItemUpdateRequest', $this->route('item'));
-        return true;
+        $item_shop = $this->route('item')->shop()->firstOrFail();
+        return $this->user()->shop()->firstOrFail()->is($item_shop);
     }
 
     /**
@@ -27,10 +27,11 @@ class ItemUpdateRequest extends FormRequest
         return [
           'name' => 'required|string|max:255',
           'description' => 'required|string|max:255',
-          'category_id' => 'required|integer',
+          'category_id' => 'required|exists:categories,id|integer',
           'price' => 'required|numeric',
           'stock' => 'required|integer',
           'images' => 'nullable|array',
+          'discount_percent' => 'nullable|numeric',
         ];
     }
 }

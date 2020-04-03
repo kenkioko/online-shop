@@ -93,7 +93,7 @@
 
 @section('page_js')
   @parent
-  @include('shared.cart_item_hover')
+  @include('shared.cart_item_hover_js')
 
   <script type="text/javascript">
     var table;          //datatable

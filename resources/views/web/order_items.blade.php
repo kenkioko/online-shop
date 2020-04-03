@@ -123,5 +123,5 @@
 
 @section('page_js')
   @parent
-  @include('shared.cart_item_hover')
+  @include('shared.cart_item_hover_js')
 @endsection

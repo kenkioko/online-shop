@@ -35,8 +35,8 @@
       <!-- Item Images -->
       <div class="col-sm-6 d-flex flex-column">
         <img id="main_img" class="img-thumbnail shadow w-100"
-          src="https://via.placeholder.com/500x350"
-          style="height: 60vh !important"
+          src=@if(count($files) == 0) "https://via.placeholder.com/500x350" @else "" @endif
+          style="height: 60vh !important;"
         />
 
         <div class="grid-container mt-auto" id="item-images-grid">
@@ -216,7 +216,7 @@
   @if(count($files) > 0)
     <script type="text/javascript">
       function view_image(url) {
-        document.getElementById("main_img").src = url;
+        var image = document.getElementById("main_img").src = url;
       }
 
       $(function(){
@@ -225,5 +225,5 @@
     </script>
   @endif
 
-  @include('shared.change_price')
+  @include('shared.change_price_js')
 @endsection
