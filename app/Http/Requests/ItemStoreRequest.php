@@ -24,13 +24,13 @@ class ItemStoreRequest extends FormRequest
     public function rules()
     {
         return [
-          'name' => 'required|string|unique:items|max:255',
-          'description' => 'required|string|max:500',
-          'category_id' => 'required|exists:categories,id|integer',
-          'price' => 'required|numeric',
-          'stock' => 'required|integer',
-          'images' => 'required|array',
-          'discount_percent' => 'nullable|numeric',
+          'name' => ['required','string','unique','max:255'],
+          'description' => ['required','string','max:500'],
+          'category_id' => ['required','exists:categories,id','integer'],
+          'price' => ['required','numeric'],
+          'stock' => ['required','integer'],
+          'images' => ['required','array'],
+          'discount_percent' => ['nullable','numeric'],
         ];
     }
 }

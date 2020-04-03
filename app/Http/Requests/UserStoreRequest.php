@@ -25,10 +25,10 @@ class UserStoreRequest extends FormRequest
     public function rules()
     {
         return [
-          'name' => 'required|unique:users|max:255',
-          'email' => 'required|unique:users|email|max:255',
-          'user_level' => 'required|max:255|in:' . implode(',', User::getUserRoles()),
-          'password' => 'required|confirmed|max:255',
+          'name' => ['required','unique:users','max:255'],
+          'email' => ['required','unique:users','email','max:255'],
+          'user_level' => ['required',Rule::in(User::getUserRoles())],
+          'password' => ['required','confirmed','max:255'],
         ];
     }
 }

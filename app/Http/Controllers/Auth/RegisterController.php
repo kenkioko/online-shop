@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Model\Shop;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -52,6 +55,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'user_role' => ['required',Rule::in(User::getUserRoles())],
         ]);
     }
 
@@ -63,13 +67,38 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        //
+        return DB::transaction(function () use ($data) {
+          $user = User::create([
+              'name' => $data['name'],
+              'email' => $data['email'],
+              'password' => Hash::make($data['password']),
+          ]);
+          $user->assignRole($data['user_role']);
 
-        $user->assignRole('buyer');
-        return $user;
+          // save shop details
+          if ($data['user_role'] === 'seller') {
+            $shop_data = $this->validate_shop($data)->validate();
+            $user->shop()->create([
+              'name' => $shop_data['shop_name'],
+              'address' => $shop_data['shop_address'],
+            ]);
+          }
+          return $user;
+        });
+    }
+
+    /**
+     * Validator for \APP\Shop.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validate_shop(array $data)
+    {
+        return Validator::make($data, [
+            'shop_name' => ['required', 'string', 'max:255'],
+            'shop_address' => ['required', 'string', 'max:500'],
+        ]);
     }
 }

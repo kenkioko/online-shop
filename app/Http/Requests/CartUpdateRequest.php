@@ -27,9 +27,9 @@ class CartUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-          'item_id' => 'required|integer',
-          'quantity' => 'required|integer',
-          'order_number' => 'required|uuid|exists:orders,order_no',
+          'item_id' => ['required','integer'],
+          'quantity' => ['required','integer'],
+          'order_number' => ['required','uuid','exists:orders,order_no'],
           'update_type' => ['required', Rule::in(['add', 'edit'])],
         ];
     }

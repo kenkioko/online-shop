@@ -13,14 +13,7 @@ class Shop extends Model
      *
      * @var array
      */
-    protected $fillable = [''];
-
-    /**
-     * The attributes that aren't mass assignable.
-     *
-     * @var array
-     */
-    protected $guarded = ['name', 'address'];
+    protected $fillable = ['name', 'address'];
 
     /**
      * The item's category '1-2-1'.

@@ -24,8 +24,8 @@ class CartStoreRequest extends FormRequest
     public function rules()
     {
         return [
-          'item_id' => 'required|integer',
-          'quantity' => 'required|integer',
+          'item_id' => ['required','integer'],
+          'quantity' => ['required','integer'],
         ];
     }
 }

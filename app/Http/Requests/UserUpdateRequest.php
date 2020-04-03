@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use App\User;
 
 class UserUpdateRequest extends FormRequest
@@ -25,9 +26,9 @@ class UserUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-          'name' => 'required|max:255',
-          'email' => 'required|email|max:255',
-          'user_level' => 'required|max:255|in:' . implode(',', User::getUserRoles()),
+          'name' => ['required','max:255'],
+          'email' => ['required','email','max:255'],
+          'user_level' => ['nullable',Rule::in(User::getUserRoles())],
           'password' => 'nullable|confirmed|max:255',
         ];
     }

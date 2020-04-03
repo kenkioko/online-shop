@@ -24,7 +24,7 @@ class OrderStoreRequest extends FormRequest
     public function rules()
     {
         return [
-          'order_number' => 'required|exists:orders,order_no',
+          'order_number' => ['required','exists:orders,order_no'],
         ];
     }
 }
