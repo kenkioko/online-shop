@@ -12,7 +12,7 @@
                         @csrf
 
                         <div class="row">
-                            <div class="col">
+                            <div class="col-md">
                                 <div class="form-group row">
                                     <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
@@ -62,10 +62,21 @@
                                         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                                     </div>
                                 </div>
+
+                                <div id="shop_check_div" class="form-group row align-items-center d-none">
+                                    <input type="hidden" name="user_role" value="{{ old('user_role') ?? 'buyer' }}" id="user_role_inp">
+
+                                    <label class="col-md-4 col-form-label text-md-right" for="shop_check_inp">
+                                        {{ __('Create a shop') }}
+                                    </label>
+                                    <div class="col-md-6">
+                                        <input type="checkbox" id="shop_check_inp" onchange="toogle_shop_details()">
+                                    </div>
+                                </div><!-- end shop_btn -->
                             </div>
 
                             <!-- Shop Details -->
-                            <div class="col border-left d-none" id="shop_details_div">
+                            <div class="col-md border-left d-none" id="shop_details_div">
                                 <h4 class="border-bottom">Shop Details</h4>
 
                                 <div class="form-group row">
@@ -103,15 +114,6 @@
                         <!-- Form Buttons -->
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4 d-flex align-items-center">
-
-                                <div id="shop_check_div" class="form-check m-2 d-none">
-                                  <input type="hidden" name="user_role" value="{{ old('user_role') ?? 'buyer' }}" id="user_role_inp">
-                                  <input class="form-check-input" type="checkbox" id="shop_check_inp" onchange="toogle_shop_details()">
-                                  <label class="form-check-label" for="shop_check_inp">
-                                    {{ __('Create a shop') }}
-                                  </label>
-                                </div><!-- end shop_btn -->
-
                                 <div><button type="submit" class="btn btn-primary">
                                   {{ __('Register') }}
                                 </button></div><!-- end submit -->
@@ -166,11 +168,9 @@
     }
   </script>
 
-  @if(old('user_role') === 'seller')
   <script type="text/javascript">
     $(function () {
-      show_shop_details();
+      toogle_shop_details();
     });
   </script>
-  @endif
 @endsection

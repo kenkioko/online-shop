@@ -190,7 +190,7 @@
     <hr>
 
     <!-- More Items Grid -->
-    <div class="d-flex flex-column mt-5">
+    <!-- <div class="d-flex flex-column mt-5">
       <h3 id="category-header" class="mx-auto">You might also like</h3>
 
       <div class="grid-container" id="more-items-grid">
@@ -200,7 +200,7 @@
             <p>Item {{ $i + 1 }}</p>
           </div>
         @endfor
-    </div>
+    </div> -->
     <!-- More Items Grid -->
 
   </div>
