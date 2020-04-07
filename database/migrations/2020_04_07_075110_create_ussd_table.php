@@ -20,7 +20,7 @@ class CreateUSSDTable extends Migration
             $table->string('phoneNumber');
             $table->string('networkCode');
             $table->string('serviceCode');
-            $table->string('text');
+            $table->string('text')->nullable();
             $table->enum('provider', USSD::getProviders());
             $table->timestamps();
         });

@@ -10,25 +10,17 @@ use Illuminate\Support\Facades\Validator;
 class USSDController extends Controller
 {
     //
-    protected function validate_data($data)
+    protected function validator($data)
     {
         $validator = Validator::make($data, [
           'sessionId' => ['required', 'string', 'max:255'],
           'phoneNumber' => ['required', 'string', 'max:255'],
           'networkCode' => ['required', 'string', 'max:255'],
           'serviceCode' => ['required', 'string', 'max:255'],
-          'text' => ['required', 'string', 'max:255'],
+          'text' => ['nullable', 'string', 'max:255'],
         ]);
 
-        if ($validator->fails()) {
-          // $this->server_response('END Error');
-
-          return back()
-              ->withErrors($validator)
-              ->withInput();
-        }
-
-        return $validator->validate();
+        return $validator;
     }
 
     /**
@@ -50,7 +42,7 @@ class USSDController extends Controller
      * @param  string  $response
      * @return \Illuminate\Http\Response
      */
-    protected function run($sessionId, $serviceCode, $phoneNumber, $text)
+    protected function run($phoneNumber, $text='')
     {
         $response = 'END Session Ended';
 

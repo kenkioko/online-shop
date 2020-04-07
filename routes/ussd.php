@@ -13,6 +13,6 @@ use Illuminate\Http\Request;
 
 Route::namespace('USSD')->group(function () {
   Route::resource('africastkng', 'AfricastkngController')->only([
-    'index', 'store'
+    'store'
   ]);
 });

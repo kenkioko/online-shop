@@ -43,6 +43,7 @@ class Kernel extends HttpKernel
         ],
 
         'ussd' => [
+            'bindings',
         ],
 
         'sms' => [

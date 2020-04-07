@@ -16,7 +16,7 @@ class AfricastkngController extends Controller
      */
     public function index()
     {
-        return view('ussd_test');
+        abort(404);
     }
 
     /**
@@ -38,7 +38,16 @@ class AfricastkngController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $this->validate_data($request->all());
+        $validator = $this->validator($request->all());
+        if ($validator->fails()) {
+          return $this->server_response('END Error Ocurred');
+
+          // return back()
+          //     ->withErrors($validator)
+          //     ->withInput();
+        }
+
+        $validated = $validator->validate();
         $response =  DB::transaction(function () use ($validated) {
           $sessionId   = $validated["sessionId"];
           $serviceCode = $validated["serviceCode"];
@@ -53,8 +62,7 @@ class AfricastkngController extends Controller
           $ussd->save();
 
           // process the response
-          $response = $this->run($sessionId, $serviceCode, $phoneNumber, $networkCode, $text);
-          // dd($validated, $response, $ussd);
+          $response = $this->run($phoneNumber, $text);
           return $response;
         });
 
