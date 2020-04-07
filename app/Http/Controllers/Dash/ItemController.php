@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ItemStoreRequest;
 use App\Http\Requests\ItemUpdateRequest;
 use Illuminate\Database\Eloquent\Builder;
-use App\Http\Controllers\ItemController as Controller;
+use App\Http\Controllers\Base\ItemController as Controller;
 
 class ItemController extends Controller
 {

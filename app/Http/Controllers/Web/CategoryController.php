@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use App\Http\Requests\CategoryStoreRequest;
 use App\Http\Requests\CategoryUpdateRequest;
-use App\Http\Controllers\CategoryController as Controller;
+use App\Http\Controllers\Base\CategoryController as Controller;
 
 class CategoryController extends Controller
 {

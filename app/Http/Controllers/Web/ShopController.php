@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Model\Shop;
 use Illuminate\Http\Request;
-use App\Http\Controllers\ShopController as Controller;
+use App\Http\Controllers\Base\ShopController as Controller;
 
 class ShopController extends Controller
 {

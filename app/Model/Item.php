@@ -35,14 +35,16 @@ class Item extends Model
    *
    * @var array
    */
-  protected $fillable = ['name', 'category', 'description', 'discount_amount', 'discount_percent'];
+  protected $fillable = [
+    'name', 'category', 'description', 'discount_amount', 'discount_percent', 'price'
+  ];
 
   /**
    * The attributes that aren't mass assignable.
    *
    * @var array
    */
-  protected $guarded = ['price', 'images_folder'];
+  protected $guarded = ['images_folder'];
 
   /**
    * The item's category '1-2-1'.

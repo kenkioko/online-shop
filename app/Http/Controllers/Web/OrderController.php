@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\OrderStoreRequest;
 use Illuminate\Database\Eloquent\Builder;
-use App\Http\Controllers\OrderController as Controller;
+use App\Http\Controllers\Base\OrderController as Controller;
 
 class OrderController extends Controller
 {

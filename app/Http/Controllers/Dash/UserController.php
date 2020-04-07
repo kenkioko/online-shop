@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
-use App\Http\Controllers\ShopController;
-use App\Http\Controllers\UserController as Controller;
+use App\Http\Controllers\Base\ShopController;
+use App\Http\Controllers\Base\UserController as Controller;
 
 class UserController extends Controller
 {

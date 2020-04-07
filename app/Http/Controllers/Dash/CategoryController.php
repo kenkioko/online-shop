@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Requests\CategoryStoreRequest;
 use App\Http\Requests\CategoryUpdateRequest;
-use App\Http\Controllers\CategoryController as Controller;
+use App\Http\Controllers\Base\CategoryController as Controller;
 
 class CategoryController extends Controller
 {
