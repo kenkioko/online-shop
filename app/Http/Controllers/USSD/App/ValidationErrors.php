@@ -19,7 +19,7 @@ trait ValidationErrors
 
         if ($validator->errors()->messages()) {
           foreach ($validator->errors()->messages() as $key => $messages) {
-            $response .= "\n" .$key ."\n";
+            $response .= "\n" .ucfirst($key) ."\n";
             foreach ($messages as $index => $message) {
               $response .= ($index + 1) .". " .$message ."\n";
             }

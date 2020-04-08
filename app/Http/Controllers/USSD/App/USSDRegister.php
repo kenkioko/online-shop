@@ -187,11 +187,6 @@ trait USSDRegister
           'password' => ['required', 'string', 'max:50'],
         ]);
 
-        $shop_validator = Validator::make($data['shop_data'], [
-            'shop_name' => ['required', 'string', 'max:255'],
-            'shop_address' => ['required', 'string', 'max:500'],
-        ]);
-
         $user_data = $shop_data = null;
         // validate user data
         $response = $this->validate_input_show($user_validator);
@@ -201,6 +196,11 @@ trait USSDRegister
         // validate shop data
         $shop_data = null;
         if ($data['shop_data']) {
+          $shop_validator = Validator::make($data['shop_data'], [
+              'shop_name' => ['required', 'string', 'max:255'],
+              'shop_address' => ['required', 'string', 'max:500'],
+          ]);
+
           $response = $this->validate_input_show($shop_validator);
           if ($response) {return $response;}
           else {$shop_data = $shop_validator->validate(); }
