@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\USSD;
 
-use App\Http\Controllers\Base\USSDController as Controller;
+use App\Http\Controllers\USSD\USSDController as Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Model\USSD;
@@ -40,33 +40,24 @@ class AfricastkngController extends Controller
     {
         $validator = $this->validator($request->all());
         if ($validator->fails()) {
-          return $this->server_response('END Error Ocurred');
-
-          // return back()
-          //     ->withErrors($validator)
-          //     ->withInput();
+          $response = "An error ocurred while processing the data.\n";
+          $response .= $this->getValidationErrors($validator);
+          return $this->server_response($response, false, 500);
         }
 
         $validated = $validator->validate();
         $response =  DB::transaction(function () use ($validated) {
-          $sessionId   = $validated["sessionId"];
-          $serviceCode = $validated["serviceCode"];
-          $phoneNumber = $validated["phoneNumber"];
-          $networkCode = $validated["networkCode"];
-          $text        = $validated["text"];
-
           // save USSD session to db
           $ussd = new USSD($validated);
-          $ussd->sessionId = $sessionId;
+          $ussd->sessionId = $validated["sessionId"];
           $ussd->provider = 'africastkng';
           $ussd->save();
 
           // process the response
-          $response = $this->run($phoneNumber, $text);
-          return $response;
+          return $this->run($validated["phoneNumber"], $validated["text"]);
         });
 
-        return $this->server_response($response);
+        return $response;
     }
 
     /**

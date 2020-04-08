@@ -16,7 +16,7 @@ class Shop extends Model
     protected $fillable = ['name', 'address'];
 
     /**
-     * The item's category '1-2-1'.
+     * The item's owner '1-2-1'.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongTo
      */

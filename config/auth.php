@@ -47,7 +47,7 @@ return [
             'hash' => false,
         ],
 
-        'ussd' => [
+        'communication' => [
             'driver' => 'session',
             'provider' => 'users',
         ],

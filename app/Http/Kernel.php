@@ -42,11 +42,9 @@ class Kernel extends HttpKernel
             'bindings',
         ],
 
-        'ussd' => [
+        'communication' => [
+            'throttle:60,1',
             'bindings',
-        ],
-
-        'sms' => [
         ],
     ];
 
