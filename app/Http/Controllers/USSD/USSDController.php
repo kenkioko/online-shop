@@ -5,14 +5,15 @@ namespace App\Http\Controllers\USSD;
 use App\Http\Controllers\Controller;
 use App\Model\USSD;
 use App\Model\Phone;
+use App\Traits\USSD\USSDRegister;
+use App\Traits\USSD\USSDAccount;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\USSD\App\USSDRegister;
 
 class USSDController extends Controller
 {
-    use USSDRegister;
+    use USSDRegister, USSDAccount;
 
     /**
      * Return the validation rules for the africastkng api.
@@ -63,8 +64,8 @@ class USSDController extends Controller
         // check if phone number is associated with any user
         $phone = Phone::where('phone_number',$phoneNumber)->first();
         if ($phone) {
-          // login first
-          $user = $this->login_ussd($phone);
+          // auto login first
+          $user = $this->login_ussd_auto($phone);
           $response = $this->main_menu($user, $text);
         } else {
           $response = $this->register_menu($phoneNumber, $text);
@@ -82,8 +83,10 @@ class USSDController extends Controller
      * @param  \App\Mode\Phone  $phone
      * @return \App\User
      */
-    protected function login_ussd($phone)
+    protected function login_ussd_auto($phone)
     {
+        dd($phone);
+
         $user = $phone->user()->first();
         Auth::guard('communication')->login($user);
 
@@ -106,7 +109,7 @@ class USSDController extends Controller
         switch ($user_input[0]) {
           case '1':
             // login...
-            $response = $this->login_ussd($phone_number, $text);
+            return $this->login_ussd($phone_number, $text);
             break;
 
           case '2':
@@ -143,9 +146,8 @@ class USSDController extends Controller
         // home level of the main menu
         switch ($user_input[0]) {
           case '1':
-            // display menu
-            $response_data  = "My Account" .Auth::guard('communication')->User() ."\n";
-            $response = $this->server_response($response_data, false);
+            // my account option
+            return $this->account_run();
             break;
 
           default:

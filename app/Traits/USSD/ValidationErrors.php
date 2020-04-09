@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\USSD\App;
+namespace App\Traits\USSD;
 
 /**
  * The validation errors from validatior if it fails.

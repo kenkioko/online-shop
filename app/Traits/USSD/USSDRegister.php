@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\USSD\App;
+namespace App\Traits\USSD;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +10,7 @@ use App\Model\Phone;
 use App\User;
 
 /**
- * USSD register user or login with the phone number.
+ * USSD Trait for user registration and login with the phone number.
  */
 trait USSDRegister
 {
@@ -292,9 +292,9 @@ trait USSDRegister
         if ($user_data_complete or $shop_data_complete) {
 
           if ($user_data_complete) {
-            $confirm = isset($user_input[5]) ? $user_input[5] : null;
+            $confirm = isset($user_input[5]) ? $user_input[5] : false;
           } else if ($shop_data_complete) {
-            $confirm = isset($user_input[7]) ? $user_input[7] : null;
+            $confirm = isset($user_input[7]) ? $user_input[7] : false;
           }
         }
 

@@ -88,8 +88,6 @@ class User extends Authenticatable
           array_push($roles, $role['code']);
         }
 
-        dd('getUserRoles', $roles);
-
         return $roles;
     }
 
