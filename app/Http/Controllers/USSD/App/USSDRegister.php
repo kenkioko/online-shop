@@ -16,11 +16,6 @@ trait USSDRegister
 {
     use ValidationErrors;
 
-    private $roles = [
-      "1"  => "Normal Customer",
-      "2"  => "Business",
-    ];
-
     /**
      * Login a new phone number and sync with user
      *
@@ -107,8 +102,10 @@ trait USSDRegister
          case 1:
            // get name.
            $response_data = "Select your role\n";
-           foreach ($this->roles as $key => $role) {
-             $response_data .= "$key. $role\n";
+           foreach (User::getUserRoles() as $key => $role) {
+             if ($key != User::getUserRoleByCode('admin')['key']) {
+               $response_data .= "$key." .$role['name'] ."\n";
+             }
            }
 
            $response = $this->server_response($response_data);
@@ -135,7 +132,7 @@ trait USSDRegister
          default:
            // get shop data
            $shop_data = null;
-           if ($this->roles[$user_input[1]] === 'Business') {
+           if ($this->is_seller($user_input[1])) {
              switch (count($user_input)) {
                case 5:
                  // get shop name.
@@ -290,8 +287,8 @@ trait USSDRegister
     private function confirm_data($user_input, $input_data)
     {
         $confirm = null;
-        $user_data_complete = ($this->roles[$input_data['role']] == $this->roles["1"]) and (count($user_input) >= 6);
-        $shop_data_complete = ($this->roles[$input_data['role']] == $this->roles["2"]) and (count($user_input) >= 8);
+        $user_data_complete = (! $this->is_seller($input_data['role'])) and (count($user_input) >= 6);
+        $shop_data_complete = ($this->is_seller($input_data['role'])) and (count($user_input) >= 8);
         if ($user_data_complete or $shop_data_complete) {
 
           if ($user_data_complete) {
@@ -322,7 +319,7 @@ trait USSDRegister
               }
             }
           } elseif ($data_key == 'role') {
-            $response_data .= "$data_key => " .$this->roles[$data_value] ." \n";
+            $response_data .= "$data_key => " .User::getUserRoleByKey($data_value)['name'] ." \n";
           } else {
             $response_data .= "$data_key => $data_value \n";
           }
@@ -334,5 +331,10 @@ trait USSDRegister
         $response_data .= "2. Cancel ";
 
         return $this->server_response($response_data);
+    }
+
+    private function is_seller($role_key)
+    {
+        return User::getUserRoleByKey($role_key) === User::getUserRoleByCode('seller');
     }
 }

@@ -52,7 +52,18 @@ class User extends Authenticatable
      * @var array
      */
     protected const ROLES = [
-        'admin', 'buyer', 'seller'
+        "1"  => [
+          "code" => "buyer",
+          "name" => "Normal Customer",
+        ],
+        "2"  => [
+          "code" => "seller",
+          "name" => "Business",
+        ],
+        "3"  => [
+          "code" => "admin",
+          "name" => "Administrator",
+        ],
     ];
 
     /**
@@ -63,6 +74,54 @@ class User extends Authenticatable
     public static function getUserRoles()
     {
         return self::ROLES;
+    }
+
+    /**
+     * return the user roles as an array of user codes.
+     *
+     * @return array
+     */
+    public static function getUserRolesCodes()
+    {
+        $roles = [];
+        foreach (self::ROLES as $id => $role) {
+          array_push($roles, $role['code']);
+        }
+
+        dd('getUserRoles', $roles);
+
+        return $roles;
+    }
+
+    /**
+     * return the user roles.
+     *
+     * @return array
+     */
+    public static function getUserRoleByKey($key)
+    {
+        $role = self::ROLES[$key];
+        $role['key'] = $key;
+
+        return $role;
+    }
+
+    /**
+     * return the user roles.
+     * calls getUserRoleByKey()
+     *
+     * @return array
+     */
+    public static function getUserRoleByCode($code)
+    {
+        $role = null;
+        $key = array_search($code, array_column(self::ROLES, 'code'));
+
+        if (is_int($key)) {
+          $role = self::getUserRoleByKey('' .($key + 1));
+        }
+
+        return $role;
     }
 
     /**
