@@ -315,13 +315,13 @@ trait USSDRegister
           if ($data_key == 'shop_data') {
             if (is_array($data_value)) {
               foreach ($data_value as $shop_key => $shop_value) {
-                $response_data .= "$shop_key => $shop_value \n";
+                $response_data .= "$shop_key: $shop_value \n";
               }
             }
           } elseif ($data_key == 'role') {
-            $response_data .= "$data_key => " .User::getUserRoleByKey($data_value)['name'] ." \n";
+            $response_data .= "$data_key: " .User::getUserRoleByKey($data_value)['name'] ." \n";
           } else {
-            $response_data .= "$data_key => $data_value \n";
+            $response_data .= "$data_key: $data_value \n";
           }
         }
 

@@ -64,9 +64,7 @@ class USSDController extends Controller
         $phone = Phone::where('phone_number',$phoneNumber)->first();
         if ($phone) {
           // login first
-          $user = $phone->user()->first();
-          Auth::guard('communication')->login($user);
-
+          $user = $this->login_ussd($phone);
           $response = $this->main_menu($user, $text);
         } else {
           $response = $this->register_menu($phoneNumber, $text);
@@ -76,6 +74,20 @@ class USSDController extends Controller
           $response = $this->server_response('Error Session Ended', false);
         }
         return $response;
+    }
+
+    /**
+     * Login to use the ussd app using your phone.
+     *
+     * @param  \App\Mode\Phone  $phone
+     * @return \App\User
+     */
+    protected function login_ussd($phone)
+    {
+        $user = $phone->user()->first();
+        Auth::guard('communication')->login($user);
+
+        return $user;
     }
 
     /**
@@ -133,7 +145,7 @@ class USSDController extends Controller
           case '1':
             // display menu
             $response_data  = "My Account" .Auth::guard('communication')->User() ."\n";
-            $response = $this->server_response($response_data);
+            $response = $this->server_response($response_data, false);
             break;
 
           default:
