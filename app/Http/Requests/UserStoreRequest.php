@@ -25,8 +25,8 @@ class UserStoreRequest extends FormRequest
     public function rules()
     {
         return [
-          'name' => ['required','unique:users','max:255'],
-          'email' => ['required','unique:users','email','max:255'],
+          'name' => ['required','unique:App\User','max:255'],
+          'email' => ['required','unique:App\User','email','max:255'],
           'user_level' => ['required',Rule::in(User::getUserRoles())],
           'password' => ['required','confirmed','max:255'],
         ];

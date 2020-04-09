@@ -16,6 +16,11 @@ trait USSDRegister
 {
     use ValidationErrors;
 
+    private $roles = [
+      "1"  => "Normal Customer",
+      "2"  => "Business",
+    ];
+
     /**
      * Login a new phone number and sync with user
      *
@@ -32,7 +37,7 @@ trait USSDRegister
         switch (count($user_input)) {
           case 1:
             // get email.
-            $response_data = "Please enter your email";
+            $response_data = "Please enter your email address";
             $response = $this->server_response($response_data);
             break;
 
@@ -95,17 +100,14 @@ trait USSDRegister
     {
        $response = null;
        $user_input = explode('*', $input_text);
-       $roles = [
-         "1"  => "Normal Customer",
-         "2"  => "Business",
-       ];
+
 
        // prompt for name, email and password
        switch (count($user_input)) {
          case 1:
            // get name.
            $response_data = "Select your role\n";
-           foreach ($roles as $key => $role) {
+           foreach ($this->roles as $key => $role) {
              $response_data .= "$key. $role\n";
            }
 
@@ -120,7 +122,7 @@ trait USSDRegister
 
          case 3:
            // get email.
-           $response_data = "Please enter your email";
+           $response_data = "Please enter your email address";
            $response = $this->server_response($response_data);
            break;
 
@@ -133,7 +135,7 @@ trait USSDRegister
          default:
            // get shop data
            $shop_data = null;
-           if ($roles[$user_input[1]] === 'Business') {
+           if ($this->roles[$user_input[1]] === 'Business') {
              switch (count($user_input)) {
                case 5:
                  // get shop name.
@@ -157,14 +159,26 @@ trait USSDRegister
              }
            }
 
-           // signup and sync phone number with user
-           $response = $this->signup_and_sync($phone_number, [
+           $input_data = [
              'role' => $user_input[1],
              'name' => $user_input[2],
              'email' => $user_input[3],
              'password' => $user_input[4],
              'shop_data' => $shop_data,
-           ]);
+           ];
+
+           // display input data for confirmation
+           $confirm = $this->confirm_data($user_input, $input_data);
+           if (! $confirm) {
+             return $this->display_data($input_data);
+           }
+
+           // signup and sync phone number with user
+           if ($confirm == '1') {
+             return $this->signup_and_sync($phone_number, $input_data);
+           }
+
+           $response = $this->server_response('Registration Canceled', false);
            break;
        }
 
@@ -183,7 +197,7 @@ trait USSDRegister
         $response = null;
         $user_validator = Validator::make($data, [
           'name' => ['required', 'string', 'max:50'],
-          'email' => ['required', 'email', 'max:50'],
+          'email' => ['required', 'email', 'unique:App\User,email', 'max:50'],
           'password' => ['required', 'string', 'max:50'],
         ]);
 
@@ -262,7 +276,63 @@ trait USSDRegister
         $response = "There were errors found.\n";
         $response .= $this->getValidationErrors($validator);
 
-        return $this->server_response($response, false);
+        // return $this->server_response($response, false);
+        return $response;
       }
+    }
+
+    /**
+     * Confirm if all data is availalble from the user input
+     *
+     * @param array $data
+     * @return mixed
+     */
+    private function confirm_data($user_input, $input_data)
+    {
+        $confirm = null;
+        $user_data_complete = ($this->roles[$input_data['role']] == $this->roles["1"]) and (count($user_input) >= 6);
+        $shop_data_complete = ($this->roles[$input_data['role']] == $this->roles["2"]) and (count($user_input) >= 8);
+        if ($user_data_complete or $shop_data_complete) {
+
+          if ($user_data_complete) {
+            $confirm = isset($user_input[5]) ? $user_input[5] : null;
+          } else if ($shop_data_complete) {
+            $confirm = isset($user_input[7]) ? $user_input[7] : null;
+          }
+        }
+
+        return $confirm;
+    }
+
+    /**
+     * Display the inputed data by user for confirmation
+     *
+     * @param array $data
+     * @return \Illuminate\Http\Response
+     */
+    private function display_data($data)
+    {
+        $response_data  = "Please confirm your data.\n";
+        $response_data .= "\n";
+        foreach ($data as $data_key => $data_value) {
+          if ($data_key == 'shop_data') {
+            if (is_array($data_value)) {
+              foreach ($data_value as $shop_key => $shop_value) {
+                $response_data .= "$shop_key => $shop_value \n";
+              }
+            }
+          } elseif ($data_key == 'role') {
+            $response_data .= "$data_key => " .$this->roles[$data_value] ." \n";
+          } else {
+            $response_data .= "$data_key => $data_value \n";
+          }
+        }
+
+        // confirmation menu
+        $response_data .= "\n";
+        $response_data .= "1. Ok \n";
+        $response_data .= "2. Cancel ";
+
+        return $this->server_response($response_data);
     }
 }

@@ -24,7 +24,7 @@ class CategoryUpdateRequest extends FormRequest
     public function rules()
     {
       return [
-        'name' => ['required','string','max:255'],
+        'name' => ['required','string', 'unique:App\Model\Category', 'max:255'],
         'parent_category_id' => ['nullable','numeric'],
       ];
     }

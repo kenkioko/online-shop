@@ -54,7 +54,7 @@ class AfricastkngController extends Controller
           $ussd->save();
 
           // process the response
-          return $this->run($validated["phoneNumber"], $validated["text"]);
+          return $this->run($validated["phoneNumber"], isset($validated["text"]) ? $validated["text"] : null);
         });
 
         return $response;
