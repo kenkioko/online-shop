@@ -85,8 +85,6 @@ class USSDController extends Controller
      */
     protected function login_ussd_auto($phone)
     {
-        dd($phone);
-
         $user = $phone->user()->first();
         Auth::guard('communication')->login($user);
 
