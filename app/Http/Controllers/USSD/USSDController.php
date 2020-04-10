@@ -220,9 +220,9 @@ class USSDController extends Controller
             $response_data  = "Welcome $user_name \n";
             $response_data .= "\n";
             $response_data .= "1. My Account  \n";
-            $response_data .= "2. My Orders \n";
             $response_data .= "3. Search Shop \n";
-            $response_data .= "4. Search Item";
+            $response_data .= "4. Search Item \n";
+            $response_data .= "2. My Orders ";
 
             return $this->server_response($response_data);
         }
