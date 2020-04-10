@@ -16,7 +16,7 @@
         "monolog/monolog": "^2.0",
         "spatie/laravel-permission": "^3.3",
         "webpatser/laravel-uuid": "^3.0",
-        "yajra/laravel-datatables-oracle": "~9.0"
+        "yajra/laravel-datatables": "^1.5"
     },
     "require-dev": {
         "facade/ignition": "^1.4",
