@@ -83,7 +83,7 @@ class USSDController extends Controller
      * @param  \App\Mode\Phone  $phone
      * @return \App\User
      */
-    protected function login_ussd_auto($phone)
+    private function login_ussd_auto($phone)
     {
         $user = $phone->user()->first();
         Auth::guard('communication')->login($user);
@@ -98,7 +98,7 @@ class USSDController extends Controller
      * @param  string  $text
      * @return \Illuminate\Http\Response
      */
-    protected function register_menu($phone_number, $text)
+    private function register_menu($phone_number, $text)
     {
         $response = null;
         $user_input = explode('*', $text, 2); // max 2 levels
@@ -108,12 +108,10 @@ class USSDController extends Controller
           case '1':
             // login...
             return $this->login_ussd($phone_number, $text);
-            break;
 
           case '2':
             // register...
-            $response = $this->register_ussd($phone_number, $text);
-            break;
+            return $this->register_ussd($phone_number, $text);
 
           default:
             // display menu
@@ -122,26 +120,63 @@ class USSDController extends Controller
             $response_data .= "1. Login\n";
             $response_data .= "2. Register";
 
-            $response = $this->server_response($response_data);
-            break;
+            return $this->server_response($response_data);
         }
-
-        return $response;
     }
 
     /**
      * This is the ussd app's main menu.
+     * calls either the seller's or buyer's menu
      *
-     * @param  string  $phoneNumber
+     * @param  \App\User  $user
      * @param  string  $text
      * @return \Illuminate\Http\Response
      */
-    protected function main_menu($user, $text)
+    private function main_menu($user, $text)
     {
         $response = null;
-        $user_input = explode('*', $text); // max 2 levels
+        $user_input = explode('*', $text, 2); // max 2 levels
 
         // home level of the main menu
+        if ($user->hasRole('seller')) {
+          // show the sellers main menu
+          return $this->show_seller_menu($user, $text);
+        }
+        elseif ($user->hasRole('buyer')) {
+          // show the buyers main menu
+          return $this->show_buyer_menu($user->name, $text);
+        }
+        else {
+          switch ($user_input[0]) {
+            case '1':
+              // my account option
+              return $this->account_run();
+              break;
+
+            default:
+              // display menu
+              $response_data  = "Welcome $user->name. \n";
+              $response_data .= "\n";
+              $response_data .= "1. My Account \n";
+              return $this->server_response($response_data);
+            }
+        }
+
+    }
+
+    /**
+     * This is the ussd app seller's  menu
+     *
+     * @param  \App\User  $user
+     * @param  string  $text
+     * @return \Illuminate\Http\Response
+     */
+    private function show_seller_menu($user, $text)
+    {
+        $response = null;
+        $user_input = explode('*', $text);
+        $my_shop = $user->shop()->first();
+
         switch ($user_input[0]) {
           case '1':
             // my account option
@@ -150,13 +185,47 @@ class USSDController extends Controller
 
           default:
             // display menu
-            $response_data  = "1. My Account \n";
-            $response_data .= "2. Help";
+            $response_data  = "Welcome $user->name. \n";
+            $response_data .= "You have (" .$my_shop->getNewOrders(true). ") new orders\n";
+            $response_data .= "\n";
+            $response_data .= "1. My Account \n";
+            $response_data .= "2. My Orders \n";
+            $response_data .= "3. My Items \n";
 
-            $response = $this->server_response($response_data);
-            break;
+            return $this->server_response($response_data);
+        }
+    }
+
+    /**
+     * This is the ussd app buyers's  menu
+     *
+     * @param  string  $user_name
+     * @param  string  $text
+     * @return \Illuminate\Http\Response
+     */
+    private function show_buyer_menu($user_name, $text)
+    {
+        // code...
+        $response = null;
+        $user_input = explode('*', $text);
+
+        // home level of the main menu
+        switch ($user_input[0]) {
+          case '1':
+            // my account option
+            return $this->account_run();
+
+          default:
+            // display menu
+            $response_data  = "Welcome $user_name \n";
+            $response_data .= "\n";
+            $response_data .= "1. My Account  \n";
+            $response_data .= "2. My Orders \n";
+            $response_data .= "3. Search Shop \n";
+            $response_data .= "4. Search Item";
+
+            return $this->server_response($response_data);
         }
 
-        return $response;
     }
 }

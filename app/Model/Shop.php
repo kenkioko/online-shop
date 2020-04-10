@@ -2,6 +2,9 @@
 
 namespace App\Model;
 
+use App\Model\Item;
+use App\Model\Order;
+use App\Pivot\OrderItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -33,5 +36,21 @@ class Shop extends Model
     public function items()
     {
         return $this->hasMany('App\Model\Item');
+    }
+
+    public function getNewOrders($count=false)
+    {
+        $shop_id = $this->id;
+        $new_orders = OrderItem::whereHas('item', function (Builder $query) use ($shop_id) {
+          $query->where('shop_id', $shop_id);
+        })->whereHas('order', function (Builder $query) {
+          $query->where('status', '!=', Order::getStatus('items_in_cart'));
+        })->where('status', Item::getStatus('queue'));
+
+        if ($count) {
+          return $new_orders->count();
+        }
+
+        return $new_orders->get();
     }
 }

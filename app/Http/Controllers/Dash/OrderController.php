@@ -33,13 +33,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $shop_id = Auth::user()->shop()->firstOrFail()->id;
-        $order_items = OrderItem::whereHas('item', function (Builder $query) use ($shop_id) {
-          $query->where('shop_id', $shop_id);
-        })->whereHas('order', function (Builder $query) {
-          $query->where('status', '!=', Order::getStatus('items_in_cart'));
-        })->get();
-
+        $order_items = Auth::user()->shop()->firstOrFail()->getNewOrders();
         return view('dash.orders')->with('orders', $order_items);
     }
 
