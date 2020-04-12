@@ -65,6 +65,9 @@ class USSDController extends Controller
         $phone = Phone::where('phone_number',$phoneNumber)->first();
         if ($phone) {
           // auto login first
+          $user = $this->login_ussd_otp($phone);
+          dd('run', $user);
+
           $user = $this->login_ussd_auto($phone);
           $response = $this->main_menu($user, $text);
         } else {

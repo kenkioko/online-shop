@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Model\Phone;
 use App\User;
+use OTP;
 
 /**
  * USSD Trait for user registration and login with the phone number.
@@ -15,6 +16,29 @@ use App\User;
 trait USSDRegister
 {
     use ValidationErrors;
+
+    /**
+     * Login to use the ussd app using your phone.
+     *
+     * @param  \App\Mode\Phone  $phone
+     * @return \App\User
+     */
+    private function login_ussd_otp($phone)
+    {
+        //
+        $user = $phone->user()->first();
+        // Auth::guard('communication')->login($user);
+        // $otp = Otp::generate($user->email, 6, 15);
+        $otp = new Otp;
+
+        $generate = $otp->generate($user, 6, 15);
+        $validate = $otp->validate($user, $generate->token);
+
+        // dd(Otp::generate($user, 6, 15));
+        // dd(Otp::validate(string $identifier, string $token));
+
+        dd('login_ussd_otp', $generate, $validate);
+    }
 
     /**
      * Login a new phone number and sync with user

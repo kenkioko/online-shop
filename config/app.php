@@ -178,6 +178,8 @@ return [
         Spatie\Permission\PermissionServiceProvider::class,
         // laravel datatables
         Yajra\DataTables\DataTablesServiceProvider::class,
+        // laravel otp
+        Kenkioko\OTP\OTPServiceProvider::class,
 
     ],
 
@@ -230,6 +232,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'OTP' => Kenkioko\OTP\OTP::class,
 
     ],
 
