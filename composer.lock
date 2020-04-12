@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1605508c7ae6b472d5bfd8d582c3ea0d",
+    "content-hash": "18cc65369c6dc840c3129ca94751350f",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -430,12 +430,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kenkioko/laravel-otp.git",
-                "reference": "e14c3fc933b456059a2f5caea7b980919beb6553"
+                "reference": "8fd5663a44006c839df18d243056be5fa0218d3d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kenkioko/laravel-otp/zipball/e14c3fc933b456059a2f5caea7b980919beb6553",
-                "reference": "e14c3fc933b456059a2f5caea7b980919beb6553",
+                "url": "https://api.github.com/repos/kenkioko/laravel-otp/zipball/8fd5663a44006c839df18d243056be5fa0218d3d",
+                "reference": "8fd5663a44006c839df18d243056be5fa0218d3d",
                 "shasum": ""
             },
             "type": "library",
@@ -471,7 +471,7 @@
                 }
             ],
             "description": "A simple package to generate and validate OTPs. [forked from ichtrojan/laravel-otp] (https://github.com/ichtrojan/laravel-otp)",
-            "time": "2020-04-12T16:26:56+00:00"
+            "time": "2020-04-12T21:57:32+00:00"
         },
         {
             "name": "laravel/framework",
