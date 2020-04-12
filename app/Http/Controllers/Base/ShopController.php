@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Base;
 
 use App\Http\Controllers\Controller;
-use App\Model\Shop;
+use App\Models\Shop;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller

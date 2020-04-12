@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Base;
 
 use App\Http\Controllers\Controller;
-use App\Model\Item;
-use App\Model\Category;
+use App\Models\Item;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use App\Http\Requests\CategoryStoreRequest;
@@ -28,7 +28,7 @@ class CategoryController extends Controller
      * save category to database.
      *
      * @param  array  $validated
-     * @param  \App\Model\Category  $category
+     * @param  \App\Models\Category  $category
      * @return boolean
      */
     protected function save($validated, $category)

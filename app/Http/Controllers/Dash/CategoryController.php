@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Dash;
 
-use App\Model\Shop;
-use App\Model\Item;
-use App\Model\Category;
+use App\Models\Shop;
+use App\Models\Item;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
@@ -74,7 +74,7 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Model\Category  $category
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function show(Category $category)
@@ -102,7 +102,7 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Model\Category  $category
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function edit(Category $category)
@@ -118,7 +118,7 @@ class CategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Model\Category  $category
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function update(CategoryUpdateRequest $request, Category $category)
@@ -136,7 +136,7 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Model\Category  $category
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
     public function destroy(Category $category)

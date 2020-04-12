@@ -143,7 +143,7 @@
               </option>
 
               @php
-                $categories = App\Model\Category::all();
+                $categories = App\Models\Category::all();
               @endphp
 
               @foreach ($categories as $cat)

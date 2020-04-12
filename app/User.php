@@ -129,7 +129,7 @@ class User extends Authenticatable
      */
     public function shop()
     {
-        return $this->hasOne('App\Model\Shop');
+        return $this->hasOne('App\Models\Shop');
     }
 
     /**
@@ -139,6 +139,6 @@ class User extends Authenticatable
      */
     public function phone()
     {
-        return $this->hasMany('App\Model\Phone');
+        return $this->hasMany('App\Models\Phone');
     }
 }

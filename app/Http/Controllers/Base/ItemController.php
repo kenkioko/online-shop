@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Base;
 
 use App\Http\Controllers\Controller;
-use App\Model\Shop;
-use App\Model\Item;
-use App\Model\Category;
+use App\Models\Shop;
+use App\Models\Item;
+use App\Models\Category;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +36,7 @@ class ItemController extends Controller
      * Saves the item to the database.
      *
      * @param  array  $validated
-     * @param  \App\Model\Category  $category
+     * @param  \App\Models\Category  $category
      * @return boolean
      */
     protected function save($validated, $item, $edit=false)
@@ -116,7 +116,7 @@ class ItemController extends Controller
     /**
      * Deletes the item in the  database.
      *
-     * @param  \App\Model\Item  $item
+     * @param  \App\Models\Item  $item
      * @return boolean
      */
     protected function delete(Item $item)

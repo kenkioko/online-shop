@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Dash;
 
 use App\User;
-use App\Model\Shop;
+use App\Models\Shop;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;

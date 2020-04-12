@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Model\Order;
+use App\Models\Order;
 
 class CreateOrdersTable extends Migration
 {

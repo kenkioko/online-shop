@@ -12,6 +12,6 @@ class ItemSeeder extends Seeder
     public function run()
     {
         //seed db with ten items
-        $items = factory(App\Model\Item::class, 10)->create();
+        $items = factory(App\Models\Item::class, 10)->create();
     }
 }

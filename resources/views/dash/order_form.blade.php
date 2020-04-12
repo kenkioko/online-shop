@@ -31,7 +31,7 @@
     @endshow_alert
 
     <div class="card">
-      @if($order->status != App\Model\Order::getStatus('completed'))
+      @if($order->status != App\Models\Order::getStatus('completed'))
         <div class="card-header">
         <div class="card-tools">
           @can('orders.update')
@@ -72,7 +72,7 @@
             </tr>
             <tr>
               <td><strong>Order Status: </strong></td>
-              <td class="px-2">{{ App\Model\Order::getStatus($order->status) }}</td>
+              <td class="px-2">{{ App\Models\Order::getStatus($order->status) }}</td>
             </tr>
             <tr>
               <td><strong>Order Amount: </strong></td>
@@ -138,19 +138,19 @@
                 <!-- set progress status -->
                 <td>
                   <select id="status_item_{{ $item->id }}" class="form-control" onchange="change_status({{ $item->id }})">
-                    @foreach(App\Model\Item::getStatusAll() as $key => $value )
+                    @foreach(App\Models\Item::getStatusAll() as $key => $value )
                       @php
                         $print_option = true;
 
-                        if($key == App\Model\Item::getStatus('reject') or $key == App\Model\Item::getStatus('received')){
+                        if($key == App\Models\Item::getStatus('reject') or $key == App\Models\Item::getStatus('received')){
                           $print_option = false;
                         }
 
-                        if($item->status != App\Model\Item::getStatus('queue') and $key == App\Model\Item::getStatus('queue')){
+                        if($item->status != App\Models\Item::getStatus('queue') and $key == App\Models\Item::getStatus('queue')){
                           $print_option = false;
                         }
 
-                        if($item->status == App\Model\Item::getStatus('sending') and $key != App\Model\Item::getStatus('sending')){
+                        if($item->status == App\Models\Item::getStatus('sending') and $key != App\Models\Item::getStatus('sending')){
                           $print_option = false;
                         }
                       @endphp
@@ -158,7 +158,7 @@
                       @if($print_option)
                         <option value="{{ $key }}"
                           @if($item->status == $key) selected @endif
-                          @if($item->status == App\Model\Item::getStatus('sending')) disabled @endif
+                          @if($item->status == App\Models\Item::getStatus('sending')) disabled @endif
                         >{{ $value }}</option>
                       @endif
                     @endforeach

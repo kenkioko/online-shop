@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\USSD;
 
 use App\Http\Controllers\Controller;
-use App\Model\USSD;
-use App\Model\Phone;
+use App\Models\USSD;
+use App\Models\Phone;
 use App\Traits\USSD\USSDRegister;
+use App\Traits\USSD\USSDAccount;
 use App\Traits\USSD\USSDAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

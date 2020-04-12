@@ -27,7 +27,7 @@ class ItemUpdateRequest extends FormRequest
         return [
           'name' => ['required','string','max:255'],
           'description' => ['required','string','max:500'],
-          'category_id' => ['required','exists:App\Model\Category,id','integer'],
+          'category_id' => ['required','exists:App\Models\Category,id','integer'],
           'price' => ['required','numeric'],
           'stock' => ['required','integer'],
           'images' => ['required','array'],

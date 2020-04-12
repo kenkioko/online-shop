@@ -5,7 +5,7 @@ namespace App\Http\Controllers\USSD;
 use App\Http\Controllers\USSD\USSDController as Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
-use App\Model\USSD;
+use App\Models\USSD;
 
 class AfricastkngController extends Controller
 {
@@ -63,7 +63,7 @@ class AfricastkngController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Model\USSD  $ussd
+     * @param  \App\Models\USSD  $ussd
      * @return \Illuminate\Http\Response
      */
     public function show(USSD $ussd)
@@ -74,7 +74,7 @@ class AfricastkngController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Model\USSD  $ussd
+     * @param  \App\Models\USSD  $ussd
      * @return \Illuminate\Http\Response
      */
     public function edit(USSD $ussd)
@@ -86,7 +86,7 @@ class AfricastkngController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Model\USSD  $ussd
+     * @param  \App\Models\USSD  $ussd
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, USSD $ussd)
@@ -97,7 +97,7 @@ class AfricastkngController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Model\USSD  $ussd
+     * @param  \App\Models\USSD  $ussd
      * @return \Illuminate\Http\Response
      */
     public function destroy(USSD $ussd)

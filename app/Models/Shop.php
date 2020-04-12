@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
-use App\Model\Item;
-use App\Model\Order;
+use App\Models\Item;
+use App\Models\Order;
 use App\Pivot\OrderItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -35,7 +35,7 @@ class Shop extends Model
      */
     public function items()
     {
-        return $this->hasMany('App\Model\Item');
+        return $this->hasMany('App\Models\Item');
     }
 
     public function getNewOrders($count=false)

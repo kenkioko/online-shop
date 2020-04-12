@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Model\Item;
-use App\Model\Order;
+use App\Models\Item;
+use App\Models\Order;
 use App\Pivot\OrderItem;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ class CartController extends Controller
      * The currently openned order.
      * The openned order is used as cart with cart items.
      *
-     * @var App\Model\Order
+     * @var App\Models\Order
      */
     private $open_order = null;
 
@@ -104,7 +104,7 @@ class CartController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id the id of the \App\Model\Order
+     * @param  int  $id the id of the \App\Models\Order
      * @return \Illuminate\Http\Response
      */
     public function update(CartUpdateRequest $request, $id)
@@ -168,7 +168,7 @@ class CartController extends Controller
     /**
      * save the openned order..
      *
-     * @param  \App\Model\Item  $item
+     * @param  \App\Models\Item  $item
      * @return true/false
      */
     private function saveCartItem($item, $quantity, $update_type='add')

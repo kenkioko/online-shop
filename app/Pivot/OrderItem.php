@@ -35,7 +35,7 @@ class OrderItem extends Pivot
      */
     public function order()
     {
-        return $this->belongsTo('App\Model\Order');
+        return $this->belongsTo('App\Models\Order');
     }
 
     /**
@@ -45,6 +45,6 @@ class OrderItem extends Pivot
      */
     public function item()
     {
-        return $this->belongsTo('App\Model\Item', 'item_id');
+        return $this->belongsTo('App\Models\Item', 'item_id');
     }
 }

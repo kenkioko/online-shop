@@ -5,8 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
-use App\Model\Shop;
-use App\Model\Item;
+use App\Models\Shop;
+use App\Models\Item;
 use App\Pivot\OrderItem;
 use App\Http\Controllers\Dash\OrderController;
 

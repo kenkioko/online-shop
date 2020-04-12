@@ -20,7 +20,7 @@
 
   @php
     use Illuminate\Support\Facades\Auth;
-    use App\Model\Order;
+    use App\Models\Order;
     use App\User;
 
     $user = Auth::user();
@@ -107,7 +107,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <!-- List all categories -->
           @php
-            $categories = App\Model\Category::all();
+            $categories = App\Models\Category::all();
           @endphp
 
           @foreach ($categories as $category)

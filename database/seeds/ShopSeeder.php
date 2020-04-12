@@ -12,6 +12,6 @@ class ShopSeeder extends Seeder
     public function run()
     {
         //seed db with two shops
-        $items = factory(App\Model\Shop::class, 2)->create();
+        $items = factory(App\Models\Shop::class, 2)->create();
     }
 }

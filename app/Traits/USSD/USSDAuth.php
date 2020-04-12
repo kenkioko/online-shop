@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Model\Phone;
+use App\Models\Phone;
 use App\User;
 use OTP;
 
@@ -23,19 +23,14 @@ trait USSDAuth
      * @param  \App\Mode\Phone  $phone
      * @return \App\User
      */
-    private function login_ussd_otp($phone)
+    private function login_ussd_otp($phone, )
     {
         //
         $user = $phone->user()->first();
         // Auth::guard('communication')->login($user);
-        // $otp = Otp::generate($user->email, 6, 15);
-        $otp = new Otp;
 
-        $generate = $otp->generate($user, 6, 15);
-        $validate = $otp->validate($user, $generate->token);
-
-        // dd(Otp::generate($user, 6, 15));
-        // dd(Otp::validate(string $identifier, string $token));
+        $generate = Otp::generate($user, 6, 15);
+        $validate = Otp::validate($user, $generate->token);
 
         dd('login_ussd_otp', $generate, $validate);
     }
@@ -107,7 +102,11 @@ trait USSDAuth
             Auth::guard('communication')->User()->phone()->save($phone);
           });
 
-          return $this->server_response('Welcome ' .Auth::guard('communication')->User()->name, false);
+          $user = Auth::guard('communication')->User();
+          $response_data  = "Welcome $user->name \n";
+          $response_data .= "Your One Time Pin (OTP) is" .Otp::generate($user, 6, 15);
+
+          return $this->server_response($response_data, false);
         }
         // else credentials don't match
         else {
@@ -248,12 +247,16 @@ trait USSDAuth
           $phone = new Phone();
           $phone->phone_number = $phone_number;
           $user->phone()->save($phone);
-
+          // login
+          Auth::guard('communication')->login($user)
           return $user;
         });
 
-        Auth::guard('communication')->login($user);
-        return $this->server_response('Welcome ' .Auth::guard('communication')->User()->name, false);
+        $user = Auth::guard('communication')->User();
+        $response_data  = "Welcome $user->name \n";
+        $response_data .= "Your One Time Pin (OTP) is" .Otp::generate($user, 6, 15);
+
+        return $this->server_response($response_data, false);
     }
 
     /**

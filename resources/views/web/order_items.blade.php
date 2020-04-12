@@ -48,7 +48,7 @@
                 </tr>
                 <tr>
                   <td><strong>Order Status: </strong></td>
-                  <td class="px-2">{{ App\Model\Order::getStatus($order->status) }}</td>
+                  <td class="px-2">{{ App\Models\Order::getStatus($order->status) }}</td>
                 </tr>
                 <tr>
                   <td><strong>Order Total: </strong></td>
@@ -87,7 +87,7 @@
                     <td>{{ $item->pivot->quantity }}</td>
                     <td>{{ $item->pivot->amount }}</td>
                     <td>{{ $item->shop()->first()->name }}</td>
-                    <td>{{ App\Model\Item::getStatus($item->pivot->status, false) }}</td>
+                    <td>{{ App\Models\Item::getStatus($item->pivot->status, false) }}</td>
                   </tr>
                 @endforeach
               @enddata_table
@@ -107,7 +107,7 @@
 
           @foreach ($order->items()->get() as $index => $item)
             <div class="card p-2 mb-2 cart-item">
-              {{ $index + 1 }}. {{ $item->name }} {{ App\Model\Item::getStatus($item->pivot->status, false) }}
+              {{ $index + 1 }}. {{ $item->name }} {{ App\Models\Item::getStatus($item->pivot->status, false) }}
             </div>
           @endforeach -->
         <!-- End Content Body-->
