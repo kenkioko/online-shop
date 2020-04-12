@@ -14,7 +14,7 @@ class CreateUSSDTable extends Migration
      */
     public function up()
     {
-        Schema::create('ussd', function (Blueprint $table) {
+        Schema::create('ussds', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('sessionId');
             $table->string('phoneNumber');
@@ -33,6 +33,6 @@ class CreateUSSDTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ussd');
+        Schema::dropIfExists('ussds');
     }
 }

@@ -11,7 +11,7 @@ class USSD extends Model
      *
      * @var string
      */
-    protected $table = 'ussd';
+    protected $table = 'ussds';
 
     /**
      * The attributes that are mass assignable.
