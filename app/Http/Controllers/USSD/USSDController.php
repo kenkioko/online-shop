@@ -6,14 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Model\USSD;
 use App\Model\Phone;
 use App\Traits\USSD\USSDRegister;
-use App\Traits\USSD\USSDAccount;
+use App\Traits\USSD\USSDAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class USSDController extends Controller
 {
-    use USSDRegister, USSDAccount;
+    use USSDAuth, USSDAccount;
 
     /**
      * Return the validation rules for the africastkng api.
@@ -78,20 +78,6 @@ class USSDController extends Controller
           $response = $this->server_response('Error Session Ended', false);
         }
         return $response;
-    }
-
-    /**
-     * Login to use the ussd app using your phone.
-     *
-     * @param  \App\Mode\Phone  $phone
-     * @return \App\User
-     */
-    private function login_ussd_auto($phone)
-    {
-        $user = $phone->user()->first();
-        Auth::guard('communication')->login($user);
-
-        return $user;
     }
 
     /**

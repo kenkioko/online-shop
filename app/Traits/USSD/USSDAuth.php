@@ -13,7 +13,7 @@ use OTP;
 /**
  * USSD Trait for user registration and login with the phone number.
  */
-trait USSDRegister
+trait USSDAuth
 {
     use ValidationErrors;
 
