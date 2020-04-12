@@ -18,21 +18,48 @@ trait USSDAuth
     use ValidationErrors;
 
     /**
+     * length of otp digits
+     * @var int
+     */
+    private $otp_digits = 5;
+
+    /**
+     * validity of the otp in minutes
+     * @var int
+     */
+    private $otp_validity = 5;
+
+    /**
      * Login to use the ussd app using your phone.
      *
      * @param  \App\Mode\Phone  $phone
+     * @param  string $input_text
      * @return \App\User
      */
-    private function login_ussd_otp($phone, )
+    private function login_ussd_otp($phone, $input_text)
     {
-        //
         $user = $phone->user()->first();
-        // Auth::guard('communication')->login($user);
+        $user_input = explode('*', $input_text);
 
-        $generate = Otp::generate($user, 6, 15);
-        $validate = Otp::validate($user, $generate->token);
+        // get and validate otp
+        $otp = null;
+        if (isset($user_input[0]) and $user_input[0]) {
+          // validate given pin
+          $otp = OTP::validate($user, $user_input[0]);
+          if ($otp->status) {
+            // login
+            Auth::guard('communication')->login($user);
+            OTP::extend($user, $user_input[0], 5);
+          }
+        } else {
+          // else create new otp token
+          $otp = OTP::generate($user, $this->otp_digits, $this->otp_validity);
+        }
 
-        dd('login_ussd_otp', $generate, $validate);
+        return (object) [
+          'user' => Auth::guard('communication')->User(),
+          'otp' => $otp,
+        ];
     }
 
     /**
@@ -96,16 +123,31 @@ trait USSDAuth
 
         // login and sync phone
         if (Auth::guard('communication')->attempt($validator->validate())) {
-          DB::transaction(function () use ($phone_number) {
+          $login_status = DB::transaction(function () use ($phone_number) {
+            $user = Auth::guard('communication')->User();
+            // sync phone
             $phone = new Phone();
             $phone->phone_number = $phone_number;
-            Auth::guard('communication')->User()->phone()->save($phone);
+            $user->phone()->save($phone);
+            //generate otp
+            $otp = OTP::generate($user, $this->otp_digits, $this->otp_validity);
+
+            return (object) [
+              'user' => $user,
+              'otp' => $otp,
+            ];
           });
 
-          $user = Auth::guard('communication')->User();
-          $response_data  = "Welcome $user->name \n";
-          $response_data .= "Your One Time Pin (OTP) is" .Otp::generate($user, 6, 15);
+          $user = $login_status->user;
+          $otp = $login_status->otp;
+          if (! $otp->status) {
+            $response_data  = "Error while generating One Time Pin (OTP) for $user->name";
+            return $this->server_response($response_data, false);
+          }
 
+          // success
+          $response_data  = "Welcome $user->name \n";
+          $response_data .= "Your One Time Pin (OTP) is $otp->token";
           return $this->server_response($response_data, false);
         }
         // else credentials don't match
@@ -241,20 +283,31 @@ trait USSDAuth
         }
 
         // sign up and sync phone
-        $user = DB::transaction(function () use ($phone_number, $user_data, $shop_data) {
+        $sign_up_status = DB::transaction(function () use ($phone_number, $user_data, $shop_data) {
           $user = $this->save_user($user_data, $shop_data);
           // sync phone number
           $phone = new Phone();
           $phone->phone_number = $phone_number;
           $user->phone()->save($phone);
           // login
-          Auth::guard('communication')->login($user)
-          return $user;
+          Auth::guard('communication')->login($user);
+
+          return (object) [
+            'user' =>$user,
+            'otp' => OTP::generate($user, $this->otp_digits, $this->otp_validity),
+          ];
         });
+
+        $user = $sign_up_status->user;
+        $otp = $sign_up_status->otp;
+        if (! $otp->status) {
+          $response_data  = "Error while generating One Time Pin (OTP) for $user->name";
+          return $this->server_response($response_data, false);
+        }
 
         $user = Auth::guard('communication')->User();
         $response_data  = "Welcome $user->name \n";
-        $response_data .= "Your One Time Pin (OTP) is" .Otp::generate($user, 6, 15);
+        $response_data .= "Your One Time Pin (OTP) is $otp->token";
 
         return $this->server_response($response_data, false);
     }

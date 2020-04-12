@@ -66,15 +66,25 @@ class USSDController extends Controller
         $phone = Phone::where('phone_number',$phoneNumber)->first();
         if ($phone) {
           // auto login first
-          $user = $this->login_ussd_otp($phone);
-          dd('run', $user);
-
-          $user = $this->login_ussd_auto($phone);
-          $response = $this->main_menu($user, $text);
+          $otp_login = $this->login_ussd_otp($phone, $text);
+          if ($otp_login->user and $otp_login->otp->status) {
+            // show main menu
+            $response = $this->main_menu($otp_login->user, $text);
+          } else if ($otp_login->otp->status) {
+            // show newly generated otp token
+            $response_data  = $otp_login->otp->message ."\n";
+            $response_data .= $otp_login->otp->token;
+            $response = $this->server_response($response_data, false);
+          } else {
+            // else error
+            $response_data = $otp_login->otp->message;
+            $response = $this->server_response($response_data, false);
+          }
         } else {
           $response = $this->register_menu($phoneNumber, $text);
         }
 
+        // default response
         if (! $response) {
           $response = $this->server_response('Error Session Ended', false);
         }

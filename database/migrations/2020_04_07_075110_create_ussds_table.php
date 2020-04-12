@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\USSD;
 
-class CreateUSSDTable extends Migration
+class CreateUSSDsTable extends Migration
 {
     /**
      * Run the migrations.
