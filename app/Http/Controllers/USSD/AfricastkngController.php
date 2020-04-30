@@ -38,23 +38,10 @@ class AfricastkngController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $this->validator($request->all());
-        if ($validator->fails()) {
-          $response = "An error ocurred while processing the data.\n";
-          $response .= $this->getValidationErrors($validator);
-          return $this->server_response($response, false, 500);
-        }
-
-        $validated = $validator->validate();
-        $response =  DB::transaction(function () use ($validated) {
-          // save USSD session to db
-          $ussd = new USSD($validated);
-          $ussd->sessionId = $validated["sessionId"];
-          $ussd->provider = 'africastkng';
-          $ussd->save();
-
+        $ussd_data = $request->all();
+        $response =  DB::transaction(function () use ($ussd_data) {
           // process the response
-          return $this->run($validated["phoneNumber"], isset($validated["text"]) ? $validated["text"] : null);
+          return $this->run($ussd_data, 'africastkng');
         });
 
         return $response;

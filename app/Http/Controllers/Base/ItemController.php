@@ -41,8 +41,6 @@ class ItemController extends Controller
      */
     protected function save($validated, $item, $edit=false)
     {
-        // dd('\App\Http\Controllers\ItemController@save', $validated);
-
         return DB::transaction(function () use ($validated, $item, $edit) {
           if ($edit and isset($validated['images'])) {
             dd('ItemController@save', $this->delete_image_files($item->images_folder));

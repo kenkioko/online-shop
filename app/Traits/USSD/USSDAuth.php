@@ -4,8 +4,8 @@ namespace App\Traits\USSD;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use App\Models\Phone;
 use App\User;
 use OTP;
@@ -69,10 +69,11 @@ trait USSDAuth
      * @param string $input_text
      * @return \Illuminate\Http\Response
      */
-    protected function login_ussd($phone_number, $input_text)
+    protected function login_ussd()
     {
         $response = null;
-        $user_input = explode('*', $input_text);
+        $ussd = $this->get_active_ussd();
+        $user_input = explode('*', $ussd->level_data);
 
         // prompt for email and password
         switch (count($user_input)) {
@@ -90,7 +91,8 @@ trait USSDAuth
 
           default:
             // login and sync phone number with user
-            $response = $this->login_and_sync($phone_number, [
+            $this->get_active_ussd(true);
+            $response = $this->login_and_sync($ussd->phoneNumber, [
               'email' => $user_input[1],
               'password' => $user_input[2],
             ]);
@@ -156,11 +158,13 @@ trait USSDAuth
         }
     }
 
-    protected function register_ussd($phone_number, $input_text)
+    protected function register_ussd()
     {
        $response = null;
-       $user_input = explode('*', $input_text);
+       $ussd = $this->get_active_ussd();
+       $user_input = explode('*', $ussd->level_data);
 
+       // dd('register_ussd', $user_input, count($user_input));
 
        // prompt for name, email and password
        switch (count($user_input)) {
@@ -236,8 +240,9 @@ trait USSDAuth
            }
 
            // signup and sync phone number with user
+           $this->get_active_ussd(true);
            if ($confirm == '1') {
-             return $this->signup_and_sync($phone_number, $input_data);
+             return $this->signup_and_sync($ussd->phoneNumber, $input_data);
            }
 
            $response = $this->server_response('Registration Canceled', false);
@@ -413,6 +418,12 @@ trait USSDAuth
         return $this->server_response($response_data);
     }
 
+    /**
+     * Get the user selected role.
+     *
+     * @param string $role_key
+     * @return boolean
+     */
     private function is_seller($role_key)
     {
         return User::getUserRoleByKey($role_key) === User::getUserRoleByCode('seller');

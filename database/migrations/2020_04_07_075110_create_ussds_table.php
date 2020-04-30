@@ -20,9 +20,18 @@ class CreateUSSDsTable extends Migration
             $table->string('phoneNumber');
             $table->string('networkCode');
             $table->string('serviceCode');
-            $table->string('text')->nullable();
+            $table->string('text')->default('');
+            $table->string('level_data')->default('');
+            $table->unsignedInteger('ussd_level')->default(0);            
+            $table->unsignedBigInteger('ussd_id')->nullable();
             $table->enum('provider', USSD::getProviders());
             $table->timestamps();
+        });
+
+        Schema::table('ussds', function (Blueprint $table) {
+            $table->foreign('ussd_id')
+                  ->references('id')->on('ussds')
+                  ->onDelete('restrict');
         });
     }
 
