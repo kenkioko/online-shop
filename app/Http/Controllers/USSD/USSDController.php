@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\USSD;
 
-use App\Http\Controllers\Controller;
+use App\User;
 use App\Models\USSD;
 use App\Models\Phone;
+use App\Http\Controllers\Controller;
 use App\Traits\USSD\USSDRegister;
 use App\Traits\USSD\USSDAccount;
 use App\Traits\USSD\USSDInput;
@@ -82,29 +83,24 @@ class USSDController extends Controller
         // check if phone number is associated with any user
         $phone = Phone::where('phone_number',$initialize->ussd->phoneNumber)->first();
         if ($phone) {
-          // auto login first
-          // $otp_login = $this->login_ussd_otp($phone, $text);
-          // if ($otp_login->user and $otp_login->otp->status) {
-          //   // show main menu
-          //   $response = $this->main_menu($otp_login->user, $text);
-          // } else if ($otp_login->otp->status) {
-          //   // show newly generated otp token
-          //   $response_data  = $otp_login->otp->message ."\n";
-          //   $response = $this->server_response($response_data, false);
-          // } else {
-          //   // else error
-          //   $response_data = $otp_login->otp->message;
-          //   $response = $this->server_response($response_data, false);
-          // }
+          // otp login
+          $otp_login = $this->otp_menu($phone);
+          if ($otp_login->user and $otp_login->otp->status) {
+            // show main menu
+            $response = $this->main_menu($otp_login->user);
+          } else {
+            // else error
+            $response_data = $otp_login->otp->message;
+            $is_default = isset($otp_login->default) ? $otp_login->default : false;
+            $response = $this->server_response($response_data, $is_default);
+          }
         } else {
+          // auth
           $response = $this->auth_menu();
         }
 
-        // default response
+        // default response, invalid option
         if (! $response) {
-          // invalid option
-          dd('run', $this->get_active_ussd());
-
           $response_data  = "Invalid option. Session ended";
           return $this->server_response($response_data, false);
         }
@@ -120,20 +116,15 @@ class USSDController extends Controller
      */
     private function auth_menu()
     {
-        $response = null;
         $ussd = $this->get_active_ussd(true);
-
-        // dd('auth_menu', $ussd->level_data);
-
-        // level one (selecting login or register or display menu)
         switch ($ussd->level_data) {
           case '':
             // display menu
             $response_data  = "This phone number is not associated with any user account.\n";
             $response_data .= "Please select your action\n";
+            $response_data .= "\n";
             $response_data .= "1. Login\n";
             $response_data .= "2. Register";
-
             return $this->server_response($response_data);
 
           case '1':
@@ -148,119 +139,111 @@ class USSDController extends Controller
         }
     }
 
-    // /**
-    //  * This is the ussd app's main menu.
-    //  * calls either the seller's or buyer's menu
-    //  *
-    //  * @param  \App\User  $user
-    //  * @param  string  $text
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // private function main_menu($user, $text)
-    // {
-    //     $response = null;
-    //     $user_input = explode('*', $text, 2); // max 2 levels
-    //
-    //     // home level of the main menu
-    //     if ($user->hasRole('seller')) {
-    //       // show the sellers main menu
-    //       return $this->show_seller_menu($user, $text);
-    //     }
-    //     elseif ($user->hasRole('buyer')) {
-    //       // show the buyers main menu
-    //       return $this->show_buyer_menu($user->name, $text);
-    //     }
-    //     else {
-    //       switch ($user_input[0]) {
-    //         case '':
-    //           // display menu
-    //           $response_data  = "Welcome $user->name. \n";
-    //           $response_data .= "\n";
-    //           $response_data .= "1. My Account \n";
-    //           return $this->server_response($response_data);
-    //
-    //         case '1':
-    //           // my account option
-    //           return $this->account_run();
-    //
-    //         default:
-    //           // invalid option
-    //           $response_data  = "Invalid option. Session ended";
-    //           return $this->server_response($response_data, false);
-    //         }
-    //     }
-    //
-    // }
-    //
-    // /**
-    //  * This is the ussd app seller's  menu
-    //  *
-    //  * @param  \App\User  $user
-    //  * @param  string  $text
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // private function show_seller_menu($user, $text)
-    // {
-    //     $response = null;
-    //     $user_input = explode('*', $text);
-    //     $my_shop = $user->shop()->first();
-    //
-    //     switch ($user_input[0]) {
-    //       case '':
-    //         // display menu
-    //         $response_data  = "Welcome $user->name. \n";
-    //         $response_data .= "You have (" .$my_shop->getNewOrders(true). ") new orders\n";
-    //         $response_data .= "\n";
-    //         $response_data .= "1. My Account \n";
-    //         $response_data .= "2. My Orders \n";
-    //         $response_data .= "3. My Items \n";
-    //
-    //         return $this->server_response($response_data);
-    //
-    //       case '1':
-    //         // my account option
-    //         return $this->account_run();
-    //
-    //       default:
-    //         // invalid option
-    //         $response_data  = "Invalid option. Session ended";
-    //         return $this->server_response($response_data, false);
-    //     }
-    // }
-    //
-    // /**
-    //  * This is the ussd app buyers's  menu
-    //  *
-    //  * @param  string  $user_name
-    //  * @param  string  $text
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // private function show_buyer_menu($user_name, $text)
-    // {
-    //     $response = null;
-    //     $user_input = explode('*', $text);
-    //
-    //     // home level of the main menu
-    //     switch ($user_input[0]) {
-    //       case '':
-    //         // display menu
-    //         $response_data  = "Welcome $user_name \n";
-    //         $response_data .= "\n";
-    //         $response_data .= "1. My Account  \n";
-    //         $response_data .= "2. Search Shop \n";
-    //         $response_data .= "3. Search Item \n";
-    //         $response_data .= "4. My Orders ";
-    //         return $this->server_response($response_data);
-    //
-    //       case '1':
-    //         // my account option
-    //         return $this->account_run();
-    //
-    //       default:
-    //         // invalid option
-    //         $response_data  = "Invalid option. Session ended";
-    //         return $this->server_response($response_data, false);
-    //     }
-    //
-    // }
+    /**
+     * Show the OTP menu.
+     *
+     * @param \App\Mode\Phone $phone
+     * @return object
+     */
+    private function otp_menu(Phone $phone)
+    {
+        $ussd = $this->get_active_ussd(true);
+        switch ($ussd->level_data) {
+          case '':
+            // display menu
+            $response_data  = "Please Enter Your One Time Pin (OTP), or select your action \n";
+            $response_data .= "\n";
+            $response_data .= "1. Generate New One Time Pin (OTP)";
+            return (object) [
+              'user' => null,
+              'default' => true,
+              'otp' => (object)['message' => $response_data, 'status' => false],
+            ];
+
+          default:
+            // otp login
+            return $this->login_ussd_otp($phone, $ussd->text);
+        }
+    }
+
+    /**
+     * This is the ussd app's main menu.
+     * calls either the seller's or buyer's menu
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    private function main_menu(User $user)
+    {
+        // home level of the main menu
+        $this->ussd_level_up();
+        if ($user->hasRole('seller')) {
+          // show the sellers main menu
+          return $this->show_seller_menu($user);
+        }
+        elseif ($user->hasRole('buyer')) {
+          // show the buyers main menu
+          return $this->show_buyer_menu($user);
+        }
+        else {
+          // show account info
+          return $this->account_run();
+        }
+    }
+
+    /**
+     * This is the ussd app seller's  menu
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    private function show_seller_menu(User $user)
+    {
+        $my_shop = $user->shop()->first();
+        $ussd = $this->get_active_ussd(true);
+
+        switch (ltrim($ussd->level_data, '*')) {
+          case '':
+            // display menu
+            $response_data  = "Welcome $user->name. \n";
+            $response_data .= "You have (" .$my_shop->getNewOrders(true). ") new orders\n";
+            $response_data .= "\n";
+            $response_data .= "1. My Account \n";
+            $response_data .= "2. My Orders \n";
+            $response_data .= "3. My Items \n";
+            return $this->server_response($response_data);
+
+          case '1':
+            // my account option
+            return $this->account_run();
+        }
+    }
+
+    /**
+     * This is the ussd app buyers's  menu
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    private function show_buyer_menu(User $user)
+    {
+        $ussd = $this->get_active_ussd(true);
+        switch (ltrim($ussd->level_data, '*')) {
+          case '':
+            // display menu
+            $response_data  = "Welcome $user->name \n";
+            $response_data .= "\n";
+            $response_data .= "1. My Account  \n";
+            $response_data .= "2. Search Shop \n";
+            $response_data .= "3. Search Item \n";
+            $response_data .= "4. My Orders ";
+            return $this->server_response($response_data);
+
+          case '1':
+            // my account option
+            $this->ussd_level_up();
+            return $this->account_run();
+        }
+
+    }
 }

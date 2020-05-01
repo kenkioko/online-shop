@@ -12,6 +12,7 @@ trait USSDAccount
 {
     function account_run()
     {
+        $ussd = $this->get_active_ussd(true);
         $user = Auth::guard('communication')->User();
         $user_role = implode(', ', $user->getRoleNames()->toArray());
         $user_role = User::getUserRoleByCode($user_role);

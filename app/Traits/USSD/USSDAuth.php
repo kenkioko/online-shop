@@ -30,32 +30,29 @@ trait USSDAuth
     private $otp_validity = 5;
 
     /**
-     * Login to use the ussd app using your phone.
+     * Login using OTP.
      *
-     * @param  \App\Mode\Phone  $phone
-     * @param  string $input_text
+     * @param \App\Mode\Phone $phone
+     * @param string $input_text
      * @return \App\User
      */
     private function login_ussd_otp($phone, $input_text)
     {
         $user = $phone->user()->first();
-        $user_input = explode('*', $input_text);
-
-        // get and validate otp
-        $otp = null;
-        if (isset($user_input[0]) and $user_input[0]) {
-          // validate given pin
-          $otp = OTP::validate($user, $user_input[0]);
-          if ($otp->status) {
-            // login
-            Auth::guard('communication')->login($user);
-            OTP::extend($user, $user_input[0], 5);
-          }
-        } else {
-          // else create new otp token
+        if ($input_text == 1) {
+          // create new otp token
           $otp = OTP::generate($user, $this->otp_digits, $this->otp_validity);
+        } else {
+          // validate given otp
+          $otp = OTP::validate($user, $input_text);
+          if ($otp->status) {
+            // login and extend validation period
+            Auth::guard('communication')->login($user);
+            OTP::extend($user, $input_text, 5);
+          }
         }
 
+        // $this->get_active_ussd(true);
         return (object) [
           'user' => Auth::guard('communication')->User(),
           'otp' => $otp,
@@ -163,8 +160,6 @@ trait USSDAuth
        $response = null;
        $ussd = $this->get_active_ussd();
        $user_input = explode('*', $ussd->level_data);
-
-       // dd('register_ussd', $user_input, count($user_input));
 
        // prompt for name, email and password
        switch (count($user_input)) {

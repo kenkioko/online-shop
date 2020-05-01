@@ -42,16 +42,6 @@ class USSD extends Model
         'level_data' => '',
     ];
 
-    // /**
-    //  * The next ussd level '1-2-M'.
-    //  *
-    //  * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-    //  */
-    // public function next_level()
-    // {
-    //     return $this->belongsTo('App\Models\USSD', 'ussd_id');
-    // }
-
     /**
      * The previouso ussd level '1-2-M'.
      *

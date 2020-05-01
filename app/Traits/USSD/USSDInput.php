@@ -61,7 +61,18 @@ trait USSDInput
      */
     protected function ussd_level_up() : USSD
     {
-        // set to next level data
+        // do not overwrite saved ussd
+        if ($this->ussd->id) {
+          $ussd = new USSD($this->ussd->toArray());
+          $ussd->sessionId = $this->ussd->sessionId;
+          $ussd->provider = $this->ussd->provider;
+          $ussd->ussd_level = $this->ussd->ussd_level;
+          $ussd->level_data = $this->ussd->level_data;
+
+          $this->ussd = $ussd;
+        }
+
+        // set next level
         $this->ussd->ussd_level += 1;
         return $this->get_active_ussd();
     }
@@ -111,16 +122,14 @@ trait USSDInput
           $this->ussd->level_data = trim($truncated_data);
 
           if ($save_to_db) {
+            $this->ussd->save();
             // save previous level
             $previous_level = ($level_data->current_level->count() > 0)
                 ? $level_data->current_level->first()
                 : $level_data->previous_levels->first();
 
             if ($previous_level) {
-              $this->ussd->save();
               $this->ussd->previous_level()->save($previous_level);
-            } else {
-              $this->ussd->save();
             }
           }
 
