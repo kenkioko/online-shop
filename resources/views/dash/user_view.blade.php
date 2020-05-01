@@ -17,7 +17,7 @@
 @section('breadcrumb')
   @breadcrum(['extra_class' => 'float-sm-right'])
     <li class="breadcrumb-item">
-      <a href="{{ route('admin.dash') }}">Admin</a>
+      <a href="{{ route('admin.dash') }}">Dashboard</a>
     </li>
     <li class="breadcrumb-item">
       <a href="{{ route('admin.users.index') }}">Users</a>
@@ -29,8 +29,8 @@
 @section('content')
   <div class="container-fluid">
 
-    @show_alert(['errors', $errors])
-    @endshow_alert
+    @include('shared.show_alert')
+     
 
     <div class="card">
       <div class="card-header">

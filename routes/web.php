@@ -20,7 +20,7 @@ Route::redirect('/index', '/');
 
 // user profile
 Route::resource('profile', 'ProfileController')->only([
-  'index', 'update'
+  'index', 'store'
 ])->middleware(['auth']);
 
 // available resource controllers for website

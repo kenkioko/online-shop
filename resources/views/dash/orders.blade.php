@@ -19,7 +19,7 @@
 @section('breadcrumb')
   @breadcrum(['extra_class' => 'float-sm-right'])
     <li class="breadcrumb-item">
-      <a href="{{ route('admin.dash') }}">Admin</a>
+      <a href="{{ route('admin.dash') }}">Dashboard</a>
     </li>
     <li class="breadcrumb-item active">Orders</li>
   @endbreadcrum()

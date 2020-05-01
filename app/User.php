@@ -47,6 +47,26 @@ class User extends Authenticatable
     ];
 
     /**
+     * The user's shop if role='seller'. '1-2-1'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function shop()
+    {
+        return $this->hasOne('App\Models\Shop');
+    }
+
+    /**
+     * The user's phone '1-2-1'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function phone()
+    {
+        return $this->hasMany('App\Models\Phone');
+    }
+
+    /**
      * The available user level 'roles'.
      *
      * @var array
@@ -120,25 +140,5 @@ class User extends Authenticatable
         }
 
         return $role;
-    }
-
-    /**
-     * The user's shop if role='seller'. '1-2-1'.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function shop()
-    {
-        return $this->hasOne('App\Models\Shop');
-    }
-
-    /**
-     * The user's phone '1-2-1'.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\hasMany
-     */
-    public function phone()
-    {
-        return $this->hasMany('App\Models\Phone');
     }
 }

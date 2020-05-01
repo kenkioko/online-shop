@@ -10,8 +10,8 @@
   @endbreadcrum()
 
   <div class="container">
-    @show_alert(['errors', $errors])
-    @endshow_alert
+    @include('shared.show_alert')
+     
   </div>
 
   <div class="container my-5 d-flex">

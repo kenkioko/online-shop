@@ -5,6 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <!-- Site description -->
+    <!-- <meta name="description" content="Free Web tutorials">
+    <meta name="keywords" content="HTML, CSS, JavaScript">
+    <meta name="author" content="John Doe"> -->
+
     @section('page_css')
         <!-- Bootstrap CSS -->
         <link rel="stylesheet"
@@ -20,7 +25,7 @@
         <link rel="stylesheet" href="{{ asset('/fontawesome/css/all.min.css') }}">
     @show
 
-    <title>@yield('title')</title>
+    <title>My Shop &bull; @yield('title')</title>
   </head>
   <body>
 

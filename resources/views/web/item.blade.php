@@ -27,8 +27,8 @@
 
   <div class="container my-5">
 
-    @show_alert(['errors', $errors])
-    @endshow_alert
+    @include('shared.show_alert')
+     
 
     <!-- Item Description -->
     <div class="row">

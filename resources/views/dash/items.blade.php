@@ -26,8 +26,8 @@
 @section('content')
   <div class="container-fluid">
 
-    @show_alert(['errors', $errors])
-    @endshow_alert
+    @include('shared.show_alert')
+     
 
     <div class="card">
       <div class="card-header">

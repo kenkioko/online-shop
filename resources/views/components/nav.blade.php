@@ -73,6 +73,12 @@
               </span>
             @endcan
 
+            <span class="dropdown-item text-dark">
+              <a type="button" class="btn btn-sm btn-secondary w-100 pop"
+                href="{{ route('profile.index') }}"
+              >Profile</a>
+            </span>
+
             @logout(['display' => 'text'])
               <!--print logout button -->
             @endlogout

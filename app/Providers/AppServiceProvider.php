@@ -36,7 +36,6 @@ class AppServiceProvider extends ServiceProvider
       Blade::component('components.modal', 'modal');
       Blade::component('components.nav', 'nav');
       Blade::component('components.search_form', 'search');
-      Blade::component('components.show_alert', 'show_alert');
       Blade::component('components.show_item_price', 'show_item_price');
       Blade::component('components.side_menu', 'side_menu');
     }

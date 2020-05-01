@@ -26,9 +26,8 @@ class ProfileController extends Controller
      */
     public function index(Request $request)
     {
-        //Auth::user();
-        $this->resist();
-
+        // show form
+        return view('dash.user_profile')->with('user', Auth::user());
     }
 
     /**
@@ -37,13 +36,17 @@ class ProfileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+          'name' => ['nullable', 'string', 'max:50'],
+          'email' => ['nullable', 'email', 'max:100'],
+          'phone' => ['nullable', 'string', 'max:50'],
+          'password' => ['required', 'string', 'max:50', 'confirmed'],
+        ]);
 
-    private function resist()
-    {
-        // code...
+        // return back()->with('errors', ['A ']);
+
+        dd($request);
     }
 }
