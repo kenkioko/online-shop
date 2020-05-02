@@ -8,12 +8,15 @@
         "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "create-links": "npm-run-all --parallel adminlte-link fontawesome-link",
+        "create-links": "npm-run-all --parallel adminlte-link fontawesome-link bootstrap-link jquery-link popper-link",
         "adminlte-link": "npm-run-all adminlte-folder adminlte-dist adminlte-plugins",
         "adminlte-folder": "mkdir -p public/adminlte/",
         "adminlte-dist": "ln -sf ../../node_modules/admin-lte/dist public/adminlte/",
         "adminlte-plugins": "ln -sf ../../node_modules/admin-lte/plugins public/adminlte/",
-        "fontawesome-link": "ln -sf ../node_modules/@fortawesome/fontawesome-free/ public/fontawesome"
+        "fontawesome-link": "ln -sf ../node_modules/@fortawesome/fontawesome-free/ public/fontawesome",
+        "bootstrap-link": "ln -sf ../node_modules/bootstrap/dist/ public/bootstrap",
+        "jquery-link": "ln -sf ../node_modules/jquery/dist/ public/jquery",
+        "popper-link": "ln -sf ../node_modules/popper.js/dist/ public/popper.js"
     },
     "devDependencies": {
         "axios": "^0.19",

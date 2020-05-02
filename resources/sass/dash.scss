@@ -1,7 +1,9 @@
-// Required
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
+// Include all of AdminLTE
+@import '~admin-lte/build/scss/AdminLTE.scss';
+
+html {
+  scroll-behavior: smooth;
+}
 
 .selected {
   background-color: gray('200') !important;

@@ -1,10 +1,6 @@
 <!-- SEARCH FORM -->
 <form class="form-inline mx-3 w-100">
-  @if($size == 'sm')
-  <div class="input-group input-group-sm w-100">
-  @else
-  <div class="input-group input-group w-100">
-  @endif
+  <div class="input-group input-group{{ ($size == 'sm') ? '-sm': ''}} w-100">
     <input
       class="form-control form-control-navbar"
       type="search"

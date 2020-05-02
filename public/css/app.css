@@ -10882,6 +10882,10 @@ a.text-dark:focus {
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .grid-container,
 .grid-sizes {
   display: grid;

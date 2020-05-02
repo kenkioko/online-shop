@@ -12,12 +12,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <title>My Shop &bull; Dashboard 	&bull; @yield('title')</title>
 
   @section('page_css')
+    <!-- Custom CSS with AdminLTE CSS-->
+    <link rel="stylesheet" href="{{ asset('/css/dash.css') }}">
+
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{{ asset('/adminlte/plugins/fontawesome-free/css/all.min.css') }}">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset('/adminlte/dist/css/adminlte.min.css') }}">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('/css/dash.css') }}">
   @show
 
   <!-- Google Font: Source Sans Pro -->
@@ -34,7 +33,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="{{ route('home.index') }}" class="nav-link">Website</a>
+        <a href="{{ route('home.index') }}" class="nav-link">
+          {{ Auth::user()->can('dashboard.view') ? 'Website' : 'Home'}}
+        </a>
       </li>
     </ul>
 
@@ -45,6 +46,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
 
+      @can('dashboard.view')
       <!-- Notifications Dropdown Menu -->
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
@@ -72,6 +74,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
+      <!-- End Notifications Dropdown Menu -->
+      @endcan
+
       <li class="nav-item">
         @logout(['display' => 'icon'])
           <!--print logout button -->
@@ -105,6 +110,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Main content -->
     <div class="content">
       @yield('content')
+
+      <a id="back-to-top" href="#" class="btn btn-primary back-to-top" role="button" aria-label="Scroll to top">
+        <i class="fas fa-chevron-up"></i>
+      </a>
     </div>
     <!-- /.content -->
   </div>

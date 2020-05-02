@@ -1,17 +1,41 @@
+# node modules and npm files
 /node_modules
-/public/hot
-/public/storage
-/public/adminlte
-/public/fontawesome
-/storage/*.key
-/vendor
-.env
-.env.backup
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
 npm-debug.log
 yarn-error.log
 package-lock.json
 yarn.lock
+
+
+# public folder symbolic links
+/public/hot
+/public/storage
+/public/adminlte
+/public/fontawesome
+/public/bootstrap
+/public/jquery
+/public/popper.js
+
+# storage .key file
+/storage/*.key
+
+
+# composer vendor folder
+/vendor
+
+
+# env file
+.env
+.env.backup
+
+
+# cache files
+.phpunit.result.cache
+
+
+# Homestead files
+Homestead.json
+Homestead.yaml
+
+
+# other files
 afskng.txt
