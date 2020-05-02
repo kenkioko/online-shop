@@ -47,7 +47,7 @@
       </div>
       <!-- /.card-header -->
       <div class="card-body">
-        <form id="user_profile_form" action="{{ route('profile.store') }}" method="post">
+        <form id="user_profile_form" action="{{ route('profile.store') }}" method="post" autocomplete="false">
           @csrf
 
 

@@ -16,6 +16,8 @@ class CreatePhonesTable extends Migration
         Schema::create('phones', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('phone_number')->unique();
+            $table->boolean('verified')->default(false);
+            $table->timestamp('phone_verified_at')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 

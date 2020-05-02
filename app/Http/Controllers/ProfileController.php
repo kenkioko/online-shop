@@ -42,11 +42,9 @@ class ProfileController extends Controller
           'name' => ['nullable', 'string', 'max:50'],
           'email' => ['nullable', 'email', 'max:100'],
           'phone' => ['nullable', 'string', 'max:50'],
-          'password' => ['required', 'string', 'max:50', 'confirmed'],
+          'password' => ['nullable', 'string', 'max:50', 'confirmed'],
         ]);
 
-        // return back()->with('errors', ['A ']);
-
-        dd($request);
+        dd(\App\Models\Category::count());
     }
 }
