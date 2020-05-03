@@ -1,5 +1,7 @@
 @extends('layouts.dash')
 
+@section('title', 'Categories')
+
 @section('page_header')
   @if ($category)
     {{ ucwords($category->name) }}
@@ -34,7 +36,7 @@
   <div class="container-fluid">
 
     @include('shared.show_alert')
-     
+
 
     <div class="card">
       <div class="card-header">

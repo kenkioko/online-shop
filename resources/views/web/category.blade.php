@@ -2,7 +2,7 @@
 
 @section('title')
   @php
-    echo 'Category | ' . ucwords($category->name);
+    echo 'Category &bull; ' . ucwords($category->name);
   @endphp
 @endsection
 

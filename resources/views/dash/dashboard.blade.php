@@ -1,5 +1,7 @@
 @extends('layouts.dash')
 
+@section('title', 'Home')
+
 @section('page_header', 'Dashboard')
 
 @section('sidebar')

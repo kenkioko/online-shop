@@ -51,18 +51,18 @@
           @csrf
 
 
-          <div class="card card-outline card-secondary">
+          <div class="card card-outline card-secondary collapsed-card">
             <div class="card-header">
               <h3 class="card-title text-bold">Basic Info</h3>
 
               <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
                 </button>
               </div>
               <!-- /.card-tools -->
             </div>
             <!-- /.card-header -->
-            <div class="card-body" style="display: block;">
+            <div class="card-body">
               <div class="row">
                 <div class="form-group col-sm-6">
                   <label for="name_input">Name</label>
@@ -80,27 +80,37 @@
           <!-- /.card -->
 
 
-          <div class="card card-outline card-secondary">
+          <div class="card card-outline card-secondary collapsed-card">
             <div class="card-header">
               <h3 class="card-title text-bold">Contacts</h3>
 
               <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
                 </button>
               </div>
               <!-- /.card-tools -->
             </div>
             <!-- /.card-header -->
-            <div class="card-body" style="display: block;">
-              <div class="form-group col-sm-6">
-                <label for="phone_input">Telephone Number</label>
-                <input type="tel" class="form-control" id="phone_input" name="phone" value="{{ old('phone') ?? $user->phone()->get() }}"
-                  pattern="+[0-9]{3} [0-9]{3} [0-9]{6}">
-                <small class="text-muted px-3">Format: +254 712 345678</small>
-              </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="form-group col-sm-6">
+                  <label for="phone_input">Telephone Number</label>
+                  <input type="tel" class="form-control" id="phone_input" name="phone"
+                    value="{{ old('phone') ?? '' }}"
+                    pattern="+[0-9]{3} [0-9]{3} [0-9]{6}"
+                  ><small class="text-muted px-3">Format: +254 712 345678</small>
+                </div>
 
-              <div class="col-sm-6">
-                Validated
+                <div class="col-sm-6 border-left">
+                  <div class="form-group col-sm-6">
+                    <label for="phone_input">Saved Telephone Numbers</label>
+                    <ul>
+                      @foreach($user_phones as $key => $phone)
+                        <li>{{ $key }} {{ $phone }}</li>
+                      @endforeach
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
             <!-- /.card-body -->
@@ -108,18 +118,18 @@
           <!-- /.card -->
 
 
-          <div class="card card-outline card-secondary">
+          <div class="card card-outline card-secondary collapsed-card">
             <div class="card-header">
               <h3 class="card-title text-bold">Change Password</h3>
 
               <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
                 </button>
               </div>
               <!-- /.card-tools -->
             </div>
             <!-- /.card-header -->
-            <div class="card-body" style="display: block;">
+            <div class="card-body">
               <div class="row">
                 <div class="form-group col-sm-6">
                   <label for="password_input">Password</label>
@@ -134,8 +144,36 @@
             </div>
             <!-- /.card-body -->
           </div>
-          <!-- /.card -->
 
+
+          @role('seller')
+            <div class="card card-outline card-secondary collapsed-card">
+              <div class="card-header">
+                <h3 class="card-title text-bold">Shop Details</h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="shop_name_input">Shop Name:</label>
+                  <input type="text" class="form-control" name="shop_name" id="shop_name_input"
+                    value="{{ old('shop_name') ?? $user_shop->name }}"
+                  >
+                </div><!-- /.form-group -->
+                <div class="form-group">
+                  <label for="shop_address_input">Shop Address:</label>
+                  <textarea class="form-control" name="shop_address" rows="8" cols="80" id="shop_address_input"
+                  >{{ old('shop_address') ?? $user_shop->address }}</textarea>
+                </div><!-- /.form-group -->
+              </div>
+              <!-- /.card-body -->
+            </div>
+          @endrole
 
         </form>
       </div>

@@ -29,7 +29,9 @@
     </div>
 
     <div id="app">
-        @yield('content')
+      @yield('content')
+
+      @include('shared.back_top_btn')
     </div>
 
     @section('footer')

@@ -1,5 +1,7 @@
 @extends('layouts.dash')
 
+@section('title', 'Items')
+
 @section('page_css')
   @parent
 
@@ -27,7 +29,7 @@
   <div class="container-fluid">
 
     @include('shared.show_alert')
-     
+
 
     <div class="card">
       <div class="card-header">

@@ -34,7 +34,7 @@
   <div class="container-fluid">
 
     @include('shared.show_alert')
-     
+
 
     <div class="card">
       <div class="card-header">
@@ -162,14 +162,14 @@
             <h4>Shop Details:</h4>
 
             <div class="form-group">
-              <label for="password_input">Shop Name:</label>
-              <input type="text" class="form-control" placeholder="shop name" name="shop_name"
+              <label for="shop_name_input">Shop Name:</label>
+              <input type="text" class="form-control" placeholder="shop name" name="shop_name" id="shop_name_input"
                 value="@if (old('shop_name')) {{ old('shop_name') }} @elseif ($shop) {{ $shop->name }} @endif"
               >
             </div><!-- /.form-group -->
             <div class="form-group">
-              <label for="password_confirmation_input">Shop Address:</label>
-              <textarea class="form-control" name="shop_address" rows="8" cols="80"
+              <label for="shop_address_input">Shop Address:</label>
+              <textarea class="form-control" name="shop_address" rows="8" cols="80" id="shop_address_input"
               >@if (old('shop_address')){{ old('shop_address') }} @elseif ($shop){{ $shop->address }}@endif</textarea>
             </div><!-- /.form-group -->
           </div>

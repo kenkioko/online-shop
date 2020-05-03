@@ -1,5 +1,7 @@
 @extends('layouts.dash')
 
+@section('title', 'Orders')
+
 @section('page_css')
   @parent
 

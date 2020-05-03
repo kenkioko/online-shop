@@ -2,7 +2,7 @@
 
 @section('title')
   @php
-    echo ucwords($item->name);
+    echo 'Item &bull; ' .ucwords($item->name);
   @endphp
 @endsection
 
@@ -28,7 +28,7 @@
   <div class="container my-5">
 
     @include('shared.show_alert')
-     
+
 
     <!-- Item Description -->
     <div class="row">

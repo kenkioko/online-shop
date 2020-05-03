@@ -1,5 +1,7 @@
 @extends('layouts.dash')
 
+@section('title', 'Categories')
+
 @section('page_header', ucwords($category->name))
 
 @section('sidebar')
@@ -24,7 +26,7 @@
   <div class="container-fluid">
 
     @include('shared.show_alert')
-     
+
 
     <div class="card">
       <div class="card-header">

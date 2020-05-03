@@ -1,5 +1,7 @@
 @extends('layouts.dash')
 
+@section('title', 'Orders')
+
 @section('page_header', 'Processing Order')
 
 @section('sidebar')
@@ -28,7 +30,7 @@
   <div class="container-fluid">
 
     @include('shared.show_alert')
-     
+
 
     <div class="card">
       @if($order->status != App\Models\Order::getStatus('completed'))
