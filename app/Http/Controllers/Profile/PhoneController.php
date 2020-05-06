@@ -1,12 +1,23 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Profile;
 
-use App\Models\Address;
+use App\Http\Controllers\Controller;
+use App\Models\Phone;
 use Illuminate\Http\Request;
 
-class AddressController extends Controller
+class PhoneController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +25,7 @@ class AddressController extends Controller
      */
     public function index()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -24,7 +35,7 @@ class AddressController extends Controller
      */
     public function create()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -35,39 +46,39 @@ class AddressController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        abort(404);
     }
 
     /**
-     * Display the specified resource.
+     * Shows the specified resource.
      *
-     * @param  \App\Models\Address  $address
+     * @param  \App\Models\Phone  $phone
      * @return \Illuminate\Http\Response
      */
-    public function show(Address $address)
+    public function show(Phone $phone)
     {
-        //
+        abort(404);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Address  $address
+     * @param  \App\Models\Phone  $phone
      * @return \Illuminate\Http\Response
      */
-    public function edit(Address $address)
+    public function edit(Phone $phone)
     {
-        //
+        abort(404);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Address  $address
+     * @param  \App\Models\Phone  $phone
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Address $address)
+    public function update(Request $request, Phone $phone)
     {
         //
     }
@@ -75,10 +86,10 @@ class AddressController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Address  $address
+     * @param  \App\Models\Phone  $phone
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Address $address)
+    public function destroy(Phone $phone)
     {
         //
     }

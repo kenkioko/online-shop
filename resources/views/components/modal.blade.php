@@ -1,8 +1,8 @@
 <!-- Modal -->
 <div class="modal fade" id="{{ $modal_id }}" tabindex="-1" role="dialog" aria-labelledby="{{ $modal_id }}_title" aria-hidden="true">
-  <div class="modal-dialog @if(isset($modal_class)) {{ $modal_class }}  @endif" role="document">
-    <div class="modal-content @if(isset($modal_content_class)) {{ $modal_content_class }}  @endif">
-      <div class="modal-header @if(isset($modal_header_class)) {{ $modal_header_class }}  @endif">
+  <div class="modal-dialog {{ $modal_class ?? ''}}" role="document">
+    <div class="modal-content {{ $modal_content_class ?? '' }}">
+      <div class="modal-header {{ $modal_header_class ?? '' }}">
         <h5 class="modal-title" id="{{ $modal_id }}_title">
           {{ $modal_title }}
         </h5>
@@ -10,12 +10,12 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body @if(isset($modal_body_class)) {{ $modal_body_class }}  @endif">
+      <div class="modal-body {{ $modal_body_class ?? '' }}">
         {{ $modal_body }}
       </div>
 
       @if(isset($modal_footer))
-        <div class="modal-footer @if(isset($modal_footer_class)) {{ $modal_footer_class }}  @endif">
+        <div class="modal-footer {{ $modal_footer_class ?? '' }}">
           {{ $modal_footer }}
         </div>
       @endif

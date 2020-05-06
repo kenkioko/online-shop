@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Models\Shop;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -97,7 +97,7 @@ class RegisterController extends Controller
     protected function validate_shop(array $data)
     {
         return Validator::make($data, [
-            'shop_name' => ['required', 'string', 'max:255'],
+            'shop_name' => ['required', 'string', 'max:100'],
             'shop_address' => ['required', 'string', 'max:500'],
         ]);
     }

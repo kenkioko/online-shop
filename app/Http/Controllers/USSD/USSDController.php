@@ -95,7 +95,7 @@ class USSDController extends Controller
             $response = $this->server_response($response_data, $is_default);
           }
         } else {
-          // auth
+          // ussd authentication
           $response = $this->auth_menu();
         }
 

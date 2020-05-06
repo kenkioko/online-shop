@@ -29,9 +29,7 @@
     </div>
     <!-- End Top Page Banners -->
 
-    @grid()
-      <!-- Category Grid inserted -->
-    @endgrid
+    @include('shared.grid')
 
   </div>
   <!-- Main Content -->
