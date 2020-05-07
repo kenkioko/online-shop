@@ -16,7 +16,7 @@ class Shop extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'address'];
+    protected $fillable = ['name'];
 
     /**
      * The item's owner '1-2-1'.
@@ -29,7 +29,7 @@ class Shop extends Model
     }
 
     /**
-     * The item's category '1-2-1'.
+     * The item's for the shop '1-2-M'.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -38,6 +38,22 @@ class Shop extends Model
         return $this->hasMany('App\Models\Item');
     }
 
+    /**
+     * The shop's address '1-2-1'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function address()
+    {
+        return $this->hasOne('App\Models\Address');
+    }
+
+    /**
+     * The shop's new orders.
+     * @TODO To be replaced by laravel notifications
+     *
+     * @return mixed
+     */
     public function getNewOrders($count=false)
     {
         $shop_id = $this->id;

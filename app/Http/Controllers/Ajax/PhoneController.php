@@ -82,7 +82,9 @@ class PhoneController extends Controller
      */
     public function update(Request $request, Phone $phone)
     {
-        //
+        return response()->json([
+          'status' => true,
+        ]);
     }
 
     /**

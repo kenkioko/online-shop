@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
     use HasRoles;
@@ -47,6 +47,26 @@ class User extends Authenticatable
     ];
 
     /**
+     * The user's phone '1-2-M'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function phone()
+    {
+        return $this->hasMany('App\Models\Phone');
+    }
+
+    /**
+     * The user's address '1-2-1'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function address()
+    {
+        return $this->hasOne('App\Models\Address');
+    }
+
+    /**
      * The user's shop if role='seller'. '1-2-1'.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
@@ -54,16 +74,6 @@ class User extends Authenticatable
     public function shop()
     {
         return $this->hasOne('App\Models\Shop');
-    }
-
-    /**
-     * The user's phone '1-2-1'.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\hasMany
-     */
-    public function phone()
-    {
-        return $this->hasMany('App\Models\Phone');
     }
 
     /**

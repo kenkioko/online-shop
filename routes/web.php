@@ -12,7 +12,7 @@
 */
 
 // auth routes from laravel/ui
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 // index page
 Route::redirect('/home', '/');

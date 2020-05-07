@@ -15,7 +15,25 @@ class CreateAddressesTable extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('shop_id')->nullable();
+            $table->string('country');
+            $table->string('state');
+            $table->string('city');
+            $table->string('street');
+            $table->string('postcode');
+            $table->string('full_address');
+            $table->double('latitude', 12, 8)->nullable();
+            $table->double('longitude', 12, 8)->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')
+                  ->references('id')->on('users')
+                  ->onDelete('restrict');
+
+            $table->foreign('shop_id')
+                  ->references('id')->on('shops')
+                  ->onDelete('restrict');
         });
     }
 

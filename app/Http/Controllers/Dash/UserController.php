@@ -59,9 +59,9 @@ class UserController extends Controller
     public function store(UserStoreRequest $request)
     {
         $validated = $request->validated();
-        $shop_data = ($validated['user_level'] == 'seller') ?
-          ShopController::validateData($request) :
-          null;
+        $shop_data = ($validated['user_level'] == 'seller')
+            ? ShopController::validateData($request)
+            : null;
 
         if ($this->save(new User, $validated, $shop_data)) {
           return redirect()->route('admin.users.index')->with([
@@ -121,9 +121,9 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, User $user)
     {
         $validated = $request->validated();
-        $shop_data = ($validated['user_level'] == 'seller') ?
-          ShopController::validateData($request) :
-          null;
+        $shop_data = ($validated['user_level'] == 'seller')
+            ? ShopController::validateData($request)
+            : null;
 
         if ($this->save($user, $validated, $shop_data)) {
           return redirect()->route('admin.users.index')->with([

@@ -44,12 +44,12 @@ class UserSeeder extends Seeder
         $seller->assignRole('seller');
 
         // seller shop
-        $faker = Faker\Factory::create();
-        $seller_shop = new Shop([
-          'name' => $faker->company(),
-          'address' => $faker->address(),
-        ]);
+        $seller_shop = factory(App\Models\Shop::class)->make();
         $seller_shop->user()->associate($seller);
         $seller_shop->save();
+
+        // seller shop's address and items
+        $seller_shop->address()->save(factory(App\Models\Address::class)->make());
+        $seller_shop->items()->saveMany(factory(App\Models\Item::class, 10)->make());
     }
 }

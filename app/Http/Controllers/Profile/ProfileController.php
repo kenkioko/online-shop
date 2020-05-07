@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
 {
@@ -45,42 +46,61 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-          'name' => ['nullable', 'string', 'max:50'],
-          'email' => ['nullable', 'email', 'max:100'],
-          'phone_number' => ['nullable', 'string', 'max:50', 'unique:App\Models\Phone,phone_number'],
-          'password' => ['nullable', 'string', 'max:50', 'confirmed'],
-          'shop_name' => ['nullable', 'string', 'max:100'],
-          'shop_address' => ['nullable', 'string', 'max:500'],
-        ]);
-
-        // save to db
-        DB::transaction(function () use ($request) {
+        $validated = $this->validateData($request->all());
+        DB::transaction(function () use ($validated) {
+          // save user details
           $user = Auth::user();
-          $user->update($request->only('name', 'email'));
-
-          // save telephone number
-          if ($request->phone_number) {
-            $phone_number = preg_replace('/\s+/', '', $request->phone_number);
-            $user->phone()->save(new Phone(['phone_number' => $phone_number]));
-          }
+          $user->update([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+          ]);
 
           // change password
-          if ($request->password) {
-            $user->password = Hash::make($request->password);
+          if ($validated['password']) {
+            $user->password = Hash::make($validated['password']);
             $user->save();
+          }
+
+          // save telephone number
+          if ($validated['phone_number']) {
+            $user->phone()->save(new Phone([
+              'phone_number' => $validated['phone_number'],
+            ]));
           }
 
           // change shop details
           if ($user->hasRole('seller')) {
             $shop = $user->shop()->firstOrFail();
             $shop->update([
-              'name' => $request->shop_name,
-              'address' => $request->shop_address,
+              'name' => $validated['shop_name'],
+              'address' => $validated['shop_address'],
             ]);
           }
         });
 
         return back()->with('success', 'User profile edited successfully');
+    }
+
+    private function validateData($data)
+    {
+        if ($data['phone_number']) {
+          // validate phone number regex
+          Validator::make($data, [
+            'phone_number' => 'regex:/^(\+[0-9]{3}\s[0-9]{3}\s[0-9]{6})$/',
+          ]);
+
+          // transform phone number
+          $phone_number = preg_replace('/\s+/', '', $data['phone_number']);
+          $data['phone_number'] = $phone_number;
+        }
+
+        return Validator::make($data, [
+          'name' => ['nullable', 'string', 'max:50'],
+          'email' => ['nullable', 'email', 'max:100'],
+          'password' => ['nullable', 'string', 'max:50', 'confirmed'],
+          'shop_name' => ['nullable', 'string', 'max:100'],
+          'shop_address' => ['nullable', 'string', 'max:500'],
+          'phone_number' => ['nullable','unique:App\Models\Phone,phone_number'],
+        ])->validate();
     }
 }

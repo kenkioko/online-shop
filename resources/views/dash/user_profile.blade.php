@@ -13,7 +13,11 @@
 @section('breadcrumb')
   @breadcrum(['extra_class' => 'float-sm-right'])
     <li class="breadcrumb-item">
-      <a href="{{ route('admin.dash') }}">Dashboard</a>
+      @if(Auth::user()->can('dashboard.view'))
+        <a href="{{ route('admin.dash') }}">Dashboard</a>
+      @else
+        <a href="{{ route('home.index') }}">Home</a>
+      @endif
     </li>
     <li class="breadcrumb-item active">Profile</li>
   @endbreadcrum()
@@ -97,7 +101,7 @@
                   <label for="phone_input">Telephone Number</label>
                   <input type="tel" class="form-control" id="phone_input" name="phone_number"
                     value="{{ old('phone_number') ?? '' }}"
-                    pattern="+[0-9]{3} [0-9]{3} [0-9]{6}"
+                    pattern="\+[0-9]{3} [0-9]{3} [0-9]{6}"
                   ><small class="text-muted">Format: +254 712 345678</small>
                 </div>
 
@@ -261,9 +265,9 @@
       $('.verify_phone_number').text(phone.phone_number);
       $("#verify_phone_form").attr('action', form_url);
       $('#verify_phone_modal').modal('show')
-      $('#verify_phone_spinner_'+key).addClass('d-none');
 
-      axios({
+      // use axios from 'resources/js/bootstrap.js'
+      window.axios({
         method: 'put',
         url: ajax_url,
         data: { validate: 'request_otp' },
