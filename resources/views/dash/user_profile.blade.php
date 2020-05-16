@@ -5,7 +5,7 @@
 @section('page_header', 'User Profile')
 
 @section('sidebar')
-  @dash_sidebar(['page' => 'users'])
+  @dash_sidebar(['page' => 'profile'])
     <!-- print sidebar -->
   @enddash_sidebar
 @endsection

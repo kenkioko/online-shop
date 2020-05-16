@@ -166,15 +166,17 @@ class UserController extends Controller
      * Saves the user deatails and also shop details if seller.
      *
      * @param  \App\User  $user
-     * @param  array $validated
+     * @param  array $user_data
      * @param  array  $shop_data
      * @return true/false
      */
-    private function save($user, $validated, $shop_data)
+    private function save($user, $user_data, $shop_data)
     {
-        return DB::transaction(function () use ($user, $validated, $shop_data) {
-          $user_success = $this->saveUser($validated, $user);
-          $shop_success = ($shop_data) ? ShopController::saveShopDetails($shop_data, $user) : true;
+        return DB::transaction(function () use ($user, $user_data, $shop_data) {
+          $user_success = $this->saveUser($user_data, $user);
+          $shop_success = ($shop_data)
+              ? ShopController::saveShopDetails($shop_data, $user)
+              : true;
 
           return ($user_success and $shop_success);
         });

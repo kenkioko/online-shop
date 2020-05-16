@@ -59,6 +59,7 @@ class ItemController extends Controller
 
         return view('web.item')->with([
           'item' => $item,
+          'shop' => $item->shop()->firstOrFail(),
           'active_order' => $active_order,
           'files' => $this->get_image_files($item->images_folder),
         ]);

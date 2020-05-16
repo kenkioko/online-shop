@@ -29,7 +29,7 @@ class UserUpdateRequest extends FormRequest
           'name' => ['required','max:255'],
           'email' => ['required','email','max:255'],
           'user_level' => ['nullable',Rule::in(User::getUserRolesCodes())],
-          'password' => 'nullable|confirmed|max:255',
+          'password' => ['nullable','confirmed','max:255'],
         ];
     }
 }

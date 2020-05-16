@@ -74,7 +74,9 @@
 
         <div class="mt-2">
           <span class="font-weight-bold">Seller:</span><br>
-          <p> {{ $item->shop()->first()->name }} </p>
+          <a href="{{ route('shops.show', ['shop' => $shop]) }}">
+            <p> {{ $shop->name }} </p>
+          </a>
         </div>
 
         <div class="mt-2">
@@ -108,10 +110,7 @@
           }
         @endphp
 
-        <form class="d-none" method="post"
-          id="add_item_form"
-          action="{{ $form_action }}"
-        >
+        <form class="d-none" method="post" id="add_item_form" action="{{ $form_action }}">
           @csrf
 
           @if($active_order)
@@ -135,53 +134,60 @@
           <div class="d-flex flex-row my-3">
             <div class="d-flex align-items-center">
               <p class="mb-0 mr-2"> QTY: </p>
-              <input id="item_qty" type="number" form="add_item_form" name="quantity" min="1", max="{{ $item->stock }}"
-                value="{{ old('quantity', $edited_item->pivot->quantity ?? 1) }}"
 
-                @if($edited_item)
-                  onchange="edit_type_update(
-                    {{ old('quantity', 1) }},
-                    {{ $item->price }},
-                    'item_qty', 'item_total', 'item_update_type',
-                    {{ $item->discount_amount ?? 0 }}
-                  )"
-                @else
-                  onchange="edit_type(
-                    {{ old('quantity', 1) }},
-                    {{ $item->price }},
-                    'item_qty', 'item_total',
-                    {{ $item->discount_amount ?? 0 }}
-                  )"
-                @endif
-              >
-            </div>
+              @if($item->stock > 0)
+                <input id="item_qty" type="number" form="add_item_form" name="quantity" min="1", max="{{ $item->stock }}"
+                  value="{{ old('quantity', $edited_item->pivot->quantity ?? 1) }}"
 
-            <div class="d-flex align-items-center ml-auto">
-              <p class="mb-0">
-                <strong>Total: </strong>
-
-                <span id="item_total">
                   @if($edited_item)
-                    {{ number_format(($item->price - $item->discount_amount) * $edited_item->pivot->quantity, 2) }}
+                    onchange="edit_type_update(
+                      {{ old('quantity', 1) }},
+                      {{ $item->price }},
+                      'item_qty', 'item_total', 'item_update_type',
+                      {{ $item->discount_amount ?? 0 }}
+                    )"
                   @else
-                    {{ number_format($item->price, 2) }}
+                    onchange="edit_type(
+                      {{ old('quantity', 1) }},
+                      {{ $item->price }},
+                      'item_qty', 'item_total',
+                      {{ $item->discount_amount ?? 0 }}
+                    )"
                   @endif
-                </span>
-              </p>
+                >
+              @else
+                <span>OUT OF STOCK</span>
+              @endif
             </div>
-          </div>
 
-          <div class="d-flex">
-            <button type="submit" form="add_item_form" class="btn btn-primary ml-auto">
-              ADD TO CART
-            </button>
-          </div>
+            @if($item->stock > 0)
+              <div class="d-flex align-items-center ml-auto">
+                <p class="mb-0">
+                  <strong>Total: </strong>
+
+                  <span id="item_total">
+                    @if($edited_item)
+                      {{ number_format(($item->price - $item->discount_amount) * $edited_item->pivot->quantity, 2) }}
+                    @else
+                      {{ number_format($item->price, 2) }}
+                    @endif
+                  </span>
+                </p>
+              </div>
+            </div>
+
+            <div class="d-flex">
+              <button type="submit" form="add_item_form" class="btn btn-primary ml-auto">
+                ADD TO CART
+              </button>
+            </div>
+          @endif
         @endcanany
 
         @guest
-          <a href="{{ route('login') }}" class="btn btn-primary my-5">
+          <button type="submit" form="add_item_form" class="btn btn-primary ml-auto">
             LOGIN TO PURCHASE ITEM
-          </a>
+          </button>
         @endguest
       </div>
     </div>

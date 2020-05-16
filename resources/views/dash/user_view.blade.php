@@ -99,40 +99,44 @@
             <div class="d-flex">
               <h5><strong>Shop address:</strong></h5>
               <address class="ml-2">
-                {{ $shop->address }}
+                {{ $shop->address->full_address }} <br>
+                {{ $shop->address->street }} <br>
+                {{ $shop->address->city }} <br>
+                {{ $shop->address->state }} <br>
+                {{ $shop->address->country }} <br>
               </address>
-            </div>
-
-            <div class="d-flex">
-              <h5><strong>Total items owned by shop:</strong></h5>
-              <p class="ml-2">{{ $shop->items()->count() }}</p>
             </div>
           </div>
 
-          <!-- // Items Owned By Shop -->
-          <h5>Items owned by shop:</h5>
-          <hr>
-          @data_table(['table_id' => 'table_list'])
-            @slot('head')
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Stock</th>
-                <th scope="col">Price</th>
-                <th scope="col">Discount</th>
-              </tr>
-            @endslot
+          <!-- Items Owned By Shop -->
+          <div class="border-top p-2">
+            <div class="d-flex">
+              <h5><strong>Items owned by shop:</strong></h5>
+              <p class="ml-2">(Total: {{ $shop->items()->count() }})</p>
+            </div>
 
-            @foreach ($shop->items()->get() as $index => $item)
-              <tr>
-                <th scope="row">{{ $loop->iteration }}</th>
-                <td>{{ $item->name }}</td>
-                <td>{{ $item->stock }}</td>
-                <td>{{ number_format($item->price, 2) }}</td>
-                <td>{{ $item->discount ?? 0 }}</td>
-              </tr>
-            @endforeach
-          @enddata_table
+            @data_table(['table_id' => 'table_list'])
+              @slot('head')
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Stock</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Discount</th>
+                </tr>
+              @endslot
+
+              @foreach ($shop->items()->get() as $index => $item)
+                <tr>
+                  <th scope="row">{{ $loop->iteration }}</th>
+                  <td>{{ $item->name }}</td>
+                  <td>{{ $item->stock }}</td>
+                  <td>{{ number_format($item->price, 2) }}</td>
+                  <td>{{ $item->discount ?? 0 }}</td>
+                </tr>
+              @endforeach
+            @enddata_table
+          </div>
         @endif
 
       </div>

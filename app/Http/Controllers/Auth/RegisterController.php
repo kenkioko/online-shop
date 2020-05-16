@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Models\Shop;
+use App\Models\Address;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -79,10 +80,13 @@ class RegisterController extends Controller
           // save shop details
           if ($data['user_role'] === 'seller') {
             $shop_data = $this->validate_shop($data)->validate();
-            $user->shop()->create([
+            $shop = $user->shop()->create([
               'name' => $shop_data['shop_name'],
-              'address' => $shop_data['shop_address'],
             ]);
+
+            $shop->address()->save(new Address([
+              'full_address' => $shop_data['shop_address'],
+            ]));
           }
           return $user;
         });

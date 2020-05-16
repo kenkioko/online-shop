@@ -164,13 +164,50 @@
             <div class="form-group">
               <label for="shop_name_input">Shop Name:</label>
               <input type="text" class="form-control" placeholder="shop name" name="shop_name" id="shop_name_input"
-                value="@if (old('shop_name')) {{ old('shop_name') }} @elseif ($shop) {{ $shop->name }} @endif"
+                value="@if (old('shop_name')) {{ old('shop_name') }} @elseif ($shop->name) {{ $shop->name }} @endif"
               >
             </div><!-- /.form-group -->
+
+            <!-- shop address -->
+            <label>Shop Address:</label>
+
+            <div class="row">
+              <div class="form-group col-sm-4">
+                <label for="shop_country_input">Country:</label>
+                <input type="text" class="form-control" placeholder="country" name="shop_country" id="shop_country_input"
+                  value="@if (old('shop_country')) {{ old('shop_country') }} @elseif ($shop->address->country) {{ $shop->address->country }} @endif"
+                >
+              </div><!-- /.form-group -->
+              <div class="form-group col-sm-4">
+                <label for="shop_state_input">State:</label>
+                <input type="text" class="form-control" placeholder="state" name="shop_state" id="shop_state_input"
+                  value="@if (old('shop_state')) {{ old('shop_state') }} @elseif ($shop->address->state) {{ $shop->address->state }} @endif"
+                >
+              </div><!-- /.form-group -->
+              <div class="form-group col-sm-4">
+                <label for="shop_city_input">City:</label>
+                <input type="text" class="form-control" placeholder="city" name="shop_city" id="shop_city_input"
+                  value="@if (old('shop_city')) {{ old('shop_city') }} @elseif ($shop->address->city) {{ $shop->address->city }} @endif"
+                >
+              </div><!-- /.form-group -->
+              <div class="form-group col-sm-4">
+                <label for="shop_street_input">Street:</label>
+                <input type="text" class="form-control" placeholder="street" name="shop_street" id="shop_street_input"
+                  value="@if (old('shop_street')) {{ old('shop_street') }} @elseif ($shop->address->street) {{ $shop->address->street }} @endif"
+                >
+              </div><!-- /.form-group -->
+              <div class="form-group col-sm-4">
+                <label for="shop_postcode_input">Postcode:</label>
+                <input type="text" class="form-control" placeholder="postcode" name="shop_postcode" id="shop_postcode_input"
+                  value="@if (old('shop_postcode')) {{ old('shop_postcode') }} @elseif ($shop->address->postcode) {{ $shop->address->postcode }} @endif"
+                >
+              </div><!-- /.form-group -->
+            </div><!-- /.row -->
+
             <div class="form-group">
-              <label for="shop_address_input">Shop Address:</label>
-              <textarea class="form-control" name="shop_address" rows="8" cols="80" id="shop_address_input"
-              >@if (old('shop_address')){{ old('shop_address') }} @elseif ($shop){{ $shop->address }}@endif</textarea>
+              <label for="shop_full_address_input">Full Address:</label>
+              <textarea class="form-control" name="shop_full_address" rows="8" cols="80" id="shop_full_address_input"
+              >@if (old('shop_full_address')){{ old('shop_full_address') }} @elseif ($shop){{ $shop->address->full_address }}@endif</textarea>
             </div><!-- /.form-group -->
           </div>
 
