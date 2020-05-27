@@ -47,8 +47,7 @@ class ShopController extends Controller
      */
     public function show(Shop $shop)
     {
-        // code ..
-        dd($shop);
+        return view('web.shop')->with(compact('shop'));
     }
 
     /**
