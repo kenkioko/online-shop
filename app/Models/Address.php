@@ -21,7 +21,16 @@ class Address extends Model
      * @var array
      */
     protected $guarded = [
-      'latitude', 'longitude'
+      'latitude', 'longitude', 'primary_address'
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'default' => 'boolean',
     ];
 
     /**

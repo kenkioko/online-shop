@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
 use App\Models\Phone;
+use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -31,8 +32,15 @@ class ProfileController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
+        $delivery_address = ($user->address()->count() > 0)
+            ? $user->address()->get()
+            : new Address;
+
+        dd('ProfileController@index', $delivery_address);
+
         return view('dash.user_profile')->with([
           'user' => $user,
+          'delivery_address' => $delivery_address,
           'user_phones' => $user->phone()->get(),
           'user_shop' => $user->shop()->first(),
         ]);

@@ -97,16 +97,30 @@
             </div>
 
             <div class="d-flex">
-              <h5><strong>Shop address:</strong></h5>
-              <address class="ml-2">
-                {{ $shop->address->full_address }} <br>
-                {{ $shop->address->street }} <br>
-                {{ $shop->address->city }} <br>
-                {{ $shop->address->state }} <br>
-                {{ $shop->address->country }} <br>
-              </address>
+              <h5><strong>Shop full address:</strong></h5>
+              <p class="ml-2">{{ $shop->address->full_address }}</p>
             </div>
-          </div>
+
+            <div class="d-flex">
+              <h5><strong>Shop country:</strong></h5>
+              <p class="ml-2">{{ $shop->address->country }}</p>
+            </div>
+
+            <div class="d-flex">
+              <h5><strong>Shop state:</strong></h5>
+              <p class="ml-2">{{ $shop->address->state }}</p>
+            </div>
+
+            <div class="d-flex">
+              <h5><strong>Shop city:</strong></h5>
+              <p class="ml-2">{{ $shop->address->city }}</p>
+            </div>
+
+            <div class="d-flex">
+              <h5><strong>Shop street:</strong></h5>
+              <p class="ml-2">{{ $shop->address->street }}</p>
+            </div>
+          </div><!-- End of Shop Details -->
 
           <!-- Items Owned By Shop -->
           <div class="border-top p-2">

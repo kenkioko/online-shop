@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
       Blade::component('components.dash.modal', 'modal');
       Blade::component('components.dash.data_table', 'data_table');
       Blade::component('components.dash.sidebar', 'dash_sidebar');
+      Blade::component('components.dash.address_form', 'address_form');
 
       // website components
       Blade::component('components.breadcrum', 'breadcrum');

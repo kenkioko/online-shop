@@ -133,7 +133,18 @@
                     </ul>
                   </div>
                 </div>
-              </div>
+              </div><!-- /.row -->
+
+              @role('buyer')
+                <div class="border-top">
+                  <!-- Delivery address -->
+                  <label>Delivery Address</label>
+
+                  @address_form(['address'=> $delivery_address])
+                  @endaddress_form
+                </div>
+
+              @endrole
             </div>
             <!-- /.card-body -->
           </div>
@@ -187,11 +198,15 @@
                     value="{{ old('shop_name') ?? $user_shop->name }}"
                   >
                 </div><!-- /.form-group -->
-                <div class="form-group">
-                  <label for="shop_address_input">Shop Address:</label>
-                  <textarea class="form-control" name="shop_address" rows="8" cols="80" id="shop_address_input"
-                  >{{ old('shop_address') ?? $user_shop->address }}</textarea>
-                </div><!-- /.form-group -->
+
+                <div class="border-top">
+                  <!-- shop address -->
+                  <label>Shop Address</label>
+
+                  @address_form(['address'=> $user_shop->address])
+                  @endaddress_form
+                </div>
+
               </div>
               <!-- /.card-body -->
             </div>

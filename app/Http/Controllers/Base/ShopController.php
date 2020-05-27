@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use App\User;
 use App\Models\Shop;
 use Illuminate\Http\Request;
-use App\Http\Requests\ShopUpdateRequest;
+use App\Http\Requests\ShopStoreRequest;
+use App\Http\Requests\AddressStoreRequest;
 
 class ShopController extends Controller
 {
@@ -35,13 +36,15 @@ class ShopController extends Controller
             ? $user->shop()->first()
             : new Shop;
 
-        dd('saveShopDetails', $validated, $user->shop);
+        $shop->name = $validated['shop_details']['shop_name'];
+        $shop->address->country = $validated['shop_address']['address_country'];
+        $shop->address->state = $validated['shop_address']['address_state'];
+        $shop->address->city = $validated['shop_address']['address_city'];
+        $shop->address->street = $validated['shop_address']['address_street'];
+        $shop->address->postcode = $validated['shop_address']['address_postcode'];
+        $shop->address->full_address = $validated['shop_address']['address_full'];
 
-        $shop->name = $validated['shop_name'];
-        $shop->address = $validated['shop_address'];
-        $user->shop()->save($shop);
-
-        return true;
+        return $shop->push();
     }
 
     /**
@@ -52,7 +55,12 @@ class ShopController extends Controller
      */
     public static function validateData(Request $request) : array
     {
-        $shop_req = new ShopUpdateRequest;
-        return $request->validate($shop_req->rules());
+        $shop_req = new ShopStoreRequest;
+        $address_req = new AddressStoreRequest;
+
+        return [
+          'shop_details' => $request->validate($shop_req->rules()),
+          'shop_address' => $request->validate($address_req->rules()),
+        ];
     }
 }

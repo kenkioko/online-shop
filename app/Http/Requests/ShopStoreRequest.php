@@ -25,12 +25,6 @@ class ShopStoreRequest extends FormRequest
     {
         return [
             'shop_name' => ['required','string','max:100'],
-            'shop_country' => ['required','string','max:100'],
-            'shop_state' => ['required','string','max:100'],
-            'shop_city' => ['required','string','max:100'],
-            'shop_street' => ['required','string','max:200'],
-            'shop_postcode' => ['required','string','max:50'],
-            'shop_full_address' => ['required','string','max:500'],
         ];
     }
 }
