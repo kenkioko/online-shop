@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+  <title>ONLINE SHOP DOCUMENTATION</title>
+  <parser>
+    <target>docs/Technical Documentation/build</target>
+  </parser>
+  <transformer>
+    <target>docs/Technical Documentation/build</target>
+  </transformer>
+  <files>
+    <file>server.php</file>
+    <file>public/index.php</file>
+    <directory>app</directory>
+    <directory>config</directory>
+    <directory>database</directory>
+    <directory>routes</directory>
+    <directory>tests</directory>
+    <ignore>vendor/*</ignore>
+  </files>
+</phpdoc>

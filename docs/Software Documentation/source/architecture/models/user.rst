@@ -46,4 +46,36 @@ Attributes
 
 Relationships
 ~~~~~~~~~~~~~
-We have relationships
+We have relationships ::
+
+    /**
+     * The user's phone '1-2-M'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function phone()
+    {
+        return $this->hasMany('App\Models\Phone');
+    }
+
+    /**
+     * The user's address '1-2-1'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function address()
+    {
+        return $this->hasMany('App\Models\Address');
+    }
+
+    /**
+     * The user's shop if role='seller'. '1-2-1'.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function shop()
+    {
+        return $this->hasOne('App\Models\Shop');
+    }
+
+

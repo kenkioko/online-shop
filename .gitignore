@@ -36,3 +36,5 @@ npm-debug.log
 Homestead.json
 Homestead.yaml
 
+# auto lock files
+*~*

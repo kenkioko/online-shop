@@ -1,6 +1,2 @@
-# Ignore everything
-*
-
-# But not these files...
-!.gitignore
-!phpDocumentor.phar
+# Ignore build folder
+build
