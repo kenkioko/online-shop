@@ -168,7 +168,7 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @param  array $user_data
      * @param  array  $shop_data
-     * @return true/false
+     * @return boolean
      */
     private function save($user, $user_data, $shop_data)
     {

@@ -169,7 +169,7 @@ class CartController extends Controller
      * save the openned order..
      *
      * @param  \App\Models\Item  $item
-     * @return true/false
+     * @return boolean
      */
     private function saveCartItem($item, $quantity, $update_type='add')
     {
@@ -205,7 +205,7 @@ class CartController extends Controller
      * @param  double $price
      * @param  double $discount
      * @param  int $quantity
-     * @return true/false
+     * @return boolean
      */
     private function getItemPrice($price, $discount, $quantity)
     {

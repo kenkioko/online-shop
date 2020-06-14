@@ -18,6 +18,7 @@ class Item extends Model
    * - received
    * - preparing
    * - sending
+   * - finishe
    *
    * @var array
    */
@@ -27,7 +28,7 @@ class Item extends Model
     'received' => "RECEIVED ORDER FOR ITEM",
     'preparing' => "PREPARING ITEM",
     'sending' => "SENDING ITEM",
-    'received' => "RECEIVED ITEM",
+    'finished' => "ORDER WAS FINALIZED",
   );
 
   /**

@@ -67,7 +67,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * The user's shop if role='seller'. '1-2-1'.
+     * The user's shop if role='seller'. '1-2-M'.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */

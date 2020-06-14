@@ -30,7 +30,7 @@ class Address extends Model
      * @var array
      */
     protected $casts = [
-        'default' => 'boolean',
+        'primary_address' => 'boolean',
     ];
 
     /**

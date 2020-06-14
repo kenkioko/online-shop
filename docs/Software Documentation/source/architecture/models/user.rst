@@ -3,6 +3,8 @@ User Model
 
 **Table: users**
 
+**Class: ``\App\User``**
+
 This model represents the application users.
 
 It extends the ``Illuminate\Foundation\Auth\User`` Authenticatable class
@@ -11,31 +13,20 @@ and implements ``Illuminate\Contracts\Auth\MustVerifyEmail``.
 It also uses ``Illuminate\Notifications\Notifiable`` and
 ``Spatie\Permission\Traits\HasRoles`` classes.
 
-The available roles are ::
-
-    protected const ROLES = [
-        "1"  => [
-          "code" => "buyer",
-          "name" => "Normal Customer",
-        ],
-        "2"  => [
-          "code" => "seller",
-          "name" => "Business",
-        ],
-        "3"  => [
-          "code" => "admin",
-          "name" => "Administrator",
-        ],
-    ];
+The available roles are:
+ * Buyer.
+ * Seller.
+ * Administrator.
 
 The class has ``getUserRoles()`` and ``getUserRolesCodes()`` to get the all roles,
 while ``getUserRoleByKey($key)`` to get a role using a key.
+This functions are to be moved and implemented as laravel facades.
 
 
 Attributes
 ~~~~~~~~~~
 
- * id (primary)
+ * id (primary key)
  * name (string)
  * email (string, unique)
  * email_verified_at (timestamp)
@@ -46,36 +37,19 @@ Attributes
 
 Relationships
 ~~~~~~~~~~~~~
-We have relationships ::
 
-    /**
-     * The user's phone '1-2-M'.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\hasMany
-     */
-    public function phone()
-    {
-        return $this->hasMany('App\Models\Phone');
-    }
+The user model has the following relationships:
+ * Phone (``App\Models\Phone``) :-
+    One to many relationship.
+    Represents the users phone number to enable use of USSD interface.
 
-    /**
-     * The user's address '1-2-1'.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function address()
-    {
-        return $this->hasMany('App\Models\Address');
-    }
+ * Address (``pp\Models\Address``) :-
+    One to many relationship.
+    Represents the delivery addresses for the user orders.
+    The user can choose a default address.
 
-    /**
-     * The user's shop if role='seller'. '1-2-1'.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function shop()
-    {
-        return $this->hasOne('App\Models\Shop');
-    }
-
+ * Shop (``App\Models\Shop``) :-
+    One to one relationship.
+    Represents a user shop.
+    This relationship is a must if the user has the `seller` role.
 
