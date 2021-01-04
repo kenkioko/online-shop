@@ -23,9 +23,9 @@
   <body>
 
     <div id="navigation">
-      @nav()
+      @nav_bar()
         <!-- print navigation bar -->
-      @endnav
+      @endnav_bar
     </div>
 
     <div id="app">

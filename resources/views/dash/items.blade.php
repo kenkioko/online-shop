@@ -21,7 +21,7 @@
 @section('breadcrumb')
   @breadcrum(['extra_class' => 'float-sm-right'])
     <li class="breadcrumb-item"><a href="#">Admin</a></li>
-    <li class="breadcrumb-item active">Orders</li>
+    <li class="breadcrumb-item active">Items</li>
   @endbreadcrum()
 @endsection
 

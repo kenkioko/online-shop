@@ -24,18 +24,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-      // dashboard component
+      // dashboard components
       Blade::component('components.dash.modal', 'modal');
       Blade::component('components.dash.data_table', 'data_table');
       Blade::component('components.dash.sidebar', 'dash_sidebar');
       Blade::component('components.dash.address_form', 'address_form');
 
       // website components
-      Blade::component('components.breadcrum', 'breadcrum');
+      Blade::component('components.breadcrum', 'breadcrum');      
       Blade::component('components.grid', 'grid');
       Blade::component('components.logout_form', 'logout');
       Blade::component('components.modal', 'modal');
-      Blade::component('components.nav', 'nav');
+      Blade::component('components.nav_bar', 'nav_bar');
+      Blade::component('components.nav_category', 'nav_category');
+      Blade::component('components.nav_profile', 'nav_profile');      
       Blade::component('components.search_form', 'search');
       Blade::component('components.show_item_price', 'show_item_price');
       Blade::component('components.side_menu', 'side_menu');

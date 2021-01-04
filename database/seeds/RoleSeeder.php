@@ -24,7 +24,8 @@ class RoleSeeder extends Seeder
           'create',   // permissions[1]
           'update',   // permissions[2]
           'delete',   // permissions[3]
-        ], true);
+        ]);
+
         define('OBJECTS', [
           'users',      // objects[0]
           'roles',      // objects[1]
@@ -32,12 +33,12 @@ class RoleSeeder extends Seeder
           'categories', // objects[3]
           'orders',     // objects[4]
           'cart',       // objects[5]
-          'shops',       // objects[6]
-        ], true);
+          'shops',      // objects[6]
+        ]);
 
         // create object permissions
-        foreach (objects as $index => $object) {
-          $this->create_permissions(permissions, $object);
+        foreach (OBJECTS as $index => $object) {
+          $this->create_permissions(PERMISSIONS, $object);
         }
 
         // non-object permissions
@@ -47,39 +48,39 @@ class RoleSeeder extends Seeder
         // admin role
         $admin_role = Role::create(['name' => 'admin']);
         $admin_role->givePermissionTo($view_dash);
-        $this->set_user_permissions(permissions, [      // All permissions
-          objects[0],  // users
-          objects[1],  // roles
-          objects[3],  // categories
-          objects[6],  // shop
+        $this->set_user_permissions(PERMISSIONS, [      // All permissions
+          OBJECTS[0],  // users
+          OBJECTS[1],  // roles
+          OBJECTS[3],  // categories
+          OBJECTS[6],  // shop
         ], $admin_role);
-        $this->set_user_permissions([permissions[0]], [   // view permissions
-          objects[2],  // items
+        $this->set_user_permissions([PERMISSIONS[0]], [   // view permissions
+          OBJECTS[2],  // items
         ], $admin_role);
 
         // buyer role
         $buyer_role = Role::create(['name' => 'buyer']);
         $buyer_role->givePermissionTo($view_web);
-        $this->set_user_permissions(permissions, [      // All permissions
-          objects[4],  // orders
-          objects[5],  // cart
+        $this->set_user_permissions(PERMISSIONS, [      // All permissions
+          OBJECTS[4],  // orders
+          OBJECTS[5],  // cart
         ], $buyer_role);
-        $this->set_user_permissions([permissions[0]], [   // view permissions
-          objects[2],  // items
-          objects[3],  // categories
-          objects[6],  // shop
+        $this->set_user_permissions([PERMISSIONS[0]], [   // view permissions
+          OBJECTS[2],  // items
+          OBJECTS[3],  // categories
+          OBJECTS[6],  // shop
         ], $buyer_role);
 
         // seller role
         $seller_role = Role::create(['name' => 'seller']);
         $seller_role->givePermissionTo($view_dash);
-        $this->set_user_permissions(permissions, [      // All permissions
-          objects[2],  // items
-          objects[4],  // orders
-          objects[6],  // shop
+        $this->set_user_permissions(PERMISSIONS, [      // All permissions
+          OBJECTS[2],  // items
+          OBJECTS[4],  // orders
+          OBJECTS[6],  // shop
         ], $seller_role);
-        $this->set_user_permissions([permissions[0]], [   // view permissions
-          objects[3],  // categories
+        $this->set_user_permissions([PERMISSIONS[0]], [   // view permissions
+          OBJECTS[3],  // categories
         ], $seller_role);
     }
 

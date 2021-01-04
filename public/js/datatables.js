@@ -128,7 +128,7 @@ $(function () {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/kioko/Projects/online-shop/resources/js/datatables.js */"./resources/js/datatables.js");
+module.exports = __webpack_require__(/*! C:\Users\PC\Git Projects\online-shop\resources\js\datatables.js */"./resources/js/datatables.js");
 
 
 /***/ })

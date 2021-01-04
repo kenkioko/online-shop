@@ -2,10 +2,12 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Order;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -150,5 +152,19 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         return $role;
+    }
+
+    public function getCartItems()
+    {
+        $new_orders = 0;
+        $orders = Order::where('user_id', Auth::id())
+          ->where('status', 'items_in_cart')
+          ->first();
+
+        if ($orders) {
+            $new_orders = $orders->items()->count();
+        }
+
+        return $new_orders;
     }
 }
