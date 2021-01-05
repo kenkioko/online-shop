@@ -10923,8 +10923,6 @@ html {
 }
 
 .flickity-cell {
-  max-height: 10rem;
-  width: 25%;
   margin: 1.5rem;
   border-radius: 5px;
 }
@@ -10945,5 +10943,17 @@ html {
 
 .border-dashed {
   border-style: dashed !important;
+}
+
+.nav-tabs .nav-link {
+  color: #343a40;
+  border-top: 0 !important;
+  border-right: 0 !important;
+  border-left: 0 !important;
+}
+
+a.nav-link.active {
+  color: #3564d4 !important;
+  border-bottom: 1px solid #3564d4 !important;
 }
 

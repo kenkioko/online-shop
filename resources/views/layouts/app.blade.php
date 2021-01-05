@@ -36,17 +36,34 @@
 
     @section('footer')
       <!-- Footer -->
-      <div class="container-fluid bg-secondary p-5" id="footer">
-        <h4>Lorem Ipsum dolor</h4>
-        <p>
-          Lorem Ipsum dolor sit amet, consectetur adipiscing elit,
-          sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-          ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-          deserunt mollit anim id est laborum.
-        </p>
+      <hr>
+      <div class="container bg-light p-5" id="footer">
+        <div class="row">
+          <div class="col-md-3">
+            <h4><b>My Shop</b></h4>
+            <p><a class="text-dark" href="#">About</a></p>
+            <p><a class="text-dark" href="#">Contact US</a></p>
+            <p><a class="text-dark" href="#">Legal</a></p>
+            <p><a class="text-dark" href="#">Invite a friend</a></p>
+          </div>
+          <div class="col-md-3">
+            <h4><b>About</b></h4>
+            <p><a class="text-dark" href="#">Blog</a></p>
+            <p><a class="text-dark" href="#">Our Comunity</a></p>
+            <p><a class="text-dark" href="#">Terms and conditions</a></p>
+            <p><a class="text-dark" href="#">Data Protection</a></p>
+          </div>
+          <div class="col-md-6">
+            <p>You can drop a line on our social media platforms and share with friends and family.</p>
+
+            <div class="d-flex">
+              <a href="#"><i class="fab fa-facebook-square fa-3x text-primary mx-1"></i></a>              
+              <a href="#"><i class="fab fa-twitter-square fa-3x text-primary mx-1"></i></a>
+              <a href="#"><i class="fab fa-instagram-square fa-3x text-primary mx-1"></i></a>                  
+            </div>            
+          </div>
+        </div>
+
         <div class="d-flex border-top py-3">
           <p class="mx-auto">&copy; sitename</p>
         </div>
