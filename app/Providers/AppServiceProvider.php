@@ -32,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
 
       // website components
       Blade::component('components.breadcrum', 'breadcrum');      
+      Blade::component('components.carousel', 'carousel');      
       Blade::component('components.grid', 'grid');
       Blade::component('components.logout_form', 'logout');
       Blade::component('components.modal', 'modal');

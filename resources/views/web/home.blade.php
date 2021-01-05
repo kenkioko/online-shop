@@ -10,26 +10,18 @@
 @endsection
 
 @section('content')
-  <!-- Banner Ads -->
-  <div class="banner-ads">
-    <img src="https://via.placeholder.com/1020x60?text=Banner+Ads" class="w-100" />
-  </div>
-  <!-- End Banner Ads -->
-
   <!-- Main Content -->
-  <div class="container my-5">
+  <div class="container-fluid p-0">
     <!-- Top Page Banners -->
     <div class="banner-main">
-      <img src="https://via.placeholder.com/1020x400?text=Banner+Main" class="w-100 py-1"/>
-    </div>
-
-    <div class="banner-sub row h-25">
-      <img src="https://via.placeholder.com/1020x350?text=Banner+Sub" class="w-100 col-sm-6 py-1" />
-      <img src="https://via.placeholder.com/1020x350?text=Banner+Sub" class="w-100 col-sm-6 py-1" />
+      @carousel
+      @endcarousel
     </div>
     <!-- End Top Page Banners -->
 
-    @include('shared.grid')
+    <div class="container">
+      @include('shared.grid')
+    </div>    
 
   </div>
   <!-- Main Content -->
