@@ -18,7 +18,7 @@ class Item extends Model
    * - received
    * - preparing
    * - sending
-   * - finishe
+   * - finished
    *
    * @var array
    */
@@ -32,12 +32,29 @@ class Item extends Model
   );
 
   /**
+   * The type of item. Either 'product' or 'service'.
+   *
+   * @var array
+   */
+  const TYPE = array(
+    'product' => "PRODUCT",
+    'service' => "SERVICE",
+  );
+
+  /**
    * The attributes that are mass assignable.
    *
    * @var array
    */
   protected $fillable = [
-    'name', 'category', 'description', 'discount_amount', 'discount_percent', 'price'
+    'name', 
+    'description', 
+    'discount_amount', 
+    'discount_percent', 
+    'price', 
+    'type', 
+    'trade_allowed',
+    'bid_allowed',
   ];
 
   /**
@@ -45,7 +62,32 @@ class Item extends Model
    *
    * @var array
    */
-  protected $guarded = ['images_folder'];
+  protected $guarded = ['images_folder'];  
+
+  /**
+   * The attributes that should be cast to native types.
+   *
+   * @var array
+   */
+  protected $casts = [
+    'trade_allowed' => 'boolean',
+    'bid_allowed' => 'boolean',
+    'discount_amount' => 'double', 
+    'discount_percent' => 'float', 
+    'price' => 'double', 
+  ];
+
+  /**
+   * The model's default values for attributes.
+   *
+   * @var array
+   */
+  protected $attributes = [
+    'trade_allowed' => false,
+    'bid_allowed' => false,
+    'discount_amount' => 0.00, 
+    'discount_percent' => 0.00, 
+  ];
 
   /**
    * The item's category '1-2-1'.

@@ -22,6 +22,9 @@ $factory->define(Item::class, function (Faker $faker) {
         'images_folder' => $faker->uuid,
         'stock' => $faker->numberBetween($min = 0, $max = 100),
         'price' => $faker->numberBetween($min = 100, $max = 3000),
+        'type' => $faker->randomElement($array = Item::TYPE),
+        'trade_allowed' => $faker->boolean,
+        'bid_allowed' => $faker->boolean,
         'description' => $faker->paragraph,
         'category_id' => function () use ($faker, $category_ids) {
             if (Category::count() > 3) {

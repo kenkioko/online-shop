@@ -17,14 +17,14 @@
 
     <div class="row w-100">
 
-      @side_menu([
+      {{-- @side_menu([
         'title' => 'FITER BY',
         'menu_items' => [
           ['name' => 'Brand','url' => '#'],
           ['name' => 'Size','url' => '#'],
         ]
       ])
-      @endside_menu
+      @endside_menu --}}
 
       <!-- Main Content-->
       <div class="col-sm w-100 mx-2">

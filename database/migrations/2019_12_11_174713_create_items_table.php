@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Item;
 
 class CreateItemsTable extends Migration
 {
@@ -18,10 +19,13 @@ class CreateItemsTable extends Migration
             $table->string('name');
             $table->text('description');
             $table->uuid('images_folder')->nullable();
+            $table->enum('type', Item::TYPE);
             $table->unsignedInteger('stock');
-            $table->unsignedDecimal('price', 8, 2);
+            $table->unsignedDecimal('price', 8, 2);            
             $table->unsignedDecimal('discount_amount', 8, 2)->nullable();
             $table->unsignedInteger('discount_percent')->nullable();
+            $table->boolean('trade_allowed')->default(false);
+            $table->boolean('bid_allowed')->default(false);
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('shop_id');
             $table->timestamps();
