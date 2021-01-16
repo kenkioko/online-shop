@@ -32,27 +32,67 @@
       <!-- Page Tabs -->
       <ul class="nav nav-tabs justify-content-center">
         <li class="nav-item px-4">
-          <a class="nav-link active" aria-current="page" href="#">
+          <a id="products_tab_link" class="nav-link active" aria-current="page" href="javascript:void(0)">
             <h5><b>NEW PRODUCTS</b></h5>
           </a>
         </li>
         <li class="nav-item px-4">
-          <a class="nav-link" href="#">
+          <a id="services_tab_link" class="nav-link" href="javascript:void(0)">
             <h5><b>NEW SERVICES</b></h5>
           </a>
         </li>
       </ul>
 
-      <!-- items display -->
-      @include('shared.item_display')
-      <!-- End items display -->
+      @for ($i=0; $i < $rows; $i++)
+        <!-- page row {{ $i }} -->
+        <div id="row-{{ $i }}">
+          
+          @if (count($products) > ($row_items * $i))
+            <!-- product display -->
+            <div class="d-none products-tab">
+              @include('shared.item_display', [
+                'items' => $products->splice(($i * $row_items), $row_items),                
+                'row_cols' => $row_cols,
+              ])
+            </div>
+            <!-- End product display -->
 
-      <!-- Big ads grid -->
-      @include('shared.grid', [
-        "cell_class" => "w-50",
-        "img_style" => "height: 25rem;",
-      ])
-      <!-- End Big ads grid -->
+            <!-- product adverts -->
+            <div class="products-advert">
+              <!-- Big ads grid -->
+              @include('shared.grid', [
+                "cell_class" => "w-50",
+                "img_style" => "height: 25rem;",
+              ])
+              <!-- End Big ads grid -->
+            </div> 
+          @endif                    
+          
+          @if (count($services) > ($row_items * $i))
+            <!-- service display -->
+            <div class="d-none services-tab">
+              @include('shared.item_display', [
+                'items' => $services->splice(($i * $row_items), $row_items),
+                'row_cols' => $row_cols,
+              ])
+            </div>
+            <!-- End service display -->
+
+            <!-- service adverts -->
+            <div class="services-advert">
+              <!-- Big ads grid -->
+              @include('shared.grid', [
+                "cell_class" => "w-50",
+                "img_style" => "height: 25rem;",
+              ])
+              <!-- End Big ads grid -->
+            </div> 
+          @endif   
+
+        </div>
+        <!-- End page row {{ $i }} -->                  
+      @endfor    
+      
     </div>    
 
   </div>
@@ -65,4 +105,62 @@
   <!-- Flickity JavaScript -->
   <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
   <script src="{{ asset('/js/flikty.js') }}" type="text/javascript"></script>
+
+  <script type="text/javascript">
+    var display_page;
+
+    $(function () {
+      function display_none() {
+        $('#products_tab_link').removeClass('active');
+        $('#services_tab_link').removeClass('active');   
+        
+        $('.products-tab').addClass('d-none');
+        $('.services-tab').addClass('d-none');
+
+        $('.products-advert').addClass('d-none');
+        $('.services-advert').addClass('d-none');        
+      }
+
+      function display_products() {
+        $('#products_tab_link').addClass('active');                
+        $('.products-tab').removeClass('d-none');
+        $('.products-advert').removeClass('d-none');
+      } 
+
+      function display_services() {
+        $('#services_tab_link').addClass('active');        
+        $('.services-tab').removeClass('d-none');
+        $('.services-advert').removeClass('d-none');
+      } 
+
+      function display_items(type = null) {
+        display_none();
+
+        switch(type) {
+          case 'products':
+            display_products();
+            break;
+          case 'services':
+            display_services();
+            break;
+          default:
+            display_products();
+        }
+      }
+
+      $('#products_tab_link').click(function () {
+        display_items('products');
+      });
+
+      $('#services_tab_link').click(function () {
+        display_items('services');
+      });
+
+      display_page = display_items;
+    });
+
+    $( window ).on( "load", function() {
+      display_page();
+    });
+  </script>
 @endsection

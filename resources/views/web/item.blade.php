@@ -87,17 +87,6 @@
           </p>
         </div>
 
-        <!-- <p><span class="font-weight-bold">
-            Select Size:
-        </span><br></p>
-        <div class="grid-sizes">
-          <div class="size-item border">7</div>
-          <div class="size-item border">8</div>
-          <div class="size-item border">9</div>
-          <div class="size-item border">10</div>
-          <div class="size-item border">11</div>
-        </div> -->
-
         @php
           $form_action = route('cart.store');
           $order_number = null;

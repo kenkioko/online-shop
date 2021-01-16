@@ -29,6 +29,12 @@ Route::namespace('Web')->group(function () {
     'index', 'show'
   ]);
 
+  Route::get('items/products', 'ItemController@indexProduct')
+    ->name('items.index_products');
+
+  Route::get('items/services', 'ItemController@indexService')
+    ->name('items.index_services');
+    
   Route::resource('items', 'ItemController')->only([
     'show'
   ]);

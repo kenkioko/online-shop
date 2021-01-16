@@ -18,10 +18,10 @@
         </h1>
 
         <div class="display-1">
-          <a class="btn btn-lg btn-light rounded-0" href="#">
+          <a class="btn btn-lg btn-light rounded-0" href="{{ route('items.index_products') }}">
             PRODUCTS
           </a>
-          <a class="btn btn-lg btn-light rounded-0" href="#">
+          <a class="btn btn-lg btn-light rounded-0" href="{{ route('items.index_services') }}">
             SERVICES
           </a>
         </div>

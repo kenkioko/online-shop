@@ -18,9 +18,29 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function indexProduct()
     {
-        return abort(404);
+        $items = Item::where('type', Item::TYPE['product'])->get();
+
+        return view('web.item_index', [
+            'items' => $items,
+            'page_title' => 'Products',
+        ]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexService()
+    {
+        $items = Item::where('type', Item::TYPE['service'])->get();
+
+        return view('web.item_index', [
+            'items' => $items,
+            'page_title' => 'Services',
+        ]);
     }
 
     /**
