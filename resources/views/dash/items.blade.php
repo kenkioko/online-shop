@@ -88,6 +88,7 @@
               <th scope="col">Category</th>
               <th scope="col">Price</th>
               <th scope="col">Stock</th>
+              <th scope="col">Type</th>
 
               @can('items.view')
                 <th scope="col">View Url</th>
@@ -114,6 +115,7 @@
               @endshow_item_price
             </td>
             <td>{{ number_format($item->stock) }}</td>
+            <td>{{ $item->type }}</td>
 
             @can('items.view')
               <td>{{ route('items.show', ['item' => $item]) }}</td>
@@ -200,15 +202,15 @@
       // hide id and url columns
       table.column(1).visible(false);
       @can('items.view')
-        table.column(6).visible(false);
-      @endcan
-
-      @can('items.update')
         table.column(7).visible(false);
       @endcan
 
-      @can('items.delete')
+      @can('items.update')
         table.column(8).visible(false);
+      @endcan
+
+      @can('items.delete')
+        table.column(9).visible(false);
       @endcan
 
       @canany(['items.view', 'items.update', 'items.delete'])

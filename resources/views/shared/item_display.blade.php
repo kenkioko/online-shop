@@ -15,7 +15,7 @@
     <a href="{{ route('items.show',['item' => $item->id]) }}" class="text-dark text-decoration-none">
       <!-- Card -->
       <div class="card border-0 bg-light h-100">
-        <img src="{{ $url }}" class="card-img-top" alt="...">
+        <img src="{{ $url }}" class="card-img-top" alt="{{ $item->images_folder }}">
         <div class="card-body p-1">
           <p class="card-text">{{ $item->name }}</p>
           <p>KSH {{ number_format($item->price, 2) }}</p>

@@ -119,6 +119,25 @@
           </div><!-- /.form-group -->
 
           <div class="form-group">
+            <label>Select a type:</label>
+            <select class="custom-select" name="type" id="type_input">
+              <option @if (!($item and $item->type) or !old('type')) selected @endif>
+                Choose A Type
+              </option>
+
+              @php
+                $types = App\Models\Item::TYPE;
+              @endphp
+
+              @foreach ($types as $key => $type)
+                <option @if ((old('type') == $key) or ($item and ($item->type == $key))) selected  @endif
+                  value="{{ $key }}"
+                >{{ $type }}</option>
+              @endforeach
+            </select>
+          </div><!-- /.form-group -->
+
+          <div class="form-group">
             @php
               $description_value = null;
               if (old('description')) {
@@ -138,7 +157,7 @@
           </div><!-- /.form-group -->
 
           <div class="form-group">
-            <label>Select a parent item:</label>
+            <label>Select a category:</label>
             <select class="custom-select" name="category_id">
               <option @if (!($item and $item->category) or !old('category_id')) selected @endif>
                 Choose A Category
@@ -213,7 +232,7 @@
             </div><!-- /.form-group -->
           </div><!-- /.row -->
 
-          <div class="form-group">
+          <div class="form-group" id="stock_form_group">
             <label for="stock_input">Remaining in Stock:</label>
             <input type="text"
               id="stock_input"
@@ -224,7 +243,7 @@
             >
           </div><!-- /.form-group -->
 
-          <div class="form-group col"><!-- /.form-group -->
+          <div class="form-group"><!-- /.form-group -->
             <label for="image_preview">Item images:</label>
             <div class="custom-file">
               <input multiple type="file" accept="image/*"
@@ -294,6 +313,25 @@
   @include('shared.format_number_js')
 
   <script type="text/javascript">
+    $(function(){
+      function show_stock(params) {
+        var item_type = $('#type_input').val();
+         if (item_type == 'product') {
+           $('#stock_form_group').removeClass('d-none');
+         } else if (item_type == 'service') {
+          $('#stock_form_group').addClass('d-none');
+         }
+      }
+
+      $('#type_input').change(function () {
+        show_stock();
+      })      
+
+      show_stock();
+    });
+  </script>
+
+  <script type="text/javascript">
     function on_delete() {
       $('#delete_modal').modal('show');
     }
@@ -323,62 +361,62 @@
   </script>
 
   <script type="text/javascript">
-  $(function(){
-    const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
-    var images = [];
+    $(function(){
+      const validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+      var images = [];
 
-    $('#item_images').change(function () {
-      delete_previous();
+      $('#item_images').change(function () {
+        delete_previous();
 
-      var length = 0;
-      $.each( this.files, function( index, file ) {
-        if (validImageTypes.includes(file.type)) {
-          var url = window.URL.createObjectURL(file);
-          create_card(url);
+        var length = 0;
+        $.each( this.files, function( index, file ) {
+          if (validImageTypes.includes(file.type)) {
+            var url = window.URL.createObjectURL(file);
+            create_card(url);
 
-          images.push(file);
-          length += 1;
+            images.push(file);
+            length += 1;
+          }
+        });
+
+        $('#item_images_label').text(
+        length + ' image file(s) selected.'
+        );
+      });
+
+      function delete_previous(files) {
+        var preview = document.getElementById('image_preview');
+        while(preview.firstChild){
+          preview.removeChild(preview.firstChild);
         }
-      });
-
-      $('#item_images_label').text(
-       length + ' image file(s) selected.'
-      );
-    });
-
-    function delete_previous(files) {
-      var preview = document.getElementById('image_preview');
-      while(preview.firstChild){
-        preview.removeChild(preview.firstChild);
       }
-    }
 
-    function create_card(url) {
-      // card element
-      var card = document.createElement('div');
-      card.classList.add("card");
+      function create_card(url) {
+        // card element
+        var card = document.createElement('div');
+        card.classList.add("card");
 
-      // card image element
-      var image = document.createElement('img');
-      image.classList.add("card-img-top");
-      image.src = url;
+        // card image element
+        var image = document.createElement('img');
+        image.classList.add("card-img-top");
+        image.src = url;
 
-      //append
-      card.appendChild(image);
-      document.getElementById('image_preview').appendChild(card);
-    }
+        //append
+        card.appendChild(image);
+        document.getElementById('image_preview').appendChild(card);
+      }
 
-    $('#submit_item_form').click(function (event) {
-      let form = document.getElementById('item_form');
-      let formData = new FormData(form);
+      $('#submit_item_form').click(function (event) {
+        let form = document.getElementById('item_form');
+        let formData = new FormData(form);
 
-      formData.delete('images[]');
-      $.each( images, function( index, image ) {
-        formData.append('images[]', image, image.name);
+        formData.delete('images[]');
+        $.each( images, function( index, image ) {
+          formData.append('images[]', image, image.name);
+        });
+
+        $(form).submit(); //Change to use ajax for image file filters
       });
-
-      $(form).submit(); //Change to use ajax for image file filters
     });
-  });
   </script>
 @endsection

@@ -20,7 +20,7 @@ class CreateItemsTable extends Migration
             $table->text('description');
             $table->uuid('images_folder')->nullable();
             $table->enum('type', Item::TYPE);
-            $table->unsignedInteger('stock');
+            $table->unsignedInteger('stock')->nullable();
             $table->unsignedDecimal('price', 8, 2);            
             $table->unsignedDecimal('discount_amount', 8, 2)->nullable();
             $table->unsignedInteger('discount_percent')->nullable();

@@ -174,7 +174,7 @@
         @endcanany
 
         @guest
-          <button type="submit" form="add_item_form" class="btn btn-primary ml-auto">
+          <button type="submit" form="add_item_form" class="btn btn-outline-primary ml-auto font-weight-bold">
             LOGIN TO PURCHASE ITEM
           </button>
         @endguest

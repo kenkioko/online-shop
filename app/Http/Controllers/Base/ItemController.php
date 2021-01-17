@@ -56,6 +56,7 @@ class ItemController extends Controller
           }
 
           $item->name = $validated['name'];
+          $item->type = $validated['type'];
           $item->price = $validated['price'];
           $item->stock = $validated['stock'];
           $item->description = $validated['description'];
