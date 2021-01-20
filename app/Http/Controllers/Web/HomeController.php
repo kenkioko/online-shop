@@ -15,20 +15,22 @@ class HomeController extends Controller
      */
     public function index()
     {
+        $page_items = config('items.homepage_rows') * config('items.items_in_row');
+
+        // product items
         $products = Item::where('type', Item::TYPE['product'])
             ->latest()
-            ->paginate(16);
+            ->paginate($page_items);
 
+        // service items
         $services = Item::where('type', Item::TYPE['service'])
             ->latest()
-            ->paginate(16);
+            ->paginate($page_items);
 
+        // return
         return view('web.home', [
             'products' => $products,
             'services' => $services,
-            'rows' => 5,            
-            'row_cols' => 4,
-            'row_items' => 8,
         ]);
     }
 }

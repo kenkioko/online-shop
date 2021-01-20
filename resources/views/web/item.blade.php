@@ -185,18 +185,25 @@
     <hr>
 
     <!-- More Items Grid -->
-    <!-- <div class="d-flex flex-column mt-5">
-      <h3 id="category-header" class="mx-auto">You might also like</h3>
+    <div class="services-advert">
+      <!-- Big ads grid -->
+      @include('shared.grid', [
+        "cell_class" => "w-50",
+        "img_style" => "height: 25rem;",
+      ])
+      <!-- End Big ads grid -->
+    </div> 
+    <!-- End More Items Grid -->
 
-      <div class="grid-container" id="more-items-grid">
-        @for($i = 0; $i < 10; $i++)
-          <div class="grid-item">
-            <img src="https://via.placeholder.com/150x150"/>
-            <p>Item {{ $i + 1 }}</p>
-          </div>
-        @endfor
-    </div> -->
-    <!-- More Items Grid -->
+    <!-- Related Items -->
+    <div>
+      <h3><b>Similar Products</b></h3>
+      
+      @include('shared.item_display', [
+        'items' => $related_items,
+      ])
+    </div>
+    <!-- End Related Items -->
 
   </div>
 @endsection

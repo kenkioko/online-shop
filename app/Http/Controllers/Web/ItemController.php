@@ -20,7 +20,9 @@ class ItemController extends Controller
      */
     public function indexProduct()
     {
-        $items = Item::where('type', Item::TYPE['product'])->get();
+        $items = Item::where('type', Item::TYPE['product'])
+            ->latest()
+            ->get();
 
         return view('web.item_index', [
             'items' => $items,
@@ -35,7 +37,9 @@ class ItemController extends Controller
      */
     public function indexService()
     {
-        $items = Item::where('type', Item::TYPE['service'])->get();
+        $items = Item::where('type', Item::TYPE['service'])
+            ->latest()
+            ->get();
 
         return view('web.item_index', [
             'items' => $items,
@@ -77,11 +81,20 @@ class ItemController extends Controller
             ->where('status', Order::getStatus('items_in_cart'))
             ->first();
 
+        $related_items = Item::where([
+            'type' => $item->type,
+            'category_id' => $item->category->id
+        ])->take(config('items.items_in_row'))
+        ->get();
+
+        // dd($related_items);
+
         return view('web.item')->with([
           'item' => $item,
           'shop' => $item->shop()->firstOrFail(),
           'active_order' => $active_order,
           'files' => $this->get_image_files($item->images_folder),
+          'related_items' => $related_items,
         ]);
     }
 

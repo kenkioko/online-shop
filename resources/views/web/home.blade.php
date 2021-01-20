@@ -43,16 +43,15 @@
         </li>
       </ul>
 
-      @for ($i=0; $i < $rows; $i++)
-        <!-- page row {{ $i }} -->
-        <div id="row-{{ $i }}">
-          
-          @if (count($products) > ($row_items * $i))
+      @for ($i=0; $i < config('items.homepage_rows'); $i++)
+        @if (count($products) > (config('items.items_in_row') * $i))
+          <!-- products page row {{ $i }} -->
+          <div id="row-{{ $i }}">
+
             <!-- product display -->
             <div class="d-none products-tab">
               @include('shared.item_display', [
-                'items' => $products->splice(($i * $row_items), $row_items),                
-                'row_cols' => $row_cols,
+                'items' => $products->splice(($i * config('items.items_in_row')), config('items.items_in_row'))
               ])
             </div>
             <!-- End product display -->
@@ -66,14 +65,22 @@
               ])
               <!-- End Big ads grid -->
             </div> 
-          @endif                    
-          
-          @if (count($services) > ($row_items * $i))
+
+          </div>
+          <!-- End products page row {{ $i }} --> 
+        @endif   
+      @endfor 
+
+
+      @for ($i=0; $i < config('items.homepage_rows'); $i++)
+        @if (count($services) > (config('items.items_in_row') * $i))
+          <!-- services page row {{ $i }} -->
+          <div id="row-{{ $i }}">
+
             <!-- service display -->
             <div class="d-none services-tab">
               @include('shared.item_display', [
-                'items' => $services->splice(($i * $row_items), $row_items),
-                'row_cols' => $row_cols,
+                'items' => $services->splice(($i * config('items.items_in_row')), config('items.items_in_row'))
               ])
             </div>
             <!-- End service display -->
@@ -87,14 +94,13 @@
               ])
               <!-- End Big ads grid -->
             </div> 
-          @endif   
 
-        </div>
-        <!-- End page row {{ $i }} -->                  
+          </div>
+          <!-- End services page row {{ $i }} --> 
+        @endif               
       @endfor    
       
-    </div>    
-
+    </div>
   </div>
   <!-- Main Content -->
 @endsection

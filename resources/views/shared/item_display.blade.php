@@ -1,4 +1,4 @@
-<div class="row row-cols-1 row-cols-md-{{ $row_cols ?? 4 }} my-5">
+<div class="row row-cols-1 row-cols-md-{{ config('items.cols_per_row') }} my-5">
   @foreach($items as $item)
 
   @php
