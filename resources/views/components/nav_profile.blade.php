@@ -25,7 +25,7 @@
 
   @auth 
     <li class="nav-item">
-      <a class="nav-link" aria-current="page" href="{{ route('login') }}">
+      <a class="nav-link" aria-current="page" href="{{ route('profile.index') }}">
         Profile
       </a>
     </li>

@@ -80,7 +80,7 @@ class PhoneController extends Controller
      */
     public function update(Request $request, Phone $phone)
     {
-        //
+        dd('PhoneController@update');
     }
 
     /**
@@ -91,6 +91,8 @@ class PhoneController extends Controller
      */
     public function destroy(Phone $phone)
     {
-        //
+        $phone->delete();
+
+        return back()->with('success', 'The telephone number was removed successfully');
     }
 }

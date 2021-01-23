@@ -23,7 +23,7 @@ class CreateAddressesTable extends Migration
             $table->string('street')->nullable();
             $table->string('postcode')->nullable();
             $table->string('full_address');
-            $table->string('primary_address')->default(false);
+            $table->boolean('primary_address')->default(false);
             $table->double('latitude', 12, 8)->nullable();
             $table->double('longitude', 12, 8)->nullable();
             $table->timestamps();

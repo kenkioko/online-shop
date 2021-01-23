@@ -86,7 +86,7 @@
 
           <div class="card card-outline card-secondary collapsed-card">
             <div class="card-header">
-              <h3 class="card-title text-bold">Contacts</h3>
+              <h3 class="card-title text-bold">Contact Info</h3>
 
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
@@ -102,6 +102,7 @@
                   <input type="tel" class="form-control" id="phone_input" name="phone_number"
                     value="{{ old('phone_number') ?? '' }}"
                     pattern="\+[0-9]{3} [0-9]{3} [0-9]{6}"
+                    placeholder="+254 712 345678"
                   ><small class="text-muted">Format: +254 712 345678</small>
                 </div>
 
@@ -117,7 +118,7 @@
                             <span class="badge badge-pill badge-success mx-2">Verified</span>
                           @else
                             <button type="button" class="btn btn-link"
-                              onclick="verify_phone( {{ $key }}, '{{ $phone }}', '{{ route('profile.phone.update', ['phone' => $phone]) }}', '{{ route('ajax.phone.update', ['phone' => $phone]) }}')"
+                              onclick="verify_phone( {{ $key }}, '{{ $phone }}', '{{ route('profile.phone.update', ['phone' => $phone]) }}')"
                             >(Not verified) Click to verify!</button>
 
                             <span id="verify_phone_spinner_{{$key}}" class="d-none">
@@ -138,10 +139,55 @@
               @role('buyer')
                 <div class="border-top">
                   <!-- Delivery address -->
-                  <label>Delivery Address</label>
+                  <label>Delivery Addresses</label>
 
-                  @address_form(['address'=> $delivery_address])
-                  @endaddress_form
+                  <div class="px-2">
+                    @if(count($delivery_addresses) == 0)
+                        <p>No addresses found!</p>                  
+                    @endif
+                  
+                    <button type="button" id="add_address_btn" class="btn btn-link p-0">
+                      Add A Delivery Address
+                    </button>
+                  </div>
+
+                  @if(count($delivery_addresses) > 0)
+                    <div class="row p-2">
+
+                      @foreach($delivery_addresses as $delivery_address)                    
+                        <div class="col-sm-6 border p-2">
+                          <button type="button" class="close ml-auto" aria-label="Close"
+                          onclick="remove_address( {{ $key }}, '{{ $delivery_address }}', '{{ route('profile.address.destroy', ['address' => $delivery_address]) }}')"
+                          ><span aria-hidden="true">&times;</span></button>
+
+                          <address>
+                            <b>Country:</b> {{ $delivery_address->country }} <br>
+                            <b>State:</b> {{ $delivery_address->state }} <br>
+                            <b>City:</b> {{ $delivery_address->city }} <br>
+                            <b>Street:</b> {{ $delivery_address->street }} <br>
+                            <b>Full Address:</b> {{ $delivery_address->full_address }}
+                          </address>
+
+                          @if($delivery_address->primary_address)
+                            <span class="badge badge-pill badge-success p-2">Primary Address</span>
+                          @else
+                            <button type="button" class="btn btn-link p-0"
+                              onclick="primary_address( {{ $key }}, '{{ $delivery_address }}', '{{ route('profile.address.update', ['address' => $delivery_address]) }}')"
+                            >Make Primary Address</button>
+                          @endif
+                        </div>                                          
+                      @endforeach
+                      
+                    </div>              
+                  @endif                  
+
+                  <div id="delivery_address_form" class="border-top d-none mt-2 pt-2">
+                    @address_form([
+                      'address'=> $primary_address,
+                      'shop_address' => false,
+                    ])
+                    @endaddress_form
+                  </div>
                 </div>
 
               @endrole
@@ -203,7 +249,10 @@
                   <!-- shop address -->
                   <label>Shop Address</label>
 
-                  @address_form(['address'=> $user_shop->address])
+                  @address_form([
+                    'address'=> $user_shop->address,
+                    'shop_address' => true,
+                  ])
                   @endaddress_form
                 </div>
 
@@ -263,6 +312,50 @@
       @endslot
     @endmodal
 
+    <!-- Primary Address Modal -->
+    @modal(['modal_id' => 'primary_address_modal'])
+      @slot('modal_title')
+        Make Primary Address
+      @endslot
+
+      @slot('modal_body')
+        <p> Are you sure you want to set this address as the primary address.</p>
+        <p><b><span id="confirm_primary_address"></span></b></p>
+
+        <form method="post" class="d-none" id="primary_address_form">
+          @csrf
+          @method('PUT')
+        </form>
+      @endslot
+
+      @slot('modal_footer')
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success" form="primary_address_form">Make Primary Address</button>
+      @endslot
+    @endmodal
+
+    <!-- Remove Address Modal -->
+    @modal(['modal_id' => 'remove_address_modal'])
+      @slot('modal_title')
+        Remove Address
+      @endslot
+
+      @slot('modal_body')
+        <p> Are you sure you want to remove this address.</p>
+        <p><b><span id="remove_address"></span></b></p>
+
+        <form method="post" class="d-none" id="remove_address_form">
+          @csrf
+          @method('DELETE')
+        </form>
+      @endslot
+
+      @slot('modal_footer')
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success" form="remove_address_form">Remove Address</button>
+      @endslot
+    @endmodal
+
   </div>
 @endsection
 
@@ -272,7 +365,15 @@
   <script src="{{ asset('/js/bootstrap.js') }}" charset="utf-8"></script>
 
   <script type="text/javascript">
-    function verify_phone(key, phone_json, form_url, ajax_url) {
+    $(function () {
+      $('#add_address_btn').click(function () {
+        $('#delivery_address_form').removeClass('d-none');
+      })
+    })
+  </script>
+
+  <script type="text/javascript">
+    function verify_phone(key, phone_json, form_url) {
       var phone = JSON.parse(phone_json);
       $('#verify_phone_spinner_'+key).removeClass('d-none');
 
@@ -283,9 +384,9 @@
 
       // use axios from 'resources/js/bootstrap.js'
       window.axios({
-        method: 'put',
-        url: ajax_url,
-        data: { validate: 'request_otp' },
+        method: 'post',
+        url: '{{ route('ajax.otp.post') }}',
+        data: { phone: phone },
       }).then(function (response) {
         // handle success
 
@@ -341,6 +442,26 @@
       $('.remove_phone_number').text(phone.phone_number);
       $("#remove_phone_form").attr('action', form_url);
       $('#remove_phone_modal').modal('show')
+    }
+
+    function primary_address(key, address_json, form_url) {
+      var address = JSON.parse(address_json);
+
+      // set modal variables and show
+      $('#confirm_primary_address').text(address.full_address);
+      $("#primary_address_form").attr('action', form_url);
+      $('#primary_address_modal').modal('show')
+    }
+
+    function remove_address(key, address_json, form_url) {
+      var address = JSON.parse(address_json);
+
+      console.log(key, address_json, form_url);
+
+      // set modal variables and show
+      $('#confirm_remove_address').text(address.full_address);
+      $("#remove_address_form").attr('action', form_url);
+      $('#remove_address_modal').modal('show')
     }
   </script>
 @endsection

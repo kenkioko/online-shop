@@ -87,8 +87,6 @@ class ItemController extends Controller
         ])->take(config('items.items_in_row'))
         ->get();
 
-        // dd($related_items);
-
         return view('web.item')->with([
           'item' => $item,
           'shop' => $item->shop()->firstOrFail(),

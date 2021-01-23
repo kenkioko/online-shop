@@ -89,6 +89,10 @@ Route::middleware('auth')
       Route::resource('phone', 'PhoneController')->only([
         'update', 'destroy'
       ]);
+
+      Route::resource('address', 'AddressController')->only([
+        'update', 'destroy'
+      ]);
     });
 
 
@@ -97,7 +101,15 @@ Route::namespace('Ajax')
     ->prefix('ajax')
     ->name('ajax.')
     ->group(function () {
-      Route::resource('phone', 'PhoneController')->only([
-        'update'
-      ]);
+      Route::post('otp', 'OTPController@sendOTP')->name('otp.post');
     });
+
+// clear cache route
+Route::get('/clear', function() {
+  Artisan::call('cache:clear');
+  Artisan::call('config:clear');
+  Artisan::call('config:cache');
+  Artisan::call('view:clear');
+
+  return "Cleared!";
+});

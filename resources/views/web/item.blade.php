@@ -80,7 +80,7 @@
         </div>
 
         <div class="mt-2">
-          <h4>Price: </h4>
+          <span class="font-weight-bold">Price:</span><br>
           <p>
             @show_item_price(['item' => $item])
             @endshow_item_price
@@ -166,6 +166,10 @@
             </div>
 
             <div class="d-flex">
+              <button class="btn btn-outline-primary">
+                HIGHEST BIDDER 
+              </button>
+
               <button type="submit" form="add_item_form" class="btn btn-primary ml-auto">
                 ADD TO CART
               </button>
@@ -198,7 +202,7 @@
     <!-- Related Items -->
     <div>
       <h3><b>Similar Products</b></h3>
-      
+
       @include('shared.item_display', [
         'items' => $related_items,
       ])
