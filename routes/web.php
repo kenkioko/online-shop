@@ -39,6 +39,9 @@ Route::namespace('Web')->group(function () {
     'show'
   ]);
 
+  Route::post('orders/bid', 'OrderController@storeBid')
+    ->name('orders.bid');
+    
   Route::resource('orders', 'OrderController')->only([
     'index', 'store', 'show'
   ]);

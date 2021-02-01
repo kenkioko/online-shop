@@ -3,7 +3,7 @@
   <div class="modal-dialog {{ $modal_class ?? ''}}" role="document">
     <div class="modal-content {{ $modal_content_class ?? '' }}">
       <div class="modal-header {{ $modal_header_class ?? '' }}">
-        <h5 class="modal-title" id="{{ $modal_id }}_title">
+        <h5 class="modal-title {{ $modal_title_class ?? '' }}" id="{{ $modal_id }}_title">
           {{ $modal_title }}
         </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">

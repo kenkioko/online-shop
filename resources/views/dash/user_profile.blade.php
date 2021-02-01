@@ -157,7 +157,7 @@
                       @foreach($delivery_addresses as $delivery_address)                    
                         <div class="col-sm-6 border p-2">
                           <button type="button" class="close ml-auto" aria-label="Close"
-                          onclick="remove_address( {{ $key }}, '{{ $delivery_address }}', '{{ route('profile.address.destroy', ['address' => $delivery_address]) }}')"
+                            onclick="remove_address( {{ $key }}, '{{ $delivery_address }}', '{{ route('profile.address.destroy', ['address' => $delivery_address]) }}')"
                           ><span aria-hidden="true">&times;</span></button>
 
                           <address>

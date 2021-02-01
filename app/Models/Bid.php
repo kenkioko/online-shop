@@ -11,7 +11,7 @@ class Bid extends Model
    *
    * @var array
    */
-  protected $fillable = ['amount'];
+  protected $fillable = ['amount', 'closing'];
 
   /**
    * The attributes that should be cast to native types.
@@ -20,6 +20,15 @@ class Bid extends Model
    */
   protected $casts = [ 
     'amount' => 'double', 
+  ];
+
+  /**
+   * The attributes that should be mutated to dates.
+   *
+   * @var array
+   */
+  protected $dates = [
+    'closing',
   ];
 
   /**
@@ -40,5 +49,10 @@ class Bid extends Model
   public function item()
   {
       return $this->belongsTo('App\User');
+  }
+
+  public function bidItem(array $data)
+  {
+    # code...
   }
 }

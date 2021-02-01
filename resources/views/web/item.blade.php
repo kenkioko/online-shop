@@ -109,6 +109,7 @@
           <input type="hidden" name="item_id" value="{{ $item->id }}">
           <input type="hidden" name="order_number" value="{{ $order_number }}">
           <input type="hidden" name="update_type" value="add" id="item_update_type">
+          <input type="hidden" name="delivery_address" id="delivery_address_input">
         </form>
 
         @canany(['cart.create','cart.update'])
@@ -166,19 +167,21 @@
             </div>
 
             <div class="d-flex">
-              <button class="btn btn-outline-primary">
-                HIGHEST BIDDER 
-              </button>
+              @if ($item->bid_allowed)
+                <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#add_address_modal" 
+                  onclick="orderType('bid')"
+                >HIGHEST BIDDER</button>
+              @endif
 
-              <button type="submit" form="add_item_form" class="btn btn-primary ml-auto">
-                ADD TO CART
-              </button>
+              <button type="button" class="btn btn-primary ml-auto" data-toggle="modal" data-target="#add_address_modal"
+                onclick="orderType('buy')"
+              >BUY ITEM</button>
             </div>
           @endif
         @endcanany
 
         @guest
-          <button type="submit" form="add_item_form" class="btn btn-outline-primary ml-auto font-weight-bold">
+          <button type="button" class="btn btn-outline-primary ml-auto font-weight-bold">
             LOGIN TO PURCHASE ITEM
           </button>
         @endguest
@@ -210,6 +213,137 @@
     <!-- End Related Items -->
 
   </div>
+
+  <!-- Add Address Item Modal -->
+  @modal([
+    'modal_id' => 'add_address_modal',
+    'modal_header_class' => 'border-0 pb-0',
+    'modal_title_class' => 'h3 ml-auto pt-0',
+    'modal_footer_class' => 'border-0',
+  ])
+    @slot('modal_title')
+      <b>Shipping Address</b>
+    @endslot
+
+    @slot('modal_body')
+      <p class="text-center">
+        Select your preferred shipping address so that your package can be droped there.
+      </p>
+
+      <div class="my-4">
+        @foreach($delivery_addresses as $delivery_address)
+          <div class="border p-2">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="select_address" 
+                id="delivery_address_input" 
+                value="{{ $delivery_address }}" 
+                @if($delivery_address->primary_address) checked @endif
+              >
+              <label class="form-check-label" for="delivery_address_input">
+                <p class='m-0'>{{ $delivery_address->full_address }}</p>
+              </label>
+            </div>            
+          </div>     
+        @endforeach
+      </div>      
+    @endslot
+
+    @slot('modal_footer')
+      <a type="button" class="btn btn-outline-primary" href="{{ route('profile.index') }}">
+        ADD SHIPPING ADDRESS
+      </a>
+
+      <button type="button" class="btn btn-primary ml-2" data-dismiss="modal" id="select_address_btn">
+        PROCEED
+      </button>       
+    @endslot
+  @endmodal
+
+
+  @if ($item->bid_allowed)
+    <!-- Bid Item Modal -->
+    @modal([
+      'modal_id' => 'bid_item_modal',
+      'modal_header_class' => 'border-0 pb-0',
+      'modal_title_class' => 'h3 ml-auto pt-0',
+      'modal_footer_class' => 'border-0',
+    ])
+      @slot('modal_title')
+        <b>Product Bidding</b>
+      @endslot
+
+      @slot('modal_body')
+        <p class="text-center">
+          The price you will place on the product will be public for everyone to see. Your name won’t be visible though.
+        </p>
+
+        <form id="bid_item_form" action="{{ route('orders.bid') }}" method="post">
+          @csrf
+          
+          <input type="hidden" name="item_id" value="{{ $item->id }}">
+          <input type="hidden" name="delivery_address" id="bid_address_input">
+
+          <div class="row my-4">
+            <div class="col-sm-6">
+              <p><b>Starting time</b></p>
+              <h3><b>08:30 am</b></h3>
+            </div>
+
+            <div class="col-sm-6">
+              <p><b>Stoppage time</b></p>
+              <h3><b>12:30 pm</b></h3>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="bid_amount_input">Amount</label>
+            <input type="email" class="form-control bg-light" name="amount" id="bid_amount_input" placeholder="Minimum amount: Ksh 90,000">
+          </div>
+        </form>
+      @endslot
+
+      @slot('modal_footer')
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          CANCEL
+        </button> 
+
+        <button type="submit" form="bid_item_form" class="btn btn-primary ml-2">
+          SUBMIT YOUR BID
+        </button>     
+      @endslot
+    @endmodal
+  @endif
+
+
+  @if ($item->trade_allowed)
+    <!-- Bid Item Modal -->
+    @modal([
+      'modal_id' => 'buy_item_modal',
+      'modal_header_class' => 'border-0 pb-0',
+      'modal_title_class' => 'h3 ml-auto pt-0',
+      'modal_footer_class' => 'border-0',
+    ])
+      @slot('modal_title')
+        <b>Buy or Trade-in</b>
+      @endslot
+
+      @slot('modal_body')        
+        <p class="text-center">
+          The owner of this item accepts a trade in, you can either buy item or trade another item.
+        </p>
+      @endslot
+
+      @slot('modal_footer')
+        <button type="button" class="btn btn-outline-primary" data-dismiss="modal">
+          ADVANCE TO TRADE IN
+        </button> 
+
+        <button type="submit" form="add_item_form" class="btn btn-primary ml-2">
+          ADD TO CART
+        </button>    
+      @endslot
+    @endmodal
+  @endif
 @endsection
 
 @section('page_js')
@@ -218,6 +352,42 @@
   <!-- Flickity JavaScript -->
   <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
   <script src="{{ asset('/js/flikty.js') }}" type="text/javascript"></script>
+
+  <script type="text/javascript">
+    var order_type;
+
+    function orderType(type) {
+      order_type = type;
+    }
+  </script>
+
+  <script type="text/javascript">
+    $(function () {
+      $('#select_address_btn').click(function () {
+        address = $("input[name=select_address]").val();
+
+        // set delivery address
+        $('#delivery_address_input').val(address);
+        $('#bid_address_input').val(address);
+
+        if (order_type == 'bid') {
+          $('#bid_item_modal').modal('show');
+        } 
+        
+        @if($item->trade_allowed)
+          if (order_type == 'buy') {
+            $('#buy_item_modal').modal('show');
+          }
+        @endif
+
+        @if(!$item->trade_allowed)
+          if (order_type == 'buy') {
+            $('#add_item_form').submit();
+          }
+        @endif
+      });
+    });
+  </script>  
 
   @if(count($files) > 0)
     <script type="text/javascript">

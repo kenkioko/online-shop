@@ -81,11 +81,14 @@ class ItemController extends Controller
             ->where('status', Order::getStatus('items_in_cart'))
             ->first();
 
+        $delivery_addresses= $user->address()
+            ->orderBy('primary_address', 'desc')
+            ->get();
+
         $related_items = Item::where([
             'type' => $item->type,
             'category_id' => $item->category->id
-        ])->take(config('items.items_in_row'))
-        ->get();
+        ])->take(config('items.items_in_row'))->get();
 
         return view('web.item')->with([
           'item' => $item,
@@ -93,6 +96,7 @@ class ItemController extends Controller
           'active_order' => $active_order,
           'files' => $this->get_image_files($item->images_folder),
           'related_items' => $related_items,
+          'delivery_addresses' => $delivery_addresses,
         ]);
     }
 
